@@ -29,7 +29,7 @@ test("one topic can manage multiple deadlines without replacing progress or V1.1
   assert.match(deadlines, /type="datetime-local"/);
   assert.match(deadlines, /Mức khẩn cấp/);
   assert.match(deadlines, /Đánh dấu hoàn thành/);
-  assert.match(deadlines, /localStorage\.setItem/);
+  assert.match(deadlines, /safeSetLocalStorage/);
   assert.doesNotMatch(deadlines, /fetch\(|api\/apps\/hoa-nhap-nga|medical-control|system-control/);
 });
 
