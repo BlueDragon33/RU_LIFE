@@ -16,8 +16,8 @@ test("personal tools use a dedicated local namespace and never become management
   assert.match(storage, /reminderAt:\s*string/);
   assert.match(storage, /reminderNote:\s*string/);
   assert.match(storage, /notifiedAt:\s*string/);
-  assert.match(topicTools, /localStorage\.setItem/);
-  assert.match(dashboardTools, /localStorage\.setItem/);
+  assert.match(topicTools, /safeSetLocalStorage/);
+  assert.match(dashboardTools, /safeSetLocalStorage/);
   assert.doesNotMatch(topicTools, /api\/apps\/hoa-nhap-nga|medical-control|system-control/);
   assert.doesNotMatch(dashboardTools, /api\/apps\/hoa-nhap-nga|medical-control|system-control/);
 });
@@ -27,7 +27,7 @@ test("topic tools support favorites local reminders and browser notification opt
   assert.match(topicTools, /aria-pressed=\{tools\.favorite\}/);
   assert.match(topicTools, /type="datetime-local"/);
   assert.match(topicTools, /Notification\.requestPermission\(\)/);
-  assert.match(topicTools, /trình duyệt không bảo đảm chạy lịch nền khi ứng dụng đã đóng/);
+  assert.match(topicTools, /best-effort khi ứng dụng có cơ hội chạy/);
   assert.match(topicTools, /RU_LIFE_TOOLS_EVENT/);
 });
 
@@ -40,6 +40,7 @@ test("local reminder runtime checks due reminders only inside the protected work
   assert.match(runtime, /new Notification/);
   assert.match(runtime, /document\.visibilityState === "visible"/);
   assert.match(runtime, /visibilitychange/);
+  assert.match(runtime, /safeSetLocalStorage/);
   assert.match(layout, /LocalReminderRuntime/);
   assert.match(layout, /import "\.\.\/tools\.css"/);
   assert.match(layout, /readDeviceSession\(\)/);
