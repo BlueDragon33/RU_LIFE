@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import DeviceHeartbeat from "@/components/device-heartbeat";
 import WorkspaceNavigation from "@/components/workspace-navigation";
 import { readDeviceSession } from "@/lib/device-session.server";
+import "../workspace.css";
 
 export const dynamic = "force-dynamic";
 
