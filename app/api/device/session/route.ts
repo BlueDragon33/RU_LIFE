@@ -4,7 +4,11 @@ import { DEVICE_SESSION_COOKIE, readDeviceSession, verifyManagedAppSession } fro
 export const dynamic = "force-dynamic";
 
 function responseHeaders() {
-  return { "cache-control": "no-store, private", "x-content-type-options": "nosniff" };
+  return {
+    "cache-control": "no-store, private",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "x-content-type-options": "nosniff",
+  };
 }
 
 export async function GET() {
@@ -36,7 +40,7 @@ export async function POST(request: Request) {
   } catch {
     const store = await cookies();
     store.delete(DEVICE_SESSION_COOKIE);
-    return Response.json({ ok: false, error: "Trung tâm quản trị chưa cấp được phiên hợp lệ cho thiết bị này." }, { status: 403, headers: responseHeaders() });
+    return Response.json({ ok: false, error: "Thiết bị chưa có phiên Hòa nhập Nga hợp lệ hoặc phiên đã bị thu hồi." }, { status: 403, headers: responseHeaders() });
   }
 }
 
