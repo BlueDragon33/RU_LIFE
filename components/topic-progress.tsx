@@ -21,18 +21,24 @@ export default function TopicProgress({ moduleSlug, topicSlug, checklist }: { mo
   const key = useMemo(() => storageKey(moduleSlug, topicSlug), [moduleSlug, topicSlug]);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(key);
-      if (raw) {
-        const parsed = JSON.parse(raw) as Partial<StoredProgress>;
-        if (Array.isArray(parsed.checked)) setChecked(parsed.checked.filter((value) => Number.isInteger(value)) as number[]);
-        if (typeof parsed.note === "string") setNote(parsed.note);
+    const frame = window.requestAnimationFrame(() => {
+      let nextChecked: number[] = [];
+      let nextNote = "";
+      try {
+        const raw = localStorage.getItem(key);
+        if (raw) {
+          const parsed = JSON.parse(raw) as Partial<StoredProgress>;
+          if (Array.isArray(parsed.checked)) nextChecked = parsed.checked.filter((value) => Number.isInteger(value)) as number[];
+          if (typeof parsed.note === "string") nextNote = parsed.note;
+        }
+      } catch {
+        // Local progress is optional; corrupt browser storage must not block content access.
       }
-    } catch {
-      // Local progress is optional; corrupt browser storage must not block content access.
-    } finally {
+      setChecked(nextChecked);
+      setNote(nextNote);
       setLoaded(true);
-    }
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, [key]);
 
   function persist(nextChecked: number[], nextNote: string) {
