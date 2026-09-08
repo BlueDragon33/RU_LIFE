@@ -2,9 +2,13 @@
 .local-data-heading { margin-bottom: 16px; }
 .local-data-counts { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
 .local-data-counts article { border: 1px solid var(--line); border-radius: 17px; padding: 18px; background: #fff; }
-.local-data-counts span, .backup-card > span { display: block; color: #8792a5; font-size: 8px; letter-spacing: .12em; font-weight: 900; }
+.local-data-counts span, .backup-card > span, .storage-health span { display: block; color: #8792a5; font-size: 8px; letter-spacing: .12em; font-weight: 900; }
 .local-data-counts strong { display: block; margin: 9px 0 4px; font-size: 24px; }
 .local-data-counts p { margin: 0; color: var(--muted); font-size: 10px; }
+.storage-health { display: flex; justify-content: space-between; align-items: center; gap: 22px; margin-top: 12px; padding: 14px 16px; border: 1px solid #d9e3ee; border-radius: 14px; background: #f8fbff; }
+.storage-health strong { display: block; margin-top: 4px; font-size: 12px; }
+.storage-health p { max-width: 640px; margin: 0; color: #65748a; font-size: 10px; line-height: 1.5; }
+.storage-health.warning { border-color: #e7c77a; background: #fffaf0; }
 .local-data-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-top: 12px; }
 .backup-card { border: 1px solid var(--line); border-radius: 18px; padding: 19px; background: #fff; }
 .backup-card h3 { margin: 6px 0 8px; font-size: 17px; }
@@ -14,7 +18,7 @@
 .backup-card input, .backup-card select { width: 100%; min-height: 40px; border: 1px solid #d7e0ea; border-radius: 10px; padding: 9px 10px; background: #fbfcfe; color: var(--ink); }
 .backup-card button { margin-top: 12px; border: 0; border-radius: 10px; padding: 10px 12px; background: #253b5f; color: #fff; font-size: 10px; font-weight: 850; }
 .backup-card button:disabled { opacity: .45; cursor: not-allowed; }
-.backup-card button:focus-visible, .backup-card input:focus-visible, .backup-card select:focus-visible { outline: 3px solid rgba(36,99,235,.18); outline-offset: 2px; }
+.backup-card button:focus-visible, .backup-card input:focus-visible, .backup-card select:focus-visible, .local-state-runtime-alert button:focus-visible { outline: 3px solid rgba(36,99,235,.18); outline-offset: 2px; }
 .restore-card { background: #f9fbff; border-color: #d8e3ef; }
 .danger-card { background: #fffafa; border-color: #ead7da; }
 .danger-card button { background: #8e3441; }
@@ -22,5 +26,22 @@
 .backup-preview > strong { font-size: 12px; }
 .backup-preview > p { margin: 4px 0 8px; color: #68778c; font-size: 10px; }
 .local-data-message { margin: 12px 0 0; border: 1px solid #d9e3ee; border-radius: 12px; padding: 11px 13px; background: #f7fafc; color: #536278; font-size: 10px; line-height: 1.5; }
-@media (max-width: 900px) { .local-data-grid { grid-template-columns: 1fr; } }
-@media (max-width: 620px) { .local-data-counts { grid-template-columns: 1fr; } }
+.local-state-runtime-alert { position: fixed; z-index: 50; right: 18px; bottom: 18px; width: min(420px, calc(100vw - 36px)); border: 1px solid #e2b9bf; border-radius: 14px; padding: 14px 16px; background: #fff7f8; box-shadow: 0 12px 34px rgba(30,42,60,.16); color: #69343d; }
+.local-state-runtime-alert strong { display: block; font-size: 12px; }
+.local-state-runtime-alert p { margin: 5px 0 0; font-size: 10px; line-height: 1.5; }
+.local-state-runtime-alert button { margin-top: 9px; border: 1px solid #dec3c7; border-radius: 9px; padding: 7px 10px; background: #fff; color: #69343d; font-size: 9px; font-weight: 800; }
+
+/* Tablet contract: single-column backup actions while preserving compact counters. */
+@media (max-width: 900px) {
+  .local-data-grid { grid-template-columns: 1fr; }
+  .storage-health { align-items: flex-start; flex-direction: column; gap: 7px; }
+  .storage-health p { max-width: none; }
+}
+
+/* Phone contract: all backup counters and controls stack to full width. */
+@media (max-width: 620px) {
+  .local-data-counts { grid-template-columns: 1fr; }
+  .backup-card { padding: 16px; }
+  .backup-card button { width: 100%; min-height: 42px; }
+  .local-state-runtime-alert { right: 10px; bottom: 10px; width: calc(100vw - 20px); }
+}
