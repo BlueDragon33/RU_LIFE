@@ -24,6 +24,21 @@ test("device private key is non-exportable and stored locally in IndexedDB", asy
   assert.doesNotMatch(client, /exportKey\([^\n]*privateKey/);
 });
 
+test("RU_LIFE automatically collects independent signals for computer phone and tablet classification", async () => {
+  const client = await source("../lib/device-access.client.ts");
+  assert.match(client, /getHighEntropyValues/);
+  assert.match(client, /navigator\.maxTouchPoints/);
+  assert.match(client, /pointer: coarse/);
+  assert.match(client, /window\.screen\.width/);
+  assert.match(client, /window\.innerWidth/);
+  assert.match(client, /deviceClass: "computer"/);
+  assert.match(client, /deviceClass: "phone"/);
+  assert.match(client, /deviceClass: "tablet"/);
+  assert.match(client, /classificationConfidence/);
+  assert.match(client, /classifierVersion: 2/);
+  assert.match(client, /profile = await browserProfile\(\)/);
+});
+
 test("challenge signature exactly matches the central managed-app contract", async () => {
   const client = await source("../lib/device-access.client.ts");
   assert.match(client, /managed-app:hoa-nhap-nga:\$\{deviceId\}:\$\{challenge\}/);
