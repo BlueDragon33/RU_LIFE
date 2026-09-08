@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LocalDataManager from "@/components/local-data-manager";
 import WorkspaceDashboard, { type DashboardTopic } from "@/components/workspace-dashboard";
 import WorkspacePersonalTools, { type PersonalToolsTopic } from "@/components/workspace-personal-tools";
 import WorkspaceDeadlineBoard, { type DeadlineBoardTopic } from "@/components/workspace-deadline-board";
@@ -47,13 +48,14 @@ export default function ProtectedAppPage() {
 
   return <>
     <header className="workspace-hero">
-      <div><span>HÒA NHẬP NGA · KHÔNG GIAN CÁ NHÂN</span><h1>Mọi việc cần nhớ khi sống và học tập tại Nga</h1><p>20 chủ đề đã có nội dung thực. V1.2 bổ sung quản lý nhiều thời hạn, mức khẩn cấp, lịch 7 ngày, cảnh báo nguồn cần rà soát và xuất .ics; Trung tâm quản trị vẫn chỉ kiểm soát quyền thiết bị.</p></div>
+      <div><span>HÒA NHẬP NGA · KHÔNG GIAN CÁ NHÂN</span><h1>Mọi việc cần nhớ khi sống và học tập tại Nga</h1><p>20 chủ đề đã có nội dung thực. V1.3 bổ sung backup/khôi phục có kiểm tra và liên kết deadline với checklist; Trung tâm quản trị vẫn chỉ kiểm soát quyền thiết bị.</p></div>
       <span className="session-ok">THIẾT BỊ HỢP LỆ</span>
     </header>
 
     <WorkspaceDashboard topics={dashboardTopics} />
     <WorkspacePersonalTools topics={personalTopics} />
     <WorkspaceDeadlineBoard topics={deadlineTopics} />
+    <LocalDataManager />
 
     <section className="module-section">
       <div className="section-heading"><div><span>BẢN ĐỒ NỘI DUNG · {topicCount()} CHỦ ĐỀ</span><h2>Chọn khu vực cần xử lý</h2></div><p>Mỗi module và chủ đề có route riêng. Có thể đi sâu, cập nhật nguồn hoặc chỉnh checklist từng phần mà không ảnh hưởng lớp cấp quyền thiết bị.</p></div>
@@ -68,7 +70,7 @@ export default function ProtectedAppPage() {
     </section>
 
     <section className="workspace-next">
-      <span>RU_LIFE V1.2 · DEADLINE CONTROL</span><h2>Nội dung đã gắn được với thời hạn cá nhân mà vẫn tách khỏi dữ liệu quản trị</h2><p>Checklist, ghi chú, yêu thích, nhắc việc và deadline đều nằm trong RU_LIFE trên thiết bị. Mốc rà soát nguồn chỉ là cơ chế kiểm soát chất lượng nội dung. P-256, session, heartbeat, introspection và quyền thiết bị tiếp tục được quản lý độc lập qua Application-Management.</p>
+      <span>RU_LIFE V1.3 · DATA RESILIENCE</span><h2>Dữ liệu cá nhân có thể sao lưu và khôi phục mà không mang theo quyền thiết bị</h2><p>Backup chỉ gồm checklist/ghi chú, yêu thích/nhắc việc và deadline. Session, P-256 identity, heartbeat, introspection và trạng thái cấp quyền không được xuất hoặc nhập qua V1.3.</p>
     </section>
   </>;
 }
