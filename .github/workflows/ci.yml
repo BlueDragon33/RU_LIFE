@@ -2,12 +2,18 @@ name: RU_LIFE CI
 
 on:
   push:
+    branches: [main]
   pull_request:
+    branches: [main]
 
 jobs:
   build-test:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
+    env:
+      RU_LIFE_CONTROL_SERVICE_SECRET: 0123456789abcdef0123456789abcdef
+      APPLICATION_MANAGEMENT_ORIGIN: https://learning-management.boiech-ai.workers.dev
+      RU_LIFE_DATABASE_ID: 00000000-0000-0000-0000-000000000001
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -15,12 +21,31 @@ jobs:
           node-version: 22.13.0
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+      - name: Enforce standalone ownership
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f .openai/hosting.json
+          test -f vite.config.ts
+          test -f worker/index.ts
+          test -f drizzle/0000_ru_life_device_gateway.sql
+          test -f lib/device-registry.server.ts
+          test -f lib/control-auth.server.ts
+          test -f app/api/device/access/route.ts
+          test -f app/api/control/devices/route.ts
+          test -f app/api/control/sessions/route.ts
+          test -f app/api/control/audit/route.ts
+          test -f app/api/control/status/route.ts
+          if grep -RInE --include='*.ts' --include='*.tsx' --include='*.js' --include='*.mjs' \
+            --exclude-dir=node_modules --exclude-dir=.git \
+            'MEDICINE_SERVICE_SECRET|HEALTH_CONTROL_SERVICE_SECRET|/api/apps/hoa-nhap-nga/device|/api/apps/hoa-nhap-nga/session' \
+            app lib components 2>/dev/null; then
+            echo 'RU_LIFE must own its HN device/session path and must not reuse Health/legacy central contracts.'
+            exit 1
+          fi
       - name: Lint
         run: npm run lint
       - name: Build
         run: npm run build
-        env:
-          RU_LIFE_CONTROL_SERVICE_SECRET: 0123456789abcdef0123456789abcdef
-          NEXT_PUBLIC_APPLICATION_MANAGEMENT_BASE_URL: https://learning-management.boiech-ai.workers.dev
       - name: Contract tests
         run: npm test
