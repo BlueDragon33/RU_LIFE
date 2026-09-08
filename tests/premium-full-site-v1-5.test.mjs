@@ -15,7 +15,7 @@ test("public RU_LIFE access gate uses the same flagship product language", async
   assert.match(rootLayout, /public-premium\.css/);
   assert.match(publicPage, /ДОБРО ПОЖАЛОВАТЬ/);
   assert.match(publicPage, /landing-value-grid/);
-  assert.match(publicPage, /không có màn hình đăng nhập trực tiếp/i);
+  assert.match(publicPage, /không có màn hình đăng nhập riêng/i);
   assert.match(gate, /premium-gate/);
   assert.match(gate, /Quyền thiết bị/);
   assert.match(publicCss, /\.premium-landing/);
