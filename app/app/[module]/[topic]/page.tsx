@@ -75,7 +75,7 @@ export default async function TopicPage({ params }: { params: Promise<{ module: 
           </article>
         </> : <>
           <article className="topic-block premium-topic-block"><span>01 · MỤC TIÊU</span><h2>Biết mình cần chuẩn bị và kiểm tra điều gì</h2><p>Trang này là khung nội dung độc lập của chủ đề <strong>{topic.title}</strong>.</p></article>
-          <article className="topic-block premium-topic-block"><span>02 · NỘI DUNG CHÍNH</span><h2>Chưa có lớp nội dung chuyên sâu</h2><div className="content-placeholder"><b>CONTENT LAYER</b><p>RU_LIFE không tự điền quy định khi chưa có dữ liệu được kiểm tra.</p></div></article>
+          <article className="topic-block premium-topic-block"><span>02 · NỘI DUNG CHÍNH</span><h2>Chưa bổ sung dữ liệu chuyên sâu</h2><div className="content-placeholder"><b>CONTENT LAYER</b><p>RU_LIFE không tự điền quy định khi chưa có dữ liệu được kiểm tra.</p></div></article>
         </>}
       </section>
       <aside className="topic-side premium-topic-side">
