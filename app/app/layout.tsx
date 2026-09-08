@@ -7,6 +7,7 @@ import "../workspace.css";
 import "../content.css";
 import "../tools.css";
 import "../deadlines.css";
+import "../backup.css";
 
 export const dynamic = "force-dynamic";
 
