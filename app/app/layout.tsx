@@ -6,6 +6,7 @@ import { readDeviceSession } from "@/lib/device-session.server";
 import "../workspace.css";
 import "../content.css";
 import "../tools.css";
+import "../deadlines.css";
 
 export const dynamic = "force-dynamic";
 
