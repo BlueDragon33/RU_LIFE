@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import TopicProgress from "@/components/topic-progress";
 import { getRuLifeTopic } from "@/lib/content-catalog";
-import { getTopicContent } from "@/lib/topic-content";
+import { getResolvedTopicContent } from "@/lib/content-resolver";
 
 const priorityLabel = {
   essential: "Cần ưu tiên",
@@ -21,7 +21,7 @@ export default async function TopicPage({ params }: { params: Promise<{ module: 
   const found = getRuLifeTopic(moduleSlug, topicSlug);
   if (!found) notFound();
   const { moduleData, topic } = found;
-  const content = getTopicContent(moduleData.slug, topic.slug);
+  const content = getResolvedTopicContent(moduleData.slug, topic.slug);
 
   return <>
     <header className="workspace-hero topic-hero">
