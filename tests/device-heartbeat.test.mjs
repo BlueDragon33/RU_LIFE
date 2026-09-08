@@ -8,13 +8,13 @@ async function source(path) {
 
 test("protected RU_LIFE workspace keeps device last-seen alive every 60 seconds", async () => {
   const heartbeat = await source("../components/device-heartbeat.tsx");
-  const page = await source("../app/app/page.tsx");
+  const layout = await source("../app/app/layout.tsx");
 
   assert.match(heartbeat, /HEARTBEAT_MS = 60_000/);
   assert.match(heartbeat, /registerDevice\(\)/);
   assert.match(heartbeat, /document\.visibilityState !== "visible"/);
   assert.match(heartbeat, /window\.addEventListener\("online"/);
-  assert.match(page, /<DeviceHeartbeat \/>/);
+  assert.match(layout, /<DeviceHeartbeat \/>/);
 });
 
 test("remote pending or blocked state clears local session and returns to access gate", async () => {
