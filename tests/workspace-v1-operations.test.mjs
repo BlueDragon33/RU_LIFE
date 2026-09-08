@@ -36,7 +36,7 @@ test("dashboard aggregates the same local progress namespace used by topic pages
   assert.match(dashboard, /checkedItems/);
   assert.match(dashboard, /notes/);
   assert.match(topicProgress, /RU_LIFE_PROGRESS_EVENT/);
-  assert.match(topicProgress, /localStorage\.setItem/);
+  assert.match(topicProgress, /safeSetLocalStorage/);
 });
 
 test("next action prioritizes incomplete essential topics before recommended and reference", async () => {
