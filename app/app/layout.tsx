@@ -11,6 +11,7 @@ import "../tools.css";
 import "../deadlines.css";
 import "../backup.css";
 import "../premium-theme.css";
+import "../premium-deep.css";
 
 export const dynamic = "force-dynamic";
 
