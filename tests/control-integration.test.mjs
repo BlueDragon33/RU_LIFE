@@ -76,10 +76,12 @@ test("RU_LIFE server introspects the exact token against the central revocation 
   assert.match(heartbeat, /window\.location\.replace\("\/"\)/);
 });
 
-test("protected workspace rejects browsers without a valid device session", async () => {
-  const page = await source("../app/app/page.tsx");
-  assert.match(page, /readDeviceSession\(\)/);
-  assert.match(page, /if \(!session\) redirect\("\/"\)/);
+test("all protected workspace routes reject browsers without a valid device session", async () => {
+  const layout = await source("../app/app/layout.tsx");
+  assert.match(layout, /readDeviceSession\(\)/);
+  assert.match(layout, /if \(!session\) redirect\("\/"\)/);
+  assert.match(layout, /<DeviceHeartbeat \/>/);
+  assert.match(layout, /<WorkspaceNavigation \/>/);
 });
 
 test("RU_LIFE has no direct login form and pending devices are rechecked every 60 seconds", async () => {
