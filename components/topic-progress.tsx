@@ -8,6 +8,7 @@ import {
   topicProgressKey,
   type StoredTopicProgress,
 } from "@/lib/progress-storage";
+import { safeSetLocalStorage } from "@/lib/local-storage-safe";
 
 export default function TopicProgress({ moduleSlug, topicSlug, checklist }: { moduleSlug: string; topicSlug: string; checklist: string[] }) {
   const [progress, setProgress] = useState<StoredTopicProgress>({ checked: [], note: "", updatedAt: "" });
@@ -25,12 +26,8 @@ export default function TopicProgress({ moduleSlug, topicSlug, checklist }: { mo
   function persist(nextChecked: number[], nextNote: string) {
     const value: StoredTopicProgress = { checked: nextChecked, note: nextNote, updatedAt: new Date().toISOString() };
     setProgress(value);
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-      window.dispatchEvent(new CustomEvent(RU_LIFE_PROGRESS_EVENT, { detail: { key } }));
-    } catch {
-      // The checklist remains usable in memory if localStorage is unavailable.
-    }
+    const result = safeSetLocalStorage(localStorage, key, JSON.stringify(value));
+    if (result.ok) window.dispatchEvent(new CustomEvent(RU_LIFE_PROGRESS_EVENT, { detail: { key } }));
   }
 
   const done = progressPercent(progress, checklist.length);
@@ -48,6 +45,6 @@ export default function TopicProgress({ moduleSlug, topicSlug, checklist }: { mo
       })}
     </div>
     <label className="topic-note"><span>Ghi chú của tôi</span><textarea value={progress.note} onChange={(event) => persist(progress.checked, event.target.value)} placeholder="Ghi lại thông tin cần nhớ trên thiết bị này…" rows={5} /></label>
-    <p className="topic-local-note">Tiến độ và ghi chú chỉ lưu cục bộ trên thiết bị này; không phải dữ liệu quản trị và không thay đổi quyền truy cập.</p>
+    <p className="topic-local-note">Tiến độ và ghi chú chỉ lưu cục bộ trên thiết bị này; nếu trình duyệt từ chối ghi, workspace sẽ hiển thị cảnh báo thay vì im lặng bỏ qua.</p>
   </section>;
 }
