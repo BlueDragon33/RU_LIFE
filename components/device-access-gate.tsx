@@ -11,6 +11,19 @@ import {
 
 type GateState = "checking" | "pending" | "blocked" | "approved" | "error";
 
+const deviceClassLabel = {
+  computer: "Máy tính",
+  phone: "Điện thoại",
+  tablet: "Máy tính bảng",
+  unknown: "Chưa xác định",
+} as const;
+
+const deviceStatusLabel = {
+  pending: "Chờ cấp quyền",
+  approved: "Đã cấp quyền",
+  blocked: "Đã khóa",
+} as const;
+
 function statusLabel(state: GateState) {
   if (state === "checking") return "Đang nhận diện thiết bị";
   if (state === "pending") return "Chờ Trung tâm cấp quyền";
@@ -22,7 +35,7 @@ function statusLabel(state: GateState) {
 export default function DeviceAccessGate() {
   const [state, setState] = useState<GateState>("checking");
   const [device, setDevice] = useState<ManagedDevice | null>(null);
-  const [message, setMessage] = useState("Đang tạo danh tính bảo mật cục bộ và kết nối Trung tâm quản trị…");
+  const [message, setMessage] = useState("Đang tự động nhận diện loại thiết bị, tạo danh tính bảo mật cục bộ và kết nối Trung tâm quản trị…");
   const [busy, setBusy] = useState(false);
   const running = useRef(false);
 
@@ -31,23 +44,24 @@ export default function DeviceAccessGate() {
     running.current = true;
     setBusy(true);
     setState("checking");
-    setMessage("Đang kiểm tra trạng thái quyền của thiết bị…");
+    setMessage("Đang nhận diện thiết bị và kiểm tra trạng thái quyền…");
     try {
       const registration = await registerDevice();
       setDevice(registration.device);
+      const detected = deviceClassLabel[registration.device.deviceClass];
       if (registration.device.status === "pending") {
         setState("pending");
-        setMessage("Thiết bị đã được gửi tới Trung tâm quản trị. Cần gắn người sử dụng và cấp quyền tại Trung tâm trước khi vào Hòa nhập Nga.");
+        setMessage(`Đã tự động nhận diện: ${detected}. Hồ sơ thiết bị đã được gửi sang Quản trị ứng dụng và đang chờ gắn người sử dụng, sau đó cấp quyền.`);
         return;
       }
       if (registration.device.status === "blocked") {
         setState("blocked");
-        setMessage("Thiết bị này đã bị Trung tâm quản trị khóa. Không thể tạo phiên truy cập mới.");
+        setMessage(`Đã tự động nhận diện: ${detected}. Thiết bị này đang bị Trung tâm quản trị khóa nên không thể tạo phiên truy cập mới.`);
         return;
       }
 
       setState("approved");
-      setMessage("Thiết bị đã được duyệt. Đang xác minh khóa và tạo phiên Hòa nhập Nga…");
+      setMessage(`Đã tự động nhận diện: ${detected}. Thiết bị đã được duyệt; đang xác minh khóa và tạo phiên Hòa nhập Nga…`);
       const authorization = await authorizeDevice(registration.keys, registration.device);
       setDevice(authorization.device);
       await establishLocalSession(authorization.accessToken);
@@ -90,18 +104,19 @@ export default function DeviceAccessGate() {
     </div>
     <p>{message}</p>
     {device ? <dl className="gate-meta">
-      <div><dt>Loại</dt><dd>{device.deviceClass}</dd></div>
+      <div><dt>Loại tự nhận diện</dt><dd>{deviceClassLabel[device.deviceClass]}</dd></div>
       <div><dt>Hệ điều hành</dt><dd>{device.osName}</dd></div>
       <div><dt>Trình duyệt</dt><dd>{device.browserName}</dd></div>
-      <div><dt>Trạng thái</dt><dd>{device.status}</dd></div>
+      <div><dt>Trạng thái</dt><dd>{deviceStatusLabel[device.status]}</dd></div>
     </dl> : null}
     <div className="gate-actions">
       <button type="button" onClick={() => void checkAccess()} disabled={busy}>{busy ? "Đang kiểm tra…" : "Kiểm tra lại quyền"}</button>
       {device?.deviceCode ? <button type="button" className="secondary" onClick={() => navigator.clipboard?.writeText(device.deviceCode)}>Sao chép mã HN</button> : null}
     </div>
     <div className="gate-policy">
+      <span>Tự động phân loại Máy tính / Điện thoại / Máy tính bảng</span>
+      <span>Quản trị ứng dụng kiểm tra lại tín hiệu trước khi lưu loại thiết bị</span>
       <span>Không có đăng nhập trực tiếp trên Hòa nhập Nga</span>
-      <span>Quyền được duyệt từ Site Quản trị theo từng thiết bị</span>
       <span>Khóa riêng P-256 chỉ lưu cục bộ trên thiết bị này</span>
     </div>
   </section>;
