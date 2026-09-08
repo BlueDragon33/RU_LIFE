@@ -7,12 +7,16 @@ export type ManagedDevice = {
   deviceId: string;
   deviceCode: string;
   status: ManagedDeviceStatus;
+  userName?: string | null;
+  userCode?: string | null;
   label: string | null;
   deviceClass: "computer" | "phone" | "tablet" | "unknown";
+  detectedDeviceClass?: "computer" | "phone" | "tablet" | "unknown";
   osName: string;
   browserName: string;
   modelHint: string | null;
   screen: string | null;
+  editEnabled?: boolean;
   createdAt: string;
   approvedAt: string | null;
   blockedAt: string | null;
@@ -45,15 +49,7 @@ export class DeviceGatewayError extends Error {
 const DB_NAME = "ru-life-device-access";
 const STORE_NAME = "crypto";
 const RECORD_KEY = "p256";
-const DEFAULT_APPLICATION_MANAGEMENT = "https://learning-management.boiech-ai.workers.dev";
-
-function applicationManagementBaseUrl() {
-  return (process.env.NEXT_PUBLIC_APPLICATION_MANAGEMENT_BASE_URL || DEFAULT_APPLICATION_MANAGEMENT).replace(/\/$/, "");
-}
-
-function gatewayUrl() {
-  return `${applicationManagementBaseUrl()}/api/apps/hoa-nhap-nga/device`;
-}
+const GATEWAY_URL = "/api/device/access";
 
 function base64Url(bytes: ArrayBuffer) {
   const view = new Uint8Array(bytes);
@@ -172,7 +168,16 @@ async function browserProfile() {
   }
 
   const coarsePointer = window.matchMedia?.("(pointer: coarse)").matches ?? false;
-  const classification = classifyDevice({ ua, mobileHint, platformHint, modelHint, touchPoints: navigator.maxTouchPoints || 0, coarsePointer, screenWidth: window.screen.width, screenHeight: window.screen.height });
+  const classification = classifyDevice({
+    ua,
+    mobileHint,
+    platformHint,
+    modelHint,
+    touchPoints: navigator.maxTouchPoints || 0,
+    coarsePointer,
+    screenWidth: window.screen.width,
+    screenHeight: window.screen.height,
+  });
 
   return {
     userAgent: ua.slice(0, 500),
@@ -190,19 +195,25 @@ async function browserProfile() {
     mobileHint: mobileHint ?? null,
     architecture: (highEntropy.architecture || "").slice(0, 30),
     bitness: (highEntropy.bitness || "").slice(0, 10),
-    classifierVersion: 2,
+    classifierVersion: 3,
   };
 }
 
 async function gatewayPost<T>(payload: Record<string, unknown>) {
   let response: Response;
   try {
-    response = await fetch(gatewayUrl(), { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload), cache: "no-store" });
+    response = await fetch(GATEWAY_URL, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(payload),
+      cache: "no-store",
+    });
   } catch {
-    throw new DeviceGatewayError("Không thể kết nối Application Management. Kiểm tra mạng rồi thử lại.", "APPLICATION_MANAGEMENT_UNREACHABLE");
+    throw new DeviceGatewayError("Không thể kết nối dịch vụ thiết bị Hòa nhập Nga. Kiểm tra mạng rồi thử lại.", "RU_LIFE_GATEWAY_UNREACHABLE");
   }
   const body = await response.json().catch(() => ({})) as T & GatewayErrorBody;
-  if (!response.ok) throw new DeviceGatewayError(body.error || "Application Management từ chối yêu cầu.", body.code || "APPLICATION_MANAGEMENT_REJECTED", body.device);
+  if (!response.ok) throw new DeviceGatewayError(body.error || "Hòa nhập Nga từ chối yêu cầu thiết bị.", body.code || "RU_LIFE_GATEWAY_REJECTED", body.device);
   return body;
 }
 
@@ -228,11 +239,22 @@ export async function authorizeDevice(keys: DeviceKeyRecord, device: ManagedDevi
   );
   const proof = await gatewayPost<{ challenge: string; expiresAt: number; device: ManagedDevice }>({ action: "challenge", deviceId: device.deviceId });
   const signature = await signChallenge(keys.privateKey, device.deviceId, proof.challenge);
-  return gatewayPost<{ accessToken: string; expiresAt: number; device: ManagedDevice }>({ action: "authorize", deviceId: device.deviceId, challenge: proof.challenge, signature });
+  return gatewayPost<{ accessToken: string; expiresAt: number; device: ManagedDevice }>({
+    action: "authorize",
+    deviceId: device.deviceId,
+    challenge: proof.challenge,
+    signature,
+  });
 }
 
 export async function establishLocalSession(accessToken: string) {
-  const response = await fetch("/api/device/session", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ accessToken }), cache: "no-store" });
+  const response = await fetch("/api/device/session", {
+    method: "POST",
+    credentials: "same-origin",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ accessToken }),
+    cache: "no-store",
+  });
   const body = await response.json().catch(() => ({})) as { ok?: boolean; error?: string };
   if (!response.ok || !body.ok) throw new DeviceGatewayError(body.error || "Không thể tạo phiên Hòa nhập Nga.", "LOCAL_SESSION_FAILED");
 }
