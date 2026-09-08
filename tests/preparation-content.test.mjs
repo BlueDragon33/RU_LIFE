@@ -31,8 +31,10 @@ test("dynamic Russian entry guidance is source-linked and does not treat e-visa 
 
 test("topic page renders freshness, structured blocks and official source links with a safe fallback", async () => {
   const page = await source("../app/app/[module]/[topic]/page.tsx");
+  const resolver = await source("../lib/content-resolver.ts");
 
-  assert.match(page, /getTopicContent/);
+  assert.match(page, /getResolvedTopicContent/);
+  assert.match(resolver, /getPreparationTopicContent/);
   assert.match(page, /freshnessLabel/);
   assert.match(page, /content\.blocks\.map/);
   assert.match(page, /content\.sources\.map/);
