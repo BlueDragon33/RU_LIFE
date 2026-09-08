@@ -20,7 +20,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          MEDICINE_SERVICE_SECRET: 0123456789abcdef0123456789abcdef
-          NEXT_PUBLIC_CONTROL_CENTER_BASE_URL: https://quan-ly-hoc-tap.dinhnam3391.chatgpt.site
+          RU_LIFE_CONTROL_SERVICE_SECRET: 0123456789abcdef0123456789abcdef
+          NEXT_PUBLIC_APPLICATION_MANAGEMENT_BASE_URL: https://learning-management.boiech-ai.workers.dev
       - name: Contract tests
         run: npm test
