@@ -10,6 +10,7 @@ import {
   type LocalDataDomain,
   type RuLifeLocalBackup,
 } from "@/lib/local-data-backup";
+import { estimateBrowserStorage, type BrowserStorageEstimate } from "@/lib/local-storage-safe";
 import { RU_LIFE_DEADLINE_EVENT } from "@/lib/deadline-storage";
 import { RU_LIFE_TOOLS_EVENT } from "@/lib/personal-tools-storage";
 import { RU_LIFE_PROGRESS_EVENT } from "@/lib/progress-storage";
@@ -20,6 +21,7 @@ type PendingImport = {
   backup: RuLifeLocalBackup;
   counts: DomainCounts;
   fileName: string;
+  migratedFromLegacy: boolean;
 };
 
 const emptyCounts: DomainCounts = { progress: 0, tools: 0, deadlines: 0 };
@@ -59,6 +61,12 @@ function dispatchPersonalDataEvents() {
   window.dispatchEvent(new CustomEvent(RU_LIFE_DEADLINE_EVENT));
 }
 
+function formatBytes(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 export default function LocalDataManager() {
   const [counts, setCounts] = useState<DomainCounts>({ ...emptyCounts });
   const [pending, setPending] = useState<PendingImport | null>(null);
@@ -66,13 +74,21 @@ export default function LocalDataManager() {
   const [restoreConfirm, setRestoreConfirm] = useState("");
   const [clearDomain, setClearDomain] = useState<LocalDataDomain>("progress");
   const [clearConfirm, setClearConfirm] = useState("");
+  const [storageEstimate, setStorageEstimate] = useState<BrowserStorageEstimate | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  async function refreshStorageEstimate() {
+    setStorageEstimate(await estimateBrowserStorage());
+  }
 
   useEffect(() => {
     let frame = 0;
     const refresh = () => {
       window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => setCounts(countPersonalKeys()));
+      frame = window.requestAnimationFrame(() => {
+        setCounts(countPersonalKeys());
+        void refreshStorageEstimate();
+      });
     };
     refresh();
     window.addEventListener(RU_LIFE_PROGRESS_EVENT, refresh);
@@ -103,8 +119,10 @@ export default function LocalDataManager() {
         setImportMessage(validation.error);
         return;
       }
-      setPending({ backup: validation.backup, counts: validation.domains, fileName: file.name });
-      setImportMessage("Tệp hợp lệ. Chưa có dữ liệu nào được ghi; kiểm tra thống kê rồi xác nhận khôi phục.");
+      setPending({ backup: validation.backup, counts: validation.domains, fileName: file.name, migratedFromLegacy: validation.migratedFromLegacy });
+      setImportMessage(validation.migratedFromLegacy
+        ? "Tệp backup V1.3 hợp lệ và đã được migrate trong bộ nhớ sang schema V1.4. Chưa có dữ liệu nào được ghi."
+        : "Tệp hợp lệ. Chưa có dữ liệu nào được ghi; kiểm tra thống kê rồi xác nhận khôi phục.");
     } catch {
       setImportMessage("Không đọc được tệp backup đã chọn.");
     }
@@ -112,20 +130,25 @@ export default function LocalDataManager() {
 
   function restoreBackup() {
     if (!pending || restoreConfirm.trim().toUpperCase() !== "KHÔI PHỤC") return;
-    try {
-      const rollback = collectLocalBackup(localStorage);
-      const stamp = rollback.exportedAt.replace(/[:.]/g, "-");
-      downloadJson(rollback, `ru-life-before-restore-${stamp}.json`);
-      replaceLocalPersonalData(localStorage, pending.backup);
-      dispatchPersonalDataEvents();
-      setCounts(countPersonalKeys());
-      setPending(null);
-      setRestoreConfirm("");
-      if (fileRef.current) fileRef.current.value = "";
-      setImportMessage("Khôi phục hoàn tất. RU_LIFE đã tự tải một backup trước khôi phục để có thể quay lại nếu cần.");
-    } catch {
-      setImportMessage("Không thể ghi đầy đủ backup vào bộ nhớ trình duyệt. Dùng tệp backup trước khôi phục để phục hồi trạng thái cũ.");
+    const rollback = collectLocalBackup(localStorage);
+    const stamp = rollback.exportedAt.replace(/[:.]/g, "-");
+    downloadJson(rollback, `ru-life-before-restore-${stamp}.json`);
+
+    const result = replaceLocalPersonalData(localStorage, pending.backup);
+    if (!result.ok) {
+      setImportMessage(result.rolledBack
+        ? `Không thể ghi backup: ${result.error} Trạng thái cũ đã được rollback tự động.`
+        : result.error);
+      return;
     }
+
+    dispatchPersonalDataEvents();
+    setCounts(countPersonalKeys());
+    setPending(null);
+    setRestoreConfirm("");
+    if (fileRef.current) fileRef.current.value = "";
+    void refreshStorageEstimate();
+    setImportMessage(`Khôi phục hoàn tất ${result.written} mục. RU_LIFE đã tự tải backup trước khôi phục để có thể quay lại nếu cần.`);
   }
 
   function clearSelectedDomain() {
@@ -138,6 +161,7 @@ export default function LocalDataManager() {
       dispatchPersonalDataEvents();
       setCounts(countPersonalKeys());
       setClearConfirm("");
+      void refreshStorageEstimate();
       setImportMessage(`Đã xóa ${removed} mục thuộc “${domainLabel[clearDomain]}”. Backup trước xóa đã được tải xuống.`);
     } catch {
       setImportMessage("Không thể xóa miền dữ liệu đã chọn.");
@@ -145,22 +169,27 @@ export default function LocalDataManager() {
   }
 
   return <section className="local-data-manager" aria-labelledby="local-data-title">
-    <div className="section-heading local-data-heading"><div><span>RU_LIFE V1.3 · BẢO TOÀN DỮ LIỆU</span><h2 id="local-data-title">Backup · khôi phục · xóa an toàn</h2></div><p>Chỉ quản lý ba miền dữ liệu cá nhân của RU_LIFE. Phiên đăng nhập, P-256 device identity và dữ liệu Application-Management không nằm trong backup.</p></div>
+    <div className="section-heading local-data-heading"><div><span>RU_LIFE V1.4 · BẢO TOÀN & MIGRATION</span><h2 id="local-data-title">Backup · migration · rollback</h2></div><p>Chỉ quản lý ba miền dữ liệu cá nhân của RU_LIFE. Phiên đăng nhập, P-256 device identity và dữ liệu Application-Management không nằm trong backup.</p></div>
 
     <div className="local-data-counts" aria-label="Số nhóm dữ liệu cục bộ">
       {(Object.keys(domainLabel) as LocalDataDomain[]).map((domain) => <article key={domain}><span>{domainLabel[domain]}</span><strong>{counts[domain]}</strong><p>khóa dữ liệu cục bộ</p></article>)}
     </div>
 
+    <div className={`storage-health ${storageEstimate && storageEstimate.ratio >= .85 ? "warning" : ""}`}>
+      <div><span>DUNG LƯỢNG TRÌNH DUYỆT</span><strong>{storageEstimate ? `${Math.round(storageEstimate.ratio * 100)}% quota origin đang dùng` : "Trình duyệt không cung cấp estimate"}</strong></div>
+      <p>{storageEstimate ? `${formatBytes(storageEstimate.usage)} / ${formatBytes(storageEstimate.quota)}. Đây là ước lượng cho toàn bộ origin, không chỉ localStorage RU_LIFE.` : "RU_LIFE vẫn bắt lỗi quota trực tiếp khi ghi. Nếu trình duyệt báo gần đầy, hãy xuất backup trước khi dọn dữ liệu."}</p>
+    </div>
+
     <div className="local-data-grid">
       <article className="backup-card">
-        <span>XUẤT BACKUP</span><h3>Tạo bản sao trước khi đổi thiết bị</h3><p>Xuất một tệp JSON có version/schema rõ ràng. Có thể lưu vào ổ đĩa cá nhân rồi nhập lại trên thiết bị khác.</p>
+        <span>XUẤT BACKUP</span><h3>Tạo bản sao trước khi đổi thiết bị</h3><p>Xuất JSON theo schema V1.4. File backup V1.3 cũ vẫn được chấp nhận và migrate trước khi khôi phục.</p>
         <button type="button" onClick={exportBackup}>Xuất backup RU_LIFE</button>
       </article>
 
       <article className="backup-card restore-card">
-        <span>KHÔI PHỤC CÓ KIỂM TRA</span><h3>Không ghi dữ liệu trước khi file đạt toàn bộ validation</h3><p>Import chỉ chấp nhận prefix cá nhân RU_LIFE và từ chối khóa lạ, schema sai, deadline lỗi hoặc tệp quá giới hạn.</p>
+        <span>KHÔI PHỤC TRANSACTIONAL</span><h3>Validation trước · rollback nếu ghi thất bại</h3><p>Import chỉ chấp nhận prefix cá nhân RU_LIFE. Nếu quota hoặc lỗi ghi xảy ra giữa chừng, hệ thống cố gắng trả toàn bộ ba miền về snapshot trước khôi phục.</p>
         <label className="backup-file"><span>Chọn tệp `.json`</span><input ref={fileRef} type="file" accept="application/json,.json" onChange={(event) => void selectBackup(event.target.files?.[0] || null)} /></label>
-        {pending ? <div className="backup-preview"><strong>{pending.fileName}</strong><p>{pending.counts.progress} tiến độ · {pending.counts.tools} công cụ · {pending.counts.deadlines} nhóm deadline</p><label><span>Nhập <b>KHÔI PHỤC</b> để thay thế ba miền dữ liệu cá nhân hiện tại</span><input value={restoreConfirm} onChange={(event) => setRestoreConfirm(event.target.value)} autoComplete="off" /></label><button type="button" disabled={restoreConfirm.trim().toUpperCase() !== "KHÔI PHỤC"} onClick={restoreBackup}>Khôi phục dữ liệu</button></div> : null}
+        {pending ? <div className="backup-preview"><strong>{pending.fileName}</strong><p>{pending.counts.progress} tiến độ · {pending.counts.tools} công cụ · {pending.counts.deadlines} nhóm deadline{pending.migratedFromLegacy ? " · MIGRATED V1.3 → V1.4" : ""}</p><label><span>Nhập <b>KHÔI PHỤC</b> để thay thế ba miền dữ liệu cá nhân hiện tại</span><input value={restoreConfirm} onChange={(event) => setRestoreConfirm(event.target.value)} autoComplete="off" /></label><button type="button" disabled={restoreConfirm.trim().toUpperCase() !== "KHÔI PHỤC"} onClick={restoreBackup}>Khôi phục dữ liệu</button></div> : null}
       </article>
 
       <article className="backup-card danger-card">
