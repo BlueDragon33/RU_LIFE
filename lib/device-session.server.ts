@@ -4,25 +4,23 @@ export const DEVICE_SESSION_COOKIE = "ru_life_device_session";
 
 type DeviceSessionClaims = {
   v: 1;
-  iss: "quan-ly-hoc-tap";
+  iss: "application-management";
   aud: "hoa-nhap-nga-device";
   appId: "hoa-nhap-nga";
   deviceId: string;
   deviceCode: string;
+  jti: string;
+  editEnabled: boolean;
   exp: number;
 };
 
 type IntrospectionState = "valid" | "invalid" | "unavailable";
+type IntrospectionResult = { state: IntrospectionState; code: string };
 
-type IntrospectionResult = {
-  state: IntrospectionState;
-  code: string;
-};
+const DEFAULT_APPLICATION_MANAGEMENT = "https://learning-management.boiech-ai.workers.dev";
 
-const DEFAULT_CONTROL_CENTER = "https://quan-ly-hoc-tap.dinhnam3391.chatgpt.site";
-
-function controlCenterBaseUrl() {
-  return (process.env.NEXT_PUBLIC_CONTROL_CENTER_BASE_URL || DEFAULT_CONTROL_CENTER).replace(/\/$/, "");
+function applicationManagementBaseUrl() {
+  return (process.env.NEXT_PUBLIC_APPLICATION_MANAGEMENT_BASE_URL || DEFAULT_APPLICATION_MANAGEMENT).replace(/\/$/, "");
 }
 
 function fromBase64Url(value: string) {
@@ -32,7 +30,7 @@ function fromBase64Url(value: string) {
 }
 
 async function hmacKey() {
-  const secret = process.env.MEDICINE_SERVICE_SECRET;
+  const secret = process.env.RU_LIFE_CONTROL_SERVICE_SECRET;
   if (!secret || secret.length < 32) throw new Error("RU_LIFE_SERVICE_SECRET_UNAVAILABLE");
   return crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["verify"]);
 }
@@ -48,13 +46,16 @@ export async function verifyManagedAppAccessToken(token: string): Promise<Device
   const claims = JSON.parse(new TextDecoder().decode(fromBase64Url(parts[1]))) as Partial<DeviceSessionClaims>;
   if (
     claims.v !== 1
-    || claims.iss !== "quan-ly-hoc-tap"
+    || claims.iss !== "application-management"
     || claims.aud !== "hoa-nhap-nga-device"
     || claims.appId !== "hoa-nhap-nga"
     || typeof claims.deviceId !== "string"
     || !/^[a-f0-9]{64}$/.test(claims.deviceId)
     || typeof claims.deviceCode !== "string"
     || !/^HN-[A-F0-9-]+$/.test(claims.deviceCode)
+    || typeof claims.jti !== "string"
+    || !/^[A-Za-z0-9_-]{24,80}$/.test(claims.jti)
+    || typeof claims.editEnabled !== "boolean"
     || typeof claims.exp !== "number"
   ) throw new Error("INVALID_ACCESS_CLAIMS");
 
@@ -62,11 +63,11 @@ export async function verifyManagedAppAccessToken(token: string): Promise<Device
   return claims as DeviceSessionClaims;
 }
 
-async function introspectWithControlCenter(token: string): Promise<IntrospectionResult> {
+async function introspectWithApplicationManagement(token: string): Promise<IntrospectionResult> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 2500);
   try {
-    const response = await fetch(`${controlCenterBaseUrl()}/api/apps/hoa-nhap-nga/session`, {
+    const response = await fetch(`${applicationManagementBaseUrl()}/api/apps/hoa-nhap-nga/session`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ accessToken: token }),
@@ -78,9 +79,9 @@ async function introspectWithControlCenter(token: string): Promise<Introspection
     if (response.status === 403 || response.status === 401 || response.status === 400) {
       return { state: "invalid", code: body.code || "SESSION_REVOKED" };
     }
-    return { state: "unavailable", code: body.code || `CONTROL_HTTP_${response.status}` };
+    return { state: "unavailable", code: body.code || `APPLICATION_MANAGEMENT_HTTP_${response.status}` };
   } catch {
-    return { state: "unavailable", code: "CONTROL_CENTER_UNREACHABLE" };
+    return { state: "unavailable", code: "APPLICATION_MANAGEMENT_UNREACHABLE" };
   } finally {
     clearTimeout(timeout);
   }
@@ -88,7 +89,7 @@ async function introspectWithControlCenter(token: string): Promise<Introspection
 
 export async function verifyManagedAppSession(token: string, options: { allowControlUnavailable?: boolean } = {}) {
   const claims = await verifyManagedAppAccessToken(token);
-  const introspection = await introspectWithControlCenter(token);
+  const introspection = await introspectWithApplicationManagement(token);
   if (introspection.state === "invalid") throw new Error(introspection.code);
   if (introspection.state === "unavailable" && !options.allowControlUnavailable) throw new Error(introspection.code);
   return claims;
