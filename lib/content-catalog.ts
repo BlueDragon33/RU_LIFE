@@ -90,16 +90,16 @@ export const ruLifeModules: RuLifeModule[] = [
 ];
 
 export function getRuLifeModule(slug: string) {
-  return ruLifeModules.find((module) => module.slug === slug) || null;
+  return ruLifeModules.find((entry) => entry.slug === slug) || null;
 }
 
 export function getRuLifeTopic(moduleSlug: string, topicSlug: string) {
-  const module = getRuLifeModule(moduleSlug);
-  if (!module) return null;
-  const topic = module.topics.find((item) => item.slug === topicSlug) || null;
-  return topic ? { module, topic } : null;
+  const moduleData = getRuLifeModule(moduleSlug);
+  if (!moduleData) return null;
+  const topic = moduleData.topics.find((item) => item.slug === topicSlug) || null;
+  return topic ? { moduleData, topic } : null;
 }
 
 export function topicCount() {
-  return ruLifeModules.reduce((total, module) => total + module.topics.length, 0);
+  return ruLifeModules.reduce((total, entry) => total + entry.topics.length, 0);
 }
