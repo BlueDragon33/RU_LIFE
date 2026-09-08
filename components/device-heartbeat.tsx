@@ -12,10 +12,11 @@ async function clearLocalSession() {
 
 export default function DeviceHeartbeat() {
   const running = useRef(false);
-  const lastRenewedAt = useRef(Date.now());
+  const lastRenewedAt = useRef(0);
 
   useEffect(() => {
     let stopped = false;
+    lastRenewedAt.current = Date.now();
 
     async function heartbeat() {
       if (stopped || running.current || document.visibilityState !== "visible") return;
