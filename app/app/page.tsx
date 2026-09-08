@@ -48,7 +48,7 @@ export default function ProtectedAppPage() {
 
   return <>
     <header className="workspace-hero">
-      <div><span>HÒA NHẬP NGA · KHÔNG GIAN CÁ NHÂN</span><h1>Mọi việc cần nhớ khi sống và học tập tại Nga</h1><p>20 chủ đề đã có nội dung thực. V1.3 bổ sung backup/khôi phục có kiểm tra và liên kết deadline với checklist; Trung tâm quản trị vẫn chỉ kiểm soát quyền thiết bị.</p></div>
+      <div><span>HÒA NHẬP NGA · KHÔNG GIAN CÁ NHÂN</span><h1>Mọi việc cần nhớ khi sống và học tập tại Nga</h1><p>20 chủ đề đã có nội dung thực. V1.4 bổ sung migration dữ liệu cũ, khôi phục transactional có rollback, cảnh báo lỗi/quota bộ nhớ và contract responsive; Trung tâm quản trị vẫn chỉ kiểm soát quyền thiết bị.</p></div>
       <span className="session-ok">THIẾT BỊ HỢP LỆ</span>
     </header>
 
@@ -70,7 +70,7 @@ export default function ProtectedAppPage() {
     </section>
 
     <section className="workspace-next">
-      <span>RU_LIFE V1.3 · DATA RESILIENCE</span><h2>Dữ liệu cá nhân có thể sao lưu và khôi phục mà không mang theo quyền thiết bị</h2><p>Backup chỉ gồm checklist/ghi chú, yêu thích/nhắc việc và deadline. Session, P-256 identity, heartbeat, introspection và trạng thái cấp quyền không được xuất hoặc nhập qua V1.3.</p>
+      <span>RU_LIFE V1.4 · DATA RESILIENCE</span><h2>Dữ liệu cá nhân có migration và rollback mà không mang theo quyền thiết bị</h2><p>Backup V1.4 chỉ gồm checklist/ghi chú, yêu thích/nhắc việc và deadline; backup V1.3 cũ vẫn được migrate khi nhập. Session, P-256 identity, heartbeat, introspection và trạng thái cấp quyền không bao giờ được xuất hoặc nhập qua cơ chế này.</p>
     </section>
   </>;
 }
