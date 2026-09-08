@@ -37,7 +37,7 @@ test("topic progress is device-local, shared through one storage contract, and d
   const progress = await source("../components/topic-progress.tsx");
   const storage = await source("../lib/progress-storage.ts");
   assert.match(progress, /localStorage\.getItem/);
-  assert.match(progress, /localStorage\.setItem/);
+  assert.match(progress, /safeSetLocalStorage/);
   assert.match(progress, /topicProgressKey/);
   assert.match(storage, /ru-life-progress:v1:/);
   assert.doesNotMatch(`${progress}\n${storage}`, /medical-control|system-control|api\/apps\/hoa-nhap-nga\/control/);
