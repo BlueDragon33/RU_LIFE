@@ -6,31 +6,33 @@ async function source(path) {
   return readFile(new URL(path, import.meta.url), "utf8");
 }
 
-test("RU_LIFE is an independent runtime that talks to the control center only through the device gateway", async () => {
+test("RU_LIFE is an independent runtime that talks to Application Management only through HN gateways", async () => {
   const readme = await source("../README.md");
   const client = await source("../lib/device-access.client.ts");
-  assert.match(readme, /mã nguồn độc lập/);
+  assert.match(readme, /mã nguồn độc lập/i);
+  assert.match(readme, /HN-\.\.\./);
   assert.match(client, /\/api\/apps\/hoa-nhap-nga\/device/);
-  assert.match(client, /NEXT_PUBLIC_CONTROL_CENTER_BASE_URL/);
-  assert.doesNotMatch(client, /\/medical-control|\/system-control|verifyControlProof/);
+  assert.match(client, /NEXT_PUBLIC_APPLICATION_MANAGEMENT_BASE_URL/);
+  assert.doesNotMatch(client, /NEXT_PUBLIC_CONTROL_CENTER_BASE_URL|\/medical-control|\/system-control|verifyControlProof/);
 });
 
 test("device private key is non-exportable and stored locally in IndexedDB", async () => {
   const client = await source("../lib/device-access.client.ts");
   assert.match(client, /indexedDB\.open/);
   assert.match(client, /namedCurve: "P-256"/);
-  assert.match(client, /false,\n\s*\["sign", "verify"\]/);
+  assert.match(client, /false,\s*\["sign", "verify"\]/);
   assert.match(client, /privateKey: pair\.privateKey/);
   assert.doesNotMatch(client, /exportKey\([^\n]*privateKey/);
 });
 
-test("RU_LIFE automatically collects independent signals for computer phone and tablet classification", async () => {
+test("RU_LIFE sends enough independent signals for server-side computer phone and tablet classification", async () => {
   const client = await source("../lib/device-access.client.ts");
   assert.match(client, /getHighEntropyValues/);
   assert.match(client, /navigator\.maxTouchPoints/);
   assert.match(client, /pointer: coarse/);
   assert.match(client, /window\.screen\.width/);
   assert.match(client, /window\.innerWidth/);
+  assert.match(client, /userAgent: ua\.slice/);
   assert.match(client, /deviceClass: "computer"/);
   assert.match(client, /deviceClass: "phone"/);
   assert.match(client, /deviceClass: "tablet"/);
@@ -39,7 +41,7 @@ test("RU_LIFE automatically collects independent signals for computer phone and 
   assert.match(client, /profile = await browserProfile\(\)/);
 });
 
-test("challenge signature exactly matches the central managed-app contract", async () => {
+test("challenge signature exactly matches the HN managed-app contract", async () => {
   const client = await source("../lib/device-access.client.ts");
   assert.match(client, /managed-app:hoa-nhap-nga:\$\{deviceId\}:\$\{challenge\}/);
   assert.match(client, /action: "challenge"/);
@@ -48,25 +50,27 @@ test("challenge signature exactly matches the central managed-app contract", asy
   assert.match(client, /SHA-256/);
 });
 
-test("RU_LIFE creates an HttpOnly local session only after verifying the central HMAC token", async () => {
+test("RU_LIFE creates an HttpOnly local session only after verifying the dedicated central HMAC token", async () => {
   const session = await source("../lib/device-session.server.ts");
   const route = await source("../app/api/device/session/route.ts");
   assert.match(session, /aud !== "hoa-nhap-nga-device"/);
-  assert.match(session, /iss !== "quan-ly-hoc-tap"/);
+  assert.match(session, /iss !== "application-management"/);
   assert.match(session, /appId !== "hoa-nhap-nga"/);
+  assert.match(session, /RU_LIFE_CONTROL_SERVICE_SECRET/);
   assert.match(session, /crypto\.subtle\.verify\("HMAC"/);
   assert.match(route, /httpOnly: true/);
   assert.match(route, /sameSite: "strict"/);
+  assert.doesNotMatch(`${session}\n${route}`, /MEDICINE_SERVICE_SECRET|HEALTH_CONTROL_SERVICE_SECRET/);
   assert.doesNotMatch(route, /NEXT_PUBLIC_.*SECRET/);
 });
 
-test("RU_LIFE server introspects the exact token against the central revocation ledger", async () => {
+test("RU_LIFE server introspects the exact token against the Application Management revocation ledger", async () => {
   const session = await source("../lib/device-session.server.ts");
   const route = await source("../app/api/device/session/route.ts");
   const heartbeat = await source("../components/device-heartbeat.tsx");
 
   assert.match(session, /\/api\/apps\/hoa-nhap-nga\/session/);
-  assert.match(session, /introspectWithControlCenter/);
+  assert.match(session, /introspectWithApplicationManagement/);
   assert.match(session, /state: "invalid"/);
   assert.match(session, /allowControlUnavailable/);
   assert.match(route, /verifyManagedAppSession\(body\.accessToken\)/);
@@ -97,4 +101,15 @@ test("service worker never caches protected app or API traffic", async () => {
   const sw = await source("../public/sw.js");
   assert.match(sw, /url\.pathname\.startsWith\("\/api\/"\)/);
   assert.match(sw, /url\.pathname\.startsWith\("\/app"\)/);
+});
+
+test("RU control contract never reuses health or medicine naming", async () => {
+  const env = await source("../.env.example");
+  const docs = await source("../CONTROL_INTEGRATION.md");
+  const session = await source("../lib/device-session.server.ts");
+  assert.match(env, /RU_LIFE_CONTROL_SERVICE_SECRET/);
+  assert.match(env, /NEXT_PUBLIC_APPLICATION_MANAGEMENT_BASE_URL/);
+  assert.match(docs, /application-management/);
+  assert.doesNotMatch(`${env}\n${session}`, /MEDICINE_SERVICE_SECRET|NEXT_PUBLIC_CONTROL_CENTER_BASE_URL/);
+  assert.doesNotMatch(docs, /\/api\/integration\/health|ru-life-control-health-v1|MEDICINE_SERVICE_SECRET/);
 });
