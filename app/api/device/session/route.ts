@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { DEVICE_SESSION_COOKIE, readDeviceSession, verifyManagedAppAccessToken } from "@/lib/device-session.server";
+import { DEVICE_SESSION_COOKIE, readDeviceSession, verifyManagedAppSession } from "@/lib/device-session.server";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +9,11 @@ function responseHeaders() {
 
 export async function GET() {
   const session = await readDeviceSession();
-  if (!session) return Response.json({ ok: false }, { status: 401, headers: responseHeaders() });
+  if (!session) {
+    const store = await cookies();
+    store.delete(DEVICE_SESSION_COOKIE);
+    return Response.json({ ok: false, code: "SESSION_INACTIVE" }, { status: 401, headers: responseHeaders() });
+  }
   return Response.json({ ok: true, session }, { headers: responseHeaders() });
 }
 
@@ -19,7 +23,7 @@ export async function POST(request: Request) {
     if (typeof body.accessToken !== "string" || body.accessToken.length > 4096) {
       return Response.json({ ok: false, error: "Phiên thiết bị không hợp lệ." }, { status: 400, headers: responseHeaders() });
     }
-    const session = await verifyManagedAppAccessToken(body.accessToken);
+    const session = await verifyManagedAppSession(body.accessToken);
     const store = await cookies();
     store.set(DEVICE_SESSION_COOKIE, body.accessToken, {
       httpOnly: true,
@@ -30,6 +34,8 @@ export async function POST(request: Request) {
     });
     return Response.json({ ok: true, session }, { headers: responseHeaders() });
   } catch {
+    const store = await cookies();
+    store.delete(DEVICE_SESSION_COOKIE);
     return Response.json({ ok: false, error: "Trung tâm quản trị chưa cấp được phiên hợp lệ cho thiết bị này." }, { status: 403, headers: responseHeaders() });
   }
 }
