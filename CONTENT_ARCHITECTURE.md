@@ -2,27 +2,9 @@
 
 ## Mục tiêu
 
-RU_LIFE là Web App độc lập. `Application-Management` chỉ quản lý quyền thiết bị, phiên, trạng thái và kiểm soát từ xa; không chứa route nội dung, checklist, ghi chú, bookmark, reminder, deadline hay runtime của Hòa nhập Nga.
+RU_LIFE là Web App độc lập. `Application-Management` chỉ quản lý quyền thiết bị, phiên, trạng thái và kiểm soát từ xa; không chứa route nội dung, checklist, ghi chú, bookmark, reminder, deadline, backup hay runtime của Hòa nhập Nga.
 
-## Cấu trúc cố định
-
-`/app` là dashboard sau khi thiết bị được Quản trị ứng dụng cấp quyền.
-
-Nội dung tổ chức theo năm lớp:
-
-1. **Module** — mảng lớn của cuộc sống/học tập tại Nga.
-2. **Topic** — tình huống hoặc nhóm đầu việc cập nhật độc lập.
-3. **Content blocks** — hướng dẫn, quy trình, tình huống và mẫu câu.
-4. **Source/Freshness** — nguồn, ngày kiểm tra và mức cần rà soát.
-5. **Local user state** — tiến độ và công cụ cá nhân lưu trên thiết bị.
-
-Routes:
-
-- `/app`
-- `/app/<module>`
-- `/app/<module>/<topic>`
-
-Tất cả `/app/*` đi qua `app/app/layout.tsx`, vì vậy cùng bắt buộc phiên RU_LIFE hợp lệ, heartbeat và introspection với Application-Management.
+Tất cả `/app/*` đi qua `app/app/layout.tsx`, vì vậy đều bắt buộc phiên RU_LIFE hợp lệ, heartbeat và introspection với Application-Management.
 
 ## Catalog V1 — 20/20 topic có content layer
 
@@ -34,172 +16,158 @@ Tất cả `/app/*` đi qua `app/app/layout.tsx`, vì vậy cùng bắt buộc p
 4. `health` — Sức khỏe · y tế.
 5. `integration` — Ngôn ngữ · hòa nhập.
 
-Content được tách theo miền:
+Content được tách theo miền và phân giải qua `lib/content-resolver.ts`. `tests/content-coverage.test.mjs` khóa 20/20 topic.
 
-- `lib/topic-content.ts` — Module 01;
-- `lib/daily-life-content.ts` — Module 02;
-- `lib/study-procedures-content.ts` — Module 03;
-- `lib/health-content.ts` — Module 04;
-- `lib/integration-content.ts` — Module 05;
-- `lib/content-resolver.ts` — điểm phân giải chung.
+## Dashboard vận hành
 
-`tests/content-coverage.test.mjs` khóa 20/20 topic. Nếu một topic mất content entry hoặc resolver mất một module, CI phải fail.
+Dashboard hiện có:
 
-## Dashboard vận hành V1
+- tìm nhanh 20 topic và phím `/`;
+- tổng hợp checklist/ghi chú;
+- “Việc nên làm tiếp”;
+- lọc theo tình huống/ưu tiên/yêu thích;
+- reminder cục bộ;
+- deadline theo quá hạn/hôm nay/7 ngày tới/mức khẩn;
+- lịch 7 ngày và xuất `.ics`;
+- cảnh báo source-review;
+- backup/restore/xóa an toàn dữ liệu cá nhân.
 
-`components/workspace-dashboard.tsx` cung cấp:
-
-- tìm nhanh trong 20 topic theo module, tiêu đề, mô tả và checklist;
-- phím `/` đưa focus vào ô tìm kiếm;
-- số topic hoàn thành, tỷ lệ checklist và số topic có ghi chú;
-- số topic `review-soon`;
-- “Việc nên làm tiếp” theo `essential` → `recommended` → `reference`;
-- search/thống kê chỉ chạy trên dữ liệu RU_LIFE/localStorage.
+Không tính năng nào trong nhóm này quyết định quyền thiết bị.
 
 ## Ba miền dữ liệu cục bộ độc lập
 
-V1.2 cố định ba namespace khác nhau. Không gộp chúng chỉ để giảm số file.
+Không gộp ba namespace chỉ để giảm số file.
 
-### 1. Progress — checklist và ghi chú
+### 1. Progress
 
 `lib/progress-storage.ts`
 
-Namespace:
+Namespace: `ru-life-progress:v1:*`
 
-`ru-life-progress:v1:*`
+Checklist + ghi chú. Event: `ru-life-progress-changed`.
 
-Dùng cho checklist và ghi chú topic. Sự kiện cục bộ: `ru-life-progress-changed`.
-
-### 2. Personal tools — yêu thích và một mốc nhắc
+### 2. Personal tools
 
 `lib/personal-tools-storage.ts`
 
-Namespace:
+Namespace: `ru-life-tools:v1:topic:*`
 
-`ru-life-tools:v1:topic:*`
+Favorite + reminder + trạng thái notification. Event: `ru-life-tools-changed`.
 
-Dùng cho bookmark/yêu thích, reminder, trạng thái đã phát notification. Sự kiện cục bộ: `ru-life-tools-changed`.
-
-`components/local-reminder-runtime.tsx` chỉ được mount trong protected layout. Notification chỉ là best-effort khi ứng dụng/trình duyệt có cơ hội chạy; không được mô tả như một background scheduler bảo đảm chạy khi app đã đóng.
-
-### 3. Deadlines — nhiều thời hạn trên cùng topic
+### 3. Deadlines
 
 `lib/deadline-storage.ts`
 
-Namespace:
+Namespace: `ru-life-deadlines:v1:topic:*`
 
-`ru-life-deadlines:v1:topic:*`
-
-Một topic có thể lưu nhiều deadline độc lập. Mỗi deadline có:
+Một topic có nhiều deadline. Mỗi deadline có:
 
 - `id`;
 - `title`;
 - `dueAt`;
-- `urgency`: `normal`, `important`, `critical`;
+- `urgency`;
 - `completed`;
+- `checklistIndex` nullable;
 - `createdAt` / `updatedAt`.
 
-Sự kiện cục bộ: `ru-life-deadlines-changed`.
+Event: `ru-life-deadlines-changed`.
 
-`components/topic-deadlines.tsx` quản lý deadline tại từng topic. `components/workspace-deadline-board.tsx` tổng hợp toàn bộ deadline tại dashboard thành:
+## Deadline ↔ checklist V1.3
 
-- quá hạn;
-- hôm nay;
-- 7 ngày tới;
-- mức khẩn;
-- lịch 7 ngày;
-- danh sách deadline đang mở.
+`components/topic-deadlines.tsx` cho phép gắn một deadline với một checklist item của cùng topic.
 
-Deadline không phải dữ liệu quản trị và không được gửi sang Application-Management.
+Quy tắc đồng bộ cố định:
 
-## Xuất lịch `.ics`
+- hoàn thành deadline có liên kết → đánh dấu checklist item tương ứng là hoàn thành;
+- bỏ trạng thái hoàn thành deadline → **không** tự bỏ checklist item;
+- deadline cũ không có `checklistIndex` vẫn được parser đọc bình thường với giá trị `null`.
 
-`buildDeadlineCalendar()` trong `lib/deadline-storage.ts` tạo iCalendar chuẩn cơ bản từ deadline chưa hoàn thành.
+Đây là đồng bộ một chiều có chủ đích để không vô tình xóa tiến độ mà người dùng đã xác nhận độc lập.
 
-Dashboard tải file `ru-life-deadlines.ics` bằng `Blob` trong trình duyệt. Không cần Google Calendar API, không gửi lịch sang bên thứ ba và không phụ thuộc tài khoản lịch bên ngoài.
+## Backup / restore V1.3
 
-`.ics` là bản xuất tại thời điểm người dùng bấm tải; thay đổi deadline trong RU_LIFE sau đó không tự sửa sự kiện đã nhập vào ứng dụng lịch.
+`lib/local-data-backup.ts` định nghĩa schema:
 
-## Nguồn và mốc rà soát V1.2
+`ru-life-local-backup-v1`
 
-Không hard-code quy định dễ thay đổi rồi coi là kiến thức cố định.
+Backup chỉ được phép chứa các key thuộc ba prefix cá nhân ở trên. Nó **không** được chứa:
 
-`TopicContent` duy trì:
+- cookie/session;
+- access token;
+- P-256 device identity/private key;
+- device code/approval state;
+- `managed_app_devices`;
+- `control_devices`;
+- bất kỳ dữ liệu Application-Management nào.
 
-- `updatedAt`;
-- `freshness`: `verified`, `review-soon`, `stable-guidance`;
-- `blocks`;
-- `sources`.
+### Validation trước ghi
 
-`TopicSource` lưu publisher, title, URL, `checkedAt` và phạm vi dùng nguồn.
+`validateLocalBackupText()` kiểm tra toàn bộ file trước khi ghi một key:
 
-`lib/source-review.ts` bổ sung lịch kiểm soát chất lượng nội bộ:
+- schema/app đúng;
+- giới hạn 2 MB;
+- tối đa 200 entry;
+- không có key ngoài ba prefix cho phép;
+- không có key trùng;
+- progress/tools/deadline phải đúng shape tương ứng;
+- ngày và deadline phải parse được;
+- urgency/checklistIndex phải hợp lệ.
 
-- `review-soon`: rà lại sau 30 ngày;
-- `verified`: rà lại sau 90 ngày;
-- `stable-guidance`: rà lại sau 365 ngày.
+Chỉ sau khi toàn bộ file pass mới được gọi `replaceLocalPersonalData()`.
 
-Các mốc này **không phải ngày hết hiệu lực pháp lý** và không chứng minh quy định chắc chắn còn đúng cho tới ngày đó. Với nội dung hành chính, pháp lý, y tế, giá/phí hoặc điều kiện nhà cung cấp, người dùng vẫn phải kiểm tra nguồn chính thức tại thời điểm sử dụng.
+### Đường lui bắt buộc
 
-Topic page hiển thị mốc kiểm tra nội bộ. Dashboard cảnh báo topic `overdue` hoặc `due-soon` để đội nội dung biết phần nào cần rà lại.
+Trước khi:
 
-## V1.1 — lọc theo tình huống và yêu thích
+- khôi phục backup; hoặc
+- xóa một miền dữ liệu,
 
-`lib/topic-situations.ts` phân loại đủ 20 topic theo các tình huống dùng thực tế như trước khi đi, những ngày đầu, sinh hoạt, hành chính, học tập, sức khỏe, khẩn cấp và giao tiếp.
+`components/local-data-manager.tsx` tự xuất một backup hiện trạng (`before-restore` hoặc `before-clear`).
 
-`components/workspace-personal-tools.tsx` cho phép:
+Khôi phục thay thế đúng ba miền dữ liệu cá nhân, không gọi `localStorage.clear()` và không đụng key ngoài allowlist.
 
-- lọc theo mức ưu tiên;
-- lọc theo tình huống;
-- chỉ xem yêu thích;
-- xem reminder sắp tới/đến hạn.
+Xóa dữ liệu cũng chỉ xóa theo một namespace được chọn sau khi người dùng nhập xác nhận `XÓA`.
 
-Mọi thao tác vẫn cục bộ.
+## `.ics`
 
-## Ranh giới CSS
+`buildDeadlineCalendar()` xuất các deadline chưa hoàn thành ra iCalendar. File `.ics` là snapshot khi tải, không phải đồng bộ hai chiều và không yêu cầu Google Calendar API.
 
-CSS được chia theo trách nhiệm:
+## Source review
 
-- `app/globals.css` — biến toàn cục + landing/access gate công khai;
-- `app/workspace.css` — protected shell, sidebar, navigation, device badge, skip link;
-- `app/content.css` — dashboard/module/topic, source/freshness, checklist;
-- `app/tools.css` — V1.1 favorite/filter/reminder;
-- `app/deadlines.css` — V1.2 deadline board, topic deadlines và source-review alert.
+`lib/source-review.ts` dùng mốc kiểm soát nội bộ:
 
-Các CSS protected chỉ được import từ `app/app/layout.tsx`; access gate công khai không tải các lớp giao diện cá nhân này.
+- `review-soon`: 30 ngày;
+- `verified`: 90 ngày;
+- `stable-guidance`: 365 ngày.
 
-## Accessibility / responsive
+Đây không phải ngày hết hiệu lực pháp lý. Nội dung hành chính, pháp lý, y tế, giá/phí hoặc điều kiện nhà cung cấp vẫn phải kiểm tra nguồn chính thức tại thời điểm sử dụng.
 
-Contract hiện có:
+## CSS boundary
 
-- skip link tới `#workspace-content`;
-- focus-visible cho control chính;
-- checklist dùng checkbox thật;
-- progress dùng ARIA progressbar;
-- search có label ẩn và phím tắt `/`;
-- deadline hoàn thành dùng checkbox thật;
-- control deadline có label, input/select native;
-- dashboard/module/topic/tools/deadlines thu lưới theo tablet/mobile;
-- `prefers-reduced-motion` vẫn được tôn trọng.
+- `app/globals.css` — public/access gate;
+- `app/workspace.css` — protected shell/navigation;
+- `app/content.css` — content/dashboard/topic/progress;
+- `app/tools.css` — favorite/filter/reminder;
+- `app/deadlines.css` — deadline/source review;
+- `app/backup.css` — backup/restore/xóa dữ liệu V1.3.
+
+Các CSS cá nhân chỉ import từ protected `app/app/layout.tsx`.
 
 ## Ranh giới bảo mật
 
-- `app/app/layout.tsx`: bảo vệ toàn bộ workspace.
-- `DeviceHeartbeat`: heartbeat + kiểm tra thu hồi phiên.
-- `LocalReminderRuntime`: chỉ chạy sau khi phiên hợp lệ.
-- `WorkspaceNavigation`: chỉ điều hướng, không quyết định quyền.
-- Content/progress/tools/deadline files không chứa secret hoặc logic quản trị.
+- `app/app/layout.tsx`: bảo vệ workspace.
+- `DeviceHeartbeat`: heartbeat + revocation check.
+- `LocalReminderRuntime`: chỉ chạy sau khi session hợp lệ.
+- content/progress/tools/deadline/backup không chứa secret hoặc logic cấp quyền.
 - Service worker không cache `/app*` hoặc `/api/*`.
-- Không dùng `managed_app_devices` hoặc `control_devices` làm kho dữ liệu cá nhân.
+- Không dùng control-plane tables làm kho dữ liệu cá nhân.
 
-Nếu sau này cần đồng bộ đa thiết bị, phải xây một miền dữ liệu người dùng riêng với mô hình quyền riêng, không trộn vào control plane.
+Nếu cần đồng bộ đa thiết bị trong tương lai, phải xây user-data domain riêng; backup V1.3 không phải cơ chế nhân bản quyền thiết bị.
 
-## Hướng phát triển sau V1.2
+## Hướng phát triển sau V1.3
 
-Không mở thêm module chỉ để tăng số lượng. Ưu tiên tiếp theo:
-
-1. kiểm thử UX trên desktop/tablet/phone thật;
-2. rà source-review policy theo mức rủi ro nội dung thay vì chỉ theo một mốc chung;
-3. cho phép deadline liên kết trực tiếp tới một checklist item nếu thật sự cần;
-4. bổ sung backup/export/import dữ liệu cá nhân cục bộ theo định dạng riêng;
-5. chỉ sau khi V1.2 ổn định mới quyết định có cần đồng bộ đa thiết bị hay không.
+1. kiểm thử UX thực tế trên desktop/tablet/phone;
+2. kiểm thử restore với file hỏng, file cũ và quota localStorage thấp;
+3. thêm version migration nếu schema cá nhân thay đổi;
+4. rà source-review theo mức rủi ro cụ thể;
+5. sau khi V1.3 ổn định mới quyết định có cần user-data sync đa thiết bị hay không.
