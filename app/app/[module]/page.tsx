@@ -10,19 +10,19 @@ const priorityLabel = {
 
 export default async function ModulePage({ params }: { params: Promise<{ module: string }> }) {
   const { module: moduleSlug } = await params;
-  const module = getRuLifeModule(moduleSlug);
-  if (!module) notFound();
+  const moduleData = getRuLifeModule(moduleSlug);
+  if (!moduleData) notFound();
 
   return <>
     <header className="workspace-hero module-hero">
-      <div><Link href="/app" className="breadcrumb">← Tổng quan</Link><span>{module.stage} · MODULE {module.code}</span><h1>{module.title}</h1><p>{module.description}</p></div>
-      <span className="module-count">{module.topics.length} CHỦ ĐỀ</span>
+      <div><Link href="/app" className="breadcrumb">← Tổng quan</Link><span>{moduleData.stage} · MODULE {moduleData.code}</span><h1>{moduleData.title}</h1><p>{moduleData.description}</p></div>
+      <span className="module-count">{moduleData.topics.length} CHỦ ĐỀ</span>
     </header>
 
     <section className="topic-index">
       <div className="section-heading"><div><span>CẤU TRÚC MODULE</span><h2>Chọn chủ đề</h2></div><p>Nội dung chuyên sâu sẽ được bổ sung trong từng chủ đề; route và tiến độ của từng phần đã tách độc lập.</p></div>
       <div className="topic-grid">
-        {module.topics.map((topic, index) => <Link href={`/app/${module.slug}/${topic.slug}`} className="topic-card" key={topic.slug}>
+        {moduleData.topics.map((topic, index) => <Link href={`/app/${moduleData.slug}/${topic.slug}`} className="topic-card" key={topic.slug}>
           <header><b>{String(index + 1).padStart(2, "0")}</b><span className={`priority ${topic.priority}`}>{priorityLabel[topic.priority]}</span></header>
           <h3>{topic.title}</h3>
           <p>{topic.summary}</p>
