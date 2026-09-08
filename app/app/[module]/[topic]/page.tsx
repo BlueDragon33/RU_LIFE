@@ -67,7 +67,7 @@ export default async function TopicPage({ params }: { params: Promise<{ module: 
       <aside className="topic-side">
         <TopicProgress moduleSlug={moduleData.slug} topicSlug={topic.slug} checklist={topic.checklist} />
         <TopicTools moduleSlug={moduleData.slug} topicSlug={topic.slug} title={topic.title} />
-        <TopicDeadlines moduleSlug={moduleData.slug} topicSlug={topic.slug} title={topic.title} />
+        <TopicDeadlines moduleSlug={moduleData.slug} topicSlug={topic.slug} title={topic.title} checklist={topic.checklist} />
       </aside>
     </div>
 
