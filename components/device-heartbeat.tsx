@@ -63,8 +63,8 @@ export default function DeviceHeartbeat() {
           lastRenewedAt.current = Date.now();
         }
       } catch {
-        // Mất mạng hoặc Trung tâm gián đoạn tạm thời không phá phiên HMAC còn hạn.
-        // Introspection server-side sẽ từ chối ngay khi Trung tâm xác nhận phiên đã bị thu hồi.
+        // A transient network/control-center failure must not destroy a still-valid local session.
+        // Introspection server-side rejects it as soon as the control center confirms revocation.
       } finally {
         running.current = false;
       }
