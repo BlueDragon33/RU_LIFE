@@ -16,6 +16,7 @@ html { background: var(--canvas); }
 body { margin: 0; min-height: 100vh; background: var(--canvas); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 button, input, textarea, select { font: inherit; }
 button { cursor: pointer; }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid rgba(36,99,235,.32); outline-offset: 3px; }
 
 .landing-shell { min-height: 100vh; padding: 32px clamp(20px, 4vw, 64px) 24px; display: flex; flex-direction: column; }
 .landing-head { display: flex; align-items: center; gap: 14px; max-width: 1320px; width: 100%; margin: 0 auto; }
@@ -53,44 +54,9 @@ button { cursor: pointer; }
 .landing-footer span { font-weight: 900; letter-spacing: .15em; }
 .landing-footer p { margin: 0; text-align: right; }
 
-.workspace-shell { min-height: 100vh; display: grid; grid-template-columns: 290px 1fr; }
-.workspace-side { position: sticky; top: 0; height: 100vh; padding: 28px 22px; background: #0f192b; color: white; display: flex; flex-direction: column; }
-.workspace-brand { display: flex; align-items: center; gap: 12px; padding: 4px 6px 26px; border-bottom: 1px solid rgba(255,255,255,.09); }
-.workspace-brand > span { width: 42px; height: 42px; border-radius: 13px; background: white; color: var(--ink); display: grid; place-items: center; font-weight: 900; }
-.workspace-brand small { display: block; font-size: 9px; color: #9aa5b5; letter-spacing: .14em; }
-.workspace-brand strong { display: block; margin-top: 3px; }
-.workspace-side nav { display: grid; gap: 7px; padding: 24px 0; }
-.workspace-side nav button { text-align: left; border: 0; border-radius: 11px; padding: 12px 13px; color: #aeb8c7; background: transparent; font-weight: 650; }
-.workspace-side nav button.active { background: rgba(255,255,255,.1); color: white; }
-.workspace-side nav button:disabled { opacity: .46; cursor: default; }
-.device-badge { margin-top: auto; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.045); padding: 16px; border-radius: 16px; }
-.device-badge small { color: #8290a4; font-size: 9px; letter-spacing: .12em; font-weight: 800; }
-.device-badge strong { display: block; margin: 6px 0; font-size: 13px; overflow-wrap: anywhere; }
-.device-badge span { color: #9eabbc; font-size: 11px; line-height: 1.45; }
-.workspace-main { padding: clamp(28px, 5vw, 68px); }
-.workspace-main > header { display: flex; justify-content: space-between; gap: 28px; align-items: flex-start; max-width: 1180px; }
-.workspace-main header span:first-child { font-size: 10px; letter-spacing: .14em; color: #7f899b; font-weight: 800; }
-.workspace-main h1 { margin: 10px 0 12px; font-size: clamp(32px, 4vw, 56px); line-height: 1; letter-spacing: -.035em; }
-.workspace-main header p { margin: 0; color: var(--muted); line-height: 1.6; }
-.session-ok { flex: 0 0 auto; border-radius: 999px; background: #e7f8f1; color: #087956; padding: 9px 12px; font-size: 10px; font-weight: 850; letter-spacing: .08em; }
-.workspace-cards { max-width: 1180px; margin-top: 44px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.workspace-cards article { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
-.workspace-cards article > span { color: #9aa5b4; font-size: 11px; font-weight: 800; }
-.workspace-cards strong { display: block; margin: 22px 0 8px; font-size: 18px; }
-.workspace-cards p { margin: 0; color: var(--muted); line-height: 1.6; font-size: 13px; }
-.workspace-next { max-width: 1180px; margin-top: 20px; border-radius: 22px; padding: 32px; background: linear-gradient(135deg, #14203a, #243d6a); color: white; }
-.workspace-next > span { font-size: 10px; letter-spacing: .14em; color: #a8b8d3; font-weight: 800; }
-.workspace-next h2 { margin: 10px 0; font-size: 28px; }
-.workspace-next p { color: #c5d0e2; max-width: 850px; line-height: 1.65; margin: 0; }
-
 @media (max-width: 900px) {
   .landing-grid { grid-template-columns: 1fr; padding: 48px 0; }
   .landing-copy h2 { font-size: clamp(38px, 10vw, 58px); }
-  .workspace-shell { grid-template-columns: 1fr; }
-  .workspace-side { position: static; height: auto; }
-  .workspace-side nav { grid-template-columns: repeat(2, 1fr); }
-  .device-badge { margin-top: 4px; }
-  .workspace-cards { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
@@ -102,8 +68,4 @@ button { cursor: pointer; }
   .gate-meta { grid-template-columns: 1fr; }
   .landing-footer { display: grid; }
   .landing-footer p { text-align: left; }
-  .workspace-side nav { grid-template-columns: 1fr; }
-  .workspace-main { padding: 26px 18px; }
-  .workspace-main > header { display: grid; }
-  .session-ok { width: fit-content; }
 }
