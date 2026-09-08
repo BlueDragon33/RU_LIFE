@@ -2,8 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import TopicProgress from "@/components/topic-progress";
 import TopicTools from "@/components/topic-tools";
+import TopicDeadlines from "@/components/topic-deadlines";
 import { getRuLifeTopic } from "@/lib/content-catalog";
 import { getResolvedTopicContent } from "@/lib/content-resolver";
+import { getSourceReviewMeta } from "@/lib/source-review";
 
 const priorityLabel = {
   essential: "Cần ưu tiên",
@@ -23,6 +25,7 @@ export default async function TopicPage({ params }: { params: Promise<{ module: 
   if (!found) notFound();
   const { moduleData, topic } = found;
   const content = getResolvedTopicContent(moduleData.slug, topic.slug);
+  const sourceReview = content ? getSourceReviewMeta(content.updatedAt, content.freshness) : null;
 
   return <>
     <header className="workspace-hero topic-hero">
@@ -35,6 +38,7 @@ export default async function TopicPage({ params }: { params: Promise<{ module: 
         {content ? <>
           <article className="topic-block topic-intro-block">
             <div className="content-state-line"><span className={`freshness-badge ${content.freshness}`}>{freshnessLabel[content.freshness]}</span><time dateTime={content.updatedAt}>Kiểm tra: {content.updatedAt}</time></div>
+            {sourceReview ? <div className={`source-review-inline ${sourceReview.state}`}><span>RÀ SOÁT NỘI BỘ</span><strong>{sourceReview.state === "overdue" ? "Nguồn đã quá mốc cần kiểm tra lại" : sourceReview.state === "due-soon" ? "Nguồn sắp tới mốc cần kiểm tra lại" : sourceReview.state === "unknown" ? "Chưa xác định được mốc rà soát" : `Rà soát lại trước ${sourceReview.reviewBy}`}</strong><p>{sourceReview.reviewBy ? `Mốc kiểm soát chất lượng: ${sourceReview.reviewBy}. ` : ""}Đây không phải ngày hết hiệu lực pháp lý; thông tin nhạy cảm theo thời gian vẫn phải kiểm tra nguồn chính thức tại thời điểm sử dụng.</p></div> : null}
             <h2>Điều cần nắm trước khi thực hiện</h2>
             <p>{content.intro}</p>
           </article>
@@ -63,6 +67,7 @@ export default async function TopicPage({ params }: { params: Promise<{ module: 
       <aside className="topic-side">
         <TopicProgress moduleSlug={moduleData.slug} topicSlug={topic.slug} checklist={topic.checklist} />
         <TopicTools moduleSlug={moduleData.slug} topicSlug={topic.slug} title={topic.title} />
+        <TopicDeadlines moduleSlug={moduleData.slug} topicSlug={topic.slug} title={topic.title} />
       </aside>
     </div>
 
