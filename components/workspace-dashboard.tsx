@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   parseStoredTopicProgress,
   progressPercent,
@@ -54,6 +54,7 @@ export default function WorkspaceDashboard({ topics }: { topics: DashboardTopic[
   const [query, setQuery] = useState("");
   const [progress, setProgress] = useState<ProgressSnapshot>({});
   const [loaded, setLoaded] = useState(false);
+  const searchRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     let frame = 0;
@@ -73,6 +74,18 @@ export default function WorkspaceDashboard({ topics }: { topics: DashboardTopic[
       window.removeEventListener(RU_LIFE_PROGRESS_EVENT, refresh);
     };
   }, [topics]);
+
+  useEffect(() => {
+    const focusSearch = (event: KeyboardEvent) => {
+      if (event.key !== "/" || event.metaKey || event.ctrlKey || event.altKey) return;
+      const target = event.target as HTMLElement | null;
+      if (target?.matches("input, textarea, select, [contenteditable='true']")) return;
+      event.preventDefault();
+      searchRef.current?.focus();
+    };
+    window.addEventListener("keydown", focusSearch);
+    return () => window.removeEventListener("keydown", focusSearch);
+  }, []);
 
   const stats = useMemo(() => {
     let checkedItems = 0;
@@ -132,7 +145,7 @@ export default function WorkspaceDashboard({ topics }: { topics: DashboardTopic[
   return <>
     <section className="dashboard-command" aria-labelledby="quick-search-title">
       <div className="dashboard-search-copy"><span>TRA NHANH 20 CHỦ ĐỀ</span><h2 id="quick-search-title">Tìm việc cần xử lý</h2><p>Tìm theo chủ đề, tình huống hoặc nội dung checklist. Dữ liệu tìm kiếm nằm trong RU_LIFE, không gửi sang Trung tâm quản trị.</p></div>
-      <label className="dashboard-search"><span className="sr-only">Tìm trong Hòa nhập Nga</span><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Ví dụ: hộ chiếu, ký túc xá, cấp cứu, deadline…" autoComplete="off" /><kbd>/</kbd></label>
+      <label className="dashboard-search"><span className="sr-only">Tìm trong Hòa nhập Nga</span><input ref={searchRef} type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Ví dụ: hộ chiếu, ký túc xá, cấp cứu, deadline…" autoComplete="off" /><kbd aria-hidden="true">/</kbd></label>
       {query.trim() ? <div className="dashboard-search-results" aria-live="polite">
         <p>{searchResults.length ? `${searchResults.length} chủ đề phù hợp` : "Không tìm thấy chủ đề phù hợp"}</p>
         <div>{searchResults.map((topic) => {
