@@ -60,6 +60,22 @@ test("RU_LIFE creates an HttpOnly local session only after verifying the central
   assert.doesNotMatch(route, /NEXT_PUBLIC_.*SECRET/);
 });
 
+test("RU_LIFE server introspects the exact token against the central revocation ledger", async () => {
+  const session = await source("../lib/device-session.server.ts");
+  const route = await source("../app/api/device/session/route.ts");
+  const heartbeat = await source("../components/device-heartbeat.tsx");
+
+  assert.match(session, /\/api\/apps\/hoa-nhap-nga\/session/);
+  assert.match(session, /introspectWithControlCenter/);
+  assert.match(session, /state: "invalid"/);
+  assert.match(session, /allowControlUnavailable/);
+  assert.match(route, /verifyManagedAppSession\(body\.accessToken\)/);
+  assert.match(route, /store\.delete\(DEVICE_SESSION_COOKIE\)/);
+  assert.match(heartbeat, /SESSION_CHECK_MS = 15_000/);
+  assert.match(heartbeat, /localSessionStillActive/);
+  assert.match(heartbeat, /window\.location\.replace\("\/"\)/);
+});
+
 test("protected workspace rejects browsers without a valid device session", async () => {
   const page = await source("../app/app/page.tsx");
   assert.match(page, /readDeviceSession\(\)/);
