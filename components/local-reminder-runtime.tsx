@@ -8,13 +8,14 @@ import {
   RU_LIFE_TOOLS_PREFIX,
   type StoredTopicTools,
 } from "@/lib/personal-tools-storage";
+import { safeSetLocalStorage } from "@/lib/local-storage-safe";
 
 const REMINDER_CHECK_MS = 60_000;
 
 function persistNotified(key: string, value: StoredTopicTools) {
   const next = { ...value, notifiedAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-  localStorage.setItem(key, JSON.stringify(next));
-  window.dispatchEvent(new CustomEvent(RU_LIFE_TOOLS_EVENT, { detail: { key } }));
+  const result = safeSetLocalStorage(localStorage, key, JSON.stringify(next));
+  if (result.ok) window.dispatchEvent(new CustomEvent(RU_LIFE_TOOLS_EVENT, { detail: { key } }));
 }
 
 function checkDueReminders() {
