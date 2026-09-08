@@ -19,7 +19,7 @@ export default async function HomePage() {
       <div className="landing-copy premium-landing-copy">
         <span className="eyebrow">HÀNH TRÌNH SỐNG · HỌC TẬP · HÒA NHẬP TẠI NGA</span>
         <h2>Một không gian riêng để chuẩn bị đúng, sống chủ động và hòa nhập tốt hơn.</h2>
-        <p>RU_LIFE hoạt động độc lập với Site Quản trị. Thiết bị mới tự tạo danh tính bảo mật và gửi yêu cầu cấp quyền; người dùng không cần và không có màn hình đăng nhập trực tiếp trên Hòa nhập Nga.</p>
+        <p>RU_LIFE hoạt động độc lập với Site Quản trị. Thiết bị mới tự tạo danh tính bảo mật và gửi yêu cầu cấp quyền; người dùng không cần và không có màn hình đăng nhập riêng trên Hòa nhập Nga.</p>
 
         <div className="landing-value-grid" aria-label="Các khu vực chính của Hòa nhập Nga">
           <article><span>01</span><strong>Chuẩn bị sang Nga</strong><p>Hồ sơ, hành lý, tài chính và ngày đầu.</p></article>
