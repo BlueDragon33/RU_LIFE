@@ -80,9 +80,12 @@ export default function WorkspacePersonalTools({ topics }: { topics: PersonalToo
   }, [topics]);
 
   useEffect(() => {
-    setNow(Date.now());
+    const frame = window.requestAnimationFrame(() => setNow(Date.now()));
     const timer = window.setInterval(() => setNow(Date.now()), 60_000);
-    return () => window.clearInterval(timer);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearInterval(timer);
+    };
   }, []);
 
   function toggleFavorite(topic: PersonalToolsTopic) {
