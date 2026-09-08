@@ -140,7 +140,7 @@ export default function TopicDeadlines({ moduleSlug, topicSlug, title }: { modul
 
     <div className="deadline-list">
       {sorted.length ? sorted.map((deadline) => {
-        const bucket = deadlineBucket(deadline, now || Date.now());
+        const bucket = deadlineBucket(deadline, now);
         return <article className={`deadline-item ${bucket} urgency-${deadline.urgency}`} key={deadline.id}>
           <div className="deadline-item-head"><div><span>{bucketLabel[bucket]} · {urgencyLabel[deadline.urgency]}</span><strong>{deadline.title}</strong><time dateTime={deadline.dueAt}>{formatDeadline(deadline.dueAt)}</time></div><button type="button" className="deadline-delete" aria-label={`Xóa thời hạn ${deadline.title}`} onClick={() => removeDeadline(deadline.id)}>×</button></div>
           <div className="deadline-item-actions"><label><input type="checkbox" checked={deadline.completed} onChange={() => updateDeadline(deadline.id, (value) => ({ ...value, completed: !value.completed }))} /><span>{deadline.completed ? "Đã hoàn thành" : "Đánh dấu hoàn thành"}</span></label>{!deadline.completed ? <select aria-label={`Mức khẩn cấp của ${deadline.title}`} value={deadline.urgency} onChange={(event) => updateDeadline(deadline.id, (value) => ({ ...value, urgency: event.target.value as DeadlineUrgency }))}><option value="normal">Bình thường</option><option value="important">Quan trọng</option><option value="critical">Khẩn</option></select> : null}</div>
