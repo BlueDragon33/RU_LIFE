@@ -8,6 +8,7 @@ import {
   topicToolsKey,
   type StoredTopicTools,
 } from "@/lib/personal-tools-storage";
+import { safeSetLocalStorage } from "@/lib/local-storage-safe";
 
 function isoToLocalInput(value: string) {
   if (!value) return "";
@@ -43,12 +44,8 @@ export default function TopicTools({ moduleSlug, topicSlug, title }: { moduleSlu
 
   function persist(value: StoredTopicTools) {
     setTools(value);
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-      window.dispatchEvent(new CustomEvent(RU_LIFE_TOOLS_EVENT, { detail: { key } }));
-    } catch {
-      // Personal tools remain usable in memory when browser storage is unavailable.
-    }
+    const result = safeSetLocalStorage(localStorage, key, JSON.stringify(value));
+    if (result.ok) window.dispatchEvent(new CustomEvent(RU_LIFE_TOOLS_EVENT, { detail: { key } }));
   }
 
   function toggleFavorite() {
@@ -82,7 +79,7 @@ export default function TopicTools({ moduleSlug, topicSlug, title }: { moduleSlu
   const formattedReminder = hasReminder ? new Intl.DateTimeFormat("vi-VN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(tools.reminderAt)) : "";
 
   return <section className="topic-tools-panel" aria-labelledby="topic-tools-title">
-    <header><div><span>CÔNG CỤ CÁ NHÂN V1.1</span><h2 id="topic-tools-title">Yêu thích · nhắc việc</h2></div></header>
+    <header><div><span>CÔNG CỤ CÁ NHÂN V1.4</span><h2 id="topic-tools-title">Yêu thích · nhắc việc</h2></div></header>
 
     <button type="button" className={`favorite-toggle ${tools.favorite ? "active" : ""}`} aria-pressed={tools.favorite} onClick={toggleFavorite} disabled={!loaded}>
       <span aria-hidden="true">{tools.favorite ? "★" : "☆"}</span>
@@ -97,7 +94,7 @@ export default function TopicTools({ moduleSlug, topicSlug, title }: { moduleSlu
     </div>
 
     <div className="notification-setting">
-      <div><span>THÔNG BÁO TRÌNH DUYỆT</span><p>Nhắc việc được lưu trên thiết bị. RU_LIFE sẽ kiểm tra khi ứng dụng đang mở hoặc khi bạn mở lại; trình duyệt không bảo đảm chạy lịch nền khi ứng dụng đã đóng.</p></div>
+      <div><span>THÔNG BÁO TRÌNH DUYỆT</span><p>Nhắc việc được lưu trên thiết bị. Nếu trình duyệt từ chối ghi do quota hoặc storage lỗi, workspace sẽ cảnh báo. Notification vẫn chỉ là best-effort khi ứng dụng có cơ hội chạy.</p></div>
       {notificationPermission === "default" ? <button type="button" onClick={requestNotifications}>Cho phép thông báo</button> : <span className={`notification-state ${notificationPermission}`}>{notificationPermission === "granted" ? "Đã cho phép" : notificationPermission === "denied" ? "Đã chặn" : "Không hỗ trợ"}</span>}
     </div>
   </section>;
