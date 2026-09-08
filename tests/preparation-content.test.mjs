@@ -43,12 +43,17 @@ test("topic page renders freshness, structured blocks and official source links 
   assert.match(page, /Chưa bổ sung dữ liệu chuyên sâu/);
 });
 
-test("RU_LIFE modular content styles are isolated from the access-gate stylesheet", async () => {
-  const layout = await source("../app/layout.tsx");
+test("RU_LIFE content styles load only inside the protected workspace", async () => {
+  const rootLayout = await source("../app/layout.tsx");
+  const workspaceLayout = await source("../app/app/layout.tsx");
+  const globalsCss = await source("../app/globals.css");
   const contentCss = await source("../app/content.css");
 
-  assert.match(layout, /import "\.\/globals\.css"/);
-  assert.match(layout, /import "\.\/content\.css"/);
+  assert.match(rootLayout, /import "\.\/globals\.css"/);
+  assert.doesNotMatch(rootLayout, /content\.css|workspace\.css/);
+  assert.match(workspaceLayout, /import "\.\.\/workspace\.css"/);
+  assert.match(workspaceLayout, /import "\.\.\/content\.css"/);
+  assert.doesNotMatch(globalsCss, /\.workspace-shell|\.workspace-nav|\.topic-layout/);
   assert.match(contentCss, /\.module-grid/);
   assert.match(contentCss, /\.topic-layout/);
   assert.match(contentCss, /\.source-list/);

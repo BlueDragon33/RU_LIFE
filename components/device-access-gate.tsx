@@ -96,24 +96,33 @@ export default function DeviceAccessGate() {
     return () => window.clearInterval(interval);
   }, [state]);
 
-  return <section className="gate-card" aria-live="polite">
-    <div className="gate-topline"><span className={`status-dot status-${state}`} /><strong>{statusLabel(state)}</strong></div>
-    <div className="gate-device-code">
+  return <section className={`gate-card premium-gate state-${state}`} aria-live="polite">
+    <header className="premium-gate-head">
+      <div><span>RU_LIFE ACCESS</span><h2>Quyền thiết bị</h2></div>
+      <div className="gate-topline"><span className={`status-dot status-${state}`} /><strong>{statusLabel(state)}</strong></div>
+    </header>
+
+    <div className="gate-device-code premium-device-code">
       <small>MÃ THIẾT BỊ HÒA NHẬP NGA</small>
       <strong>{device?.deviceCode || "ĐANG TẠO…"}</strong>
+      <span>Mã này chỉ dùng để Trung tâm quản trị nhận diện đúng thiết bị cần cấp quyền.</span>
     </div>
-    <p>{message}</p>
-    {device ? <dl className="gate-meta">
+
+    <div className="gate-message"><span aria-hidden="true">i</span><p>{message}</p></div>
+
+    {device ? <dl className="gate-meta premium-gate-meta">
       <div><dt>Loại tự nhận diện</dt><dd>{deviceClassLabel[device.deviceClass]}</dd></div>
       <div><dt>Hệ điều hành</dt><dd>{device.osName}</dd></div>
       <div><dt>Trình duyệt</dt><dd>{device.browserName}</dd></div>
       <div><dt>Trạng thái</dt><dd>{deviceStatusLabel[device.status]}</dd></div>
-    </dl> : null}
-    <div className="gate-actions">
+    </dl> : <div className="gate-detection-skeleton" aria-hidden="true"><i /><i /><i /><i /></div>}
+
+    <div className="gate-actions premium-gate-actions">
       <button type="button" onClick={() => void checkAccess()} disabled={busy}>{busy ? "Đang kiểm tra…" : "Kiểm tra lại quyền"}</button>
       {device?.deviceCode ? <button type="button" className="secondary" onClick={() => navigator.clipboard?.writeText(device.deviceCode)}>Sao chép mã HN</button> : null}
     </div>
-    <div className="gate-policy">
+
+    <div className="gate-policy premium-gate-policy">
       <span>Tự động phân loại Máy tính / Điện thoại / Máy tính bảng</span>
       <span>Quản trị ứng dụng kiểm tra lại tín hiệu trước khi lưu loại thiết bị</span>
       <span>Không có đăng nhập trực tiếp trên Hòa nhập Nga</span>

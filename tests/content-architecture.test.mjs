@@ -33,12 +33,14 @@ test("all module and topic routes remain inside the protected RU_LIFE workspace 
   assert.match(sw, /url\.pathname\.startsWith\("\/app"\)/);
 });
 
-test("topic progress is device-local and does not call management APIs", async () => {
+test("topic progress is device-local, shared through one storage contract, and does not call management APIs", async () => {
   const progress = await source("../components/topic-progress.tsx");
+  const storage = await source("../lib/progress-storage.ts");
   assert.match(progress, /localStorage\.getItem/);
-  assert.match(progress, /localStorage\.setItem/);
-  assert.match(progress, /ru-life-progress:v1:/);
-  assert.doesNotMatch(progress, /medical-control|system-control|api\/apps\/hoa-nhap-nga\/control/);
+  assert.match(progress, /safeSetLocalStorage/);
+  assert.match(progress, /topicProgressKey/);
+  assert.match(storage, /ru-life-progress:v1:/);
+  assert.doesNotMatch(`${progress}\n${storage}`, /medical-control|system-control|api\/apps\/hoa-nhap-nga\/control/);
 });
 
 test("change-sensitive Russia content is explicitly prepared for source freshness instead of hardcoded rules", async () => {

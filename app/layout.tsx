@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import "./content.css";
+import "./public-premium.css";
 import ServiceWorkerRegister from "@/components/service-worker-register";
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f4f7fb",
+  themeColor: "#07152f",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

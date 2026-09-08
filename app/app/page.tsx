@@ -1,33 +1,85 @@
 import Link from "next/link";
+import LocalDataManager from "@/components/local-data-manager";
+import WorkspaceDashboard, { type DashboardTopic } from "@/components/workspace-dashboard";
+import WorkspacePersonalTools, { type PersonalToolsTopic } from "@/components/workspace-personal-tools";
+import WorkspaceDeadlineBoard, { type DeadlineBoardTopic } from "@/components/workspace-deadline-board";
 import { ruLifeModules, topicCount } from "@/lib/content-catalog";
+import { getResolvedTopicContent } from "@/lib/content-resolver";
+import { getTopicSituations } from "@/lib/topic-situations";
+
+const moduleIcon: Record<string, string> = {
+  prepare: "✈",
+  "daily-life": "⌂",
+  "study-procedures": "◆",
+  health: "♥",
+  integration: "文",
+};
 
 export default function ProtectedAppPage() {
+  const dashboardTopics: DashboardTopic[] = ruLifeModules.flatMap((moduleData) => moduleData.topics.map((topic) => {
+    const content = getResolvedTopicContent(moduleData.slug, topic.slug);
+    return {
+      moduleSlug: moduleData.slug,
+      moduleCode: moduleData.code,
+      moduleTitle: moduleData.title,
+      stage: moduleData.stage,
+      topicSlug: topic.slug,
+      title: topic.title,
+      summary: topic.summary,
+      priority: topic.priority,
+      checklist: topic.checklist,
+      freshness: content?.freshness || "review-soon",
+      updatedAt: content?.updatedAt || "",
+    };
+  }));
+
+  const personalTopics: PersonalToolsTopic[] = ruLifeModules.flatMap((moduleData) => moduleData.topics.map((topic) => ({
+    moduleSlug: moduleData.slug,
+    moduleCode: moduleData.code,
+    moduleTitle: moduleData.title,
+    topicSlug: topic.slug,
+    title: topic.title,
+    summary: topic.summary,
+    priority: topic.priority,
+    situations: getTopicSituations(moduleData.slug, topic.slug),
+  })));
+
+  const deadlineTopics: DeadlineBoardTopic[] = dashboardTopics.map((topic) => ({
+    moduleSlug: topic.moduleSlug,
+    moduleCode: topic.moduleCode,
+    moduleTitle: topic.moduleTitle,
+    topicSlug: topic.topicSlug,
+    topicTitle: topic.title,
+    freshness: topic.freshness,
+    updatedAt: topic.updatedAt,
+  }));
+
   return <>
-    <header className="workspace-hero">
-      <div><span>HÒA NHẬP NGA · KHÔNG GIAN CÁ NHÂN</span><h1>Mọi việc cần nhớ khi sống và học tập tại Nga</h1><p>Thông tin được chia theo tình huống và tiến trình sử dụng. Bộ khung này tách hoàn toàn khỏi Quản trị ứng dụng; Trung tâm chỉ quản lý quyền thiết bị.</p></div>
-      <span className="session-ok">THIẾT BỊ HỢP LỆ</span>
+    <header className="workspace-hero premium-hero">
+      <div><span>RU_LIFE · HÒA NHẬP NGA</span><h1>Dashboard Hòa nhập Nga</h1><p>Không gian cá nhân để chuẩn bị, sinh sống, học tập và hòa nhập tại Nga. Truy cập độc lập trên thiết bị đã được Quản trị ứng dụng phê duyệt; dữ liệu cá nhân vẫn nằm trong RU_LIFE.</p><span className="session-ok">THIẾT BỊ HỢP LỆ</span></div>
+      <div className="hero-visual" aria-hidden="true"><small>WELCOME TO YOUR NEXT CHAPTER</small><strong>Добро пожаловать!</strong><p>Chuẩn bị kỹ hơn · thích nghi nhanh hơn · chủ động trong từng mốc quan trọng.</p><div className="hero-visual-art" /></div>
     </header>
 
-    <section className="workspace-overview">
-      <article><span>MODULE</span><strong>{ruLifeModules.length}</strong><p>Nhóm nội dung độc lập, có thể mở rộng mà không phá cấu trúc chung.</p></article>
-      <article><span>CHỦ ĐỀ KHỞI TẠO</span><strong>{topicCount()}</strong><p>Các khung chủ đề đã sẵn sàng để bổ sung nội dung có nguồn và ngày cập nhật.</p></article>
-      <article><span>TIẾN ĐỘ</span><strong>CỤC BỘ</strong><p>Checklist và ghi chú cá nhân lưu trên chính thiết bị, không trộn với dữ liệu quản trị.</p></article>
-    </section>
+    <WorkspaceDashboard topics={dashboardTopics} />
+    <WorkspacePersonalTools topics={personalTopics} />
+    <WorkspaceDeadlineBoard topics={deadlineTopics} />
+    <LocalDataManager />
 
     <section className="module-section">
-      <div className="section-heading"><div><span>BẢN ĐỒ NỘI DUNG</span><h2>Chọn khu vực cần xử lý</h2></div><p>Mỗi module có route riêng và các chủ đề con độc lập để sau này cập nhật từng phần mà không phải sửa toàn bộ Web App.</p></div>
+      <div className="section-heading"><div><span>KHÁM PHÁ CÁC CHỦ ĐỀ CHÍNH · {topicCount()} CHỦ ĐỀ</span><h2>Năm khu vực cho hành trình tại Nga</h2></div><p>Mỗi module là một khu vực độc lập, có hướng dẫn, checklist, nguồn và công cụ cá nhân riêng nhưng vẫn thống nhất trong một trải nghiệm RU_LIFE.</p></div>
       <div className="module-grid">
-        {ruLifeModules.map((module) => <Link href={`/app/${module.slug}`} className="module-card" key={module.slug}>
-          <header><span>{module.stage}</span><b>{module.code}</b></header>
-          <h3>{module.title}</h3>
-          <p>{module.description}</p>
-          <footer><span>{module.topics.length} chủ đề</span><strong>Mở module →</strong></footer>
+        {ruLifeModules.map((moduleData) => <Link href={`/app/${moduleData.slug}`} className="module-card" key={moduleData.slug}>
+          <header><span>{moduleData.stage}</span><b>{moduleData.code}</b></header>
+          <span className="module-icon" aria-hidden="true">{moduleIcon[moduleData.slug] || "•"}</span>
+          <h3>{moduleData.title}</h3>
+          <p>{moduleData.description}</p>
+          <footer><span>{moduleData.topics.length} chủ đề</span><strong>Mở module →</strong></footer>
         </Link>)}
       </div>
     </section>
 
     <section className="workspace-next">
-      <span>KIẾN TRÚC NỘI DUNG V1</span><h2>Nội dung có thể đi sâu dần mà không ảnh hưởng lớp cấp quyền</h2><p>Các module, topic, checklist và ghi chú nằm trong RU_LIFE. P-256, session, heartbeat, introspection và quyền thiết bị tiếp tục do lớp tích hợp với Quản trị ứng dụng kiểm soát độc lập.</p>
+      <span>RU_LIFE V1.4 · PRIVATE BY DESIGN</span><h2>Dữ liệu cá nhân có migration và rollback mà không mang theo quyền thiết bị</h2><p>Backup chỉ gồm checklist/ghi chú, yêu thích/nhắc việc và deadline. Session, P-256 identity, heartbeat, introspection và trạng thái cấp quyền không bao giờ được xuất hoặc nhập qua cơ chế dữ liệu cá nhân.</p>
     </section>
   </>;
 }

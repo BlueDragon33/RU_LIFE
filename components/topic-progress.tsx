@@ -1,72 +1,50 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-
-const STORAGE_PREFIX = "ru-life-progress:v1:";
-
-type StoredProgress = {
-  checked: number[];
-  note: string;
-  updatedAt: string;
-};
-
-function storageKey(moduleSlug: string, topicSlug: string) {
-  return `${STORAGE_PREFIX}${moduleSlug}:${topicSlug}`;
-}
+import {
+  parseStoredTopicProgress,
+  progressPercent,
+  RU_LIFE_PROGRESS_EVENT,
+  topicProgressKey,
+  type StoredTopicProgress,
+} from "@/lib/progress-storage";
+import { safeSetLocalStorage } from "@/lib/local-storage-safe";
 
 export default function TopicProgress({ moduleSlug, topicSlug, checklist }: { moduleSlug: string; topicSlug: string; checklist: string[] }) {
-  const [checked, setChecked] = useState<number[]>([]);
-  const [note, setNote] = useState("");
+  const [progress, setProgress] = useState<StoredTopicProgress>({ checked: [], note: "", updatedAt: "" });
   const [loaded, setLoaded] = useState(false);
-  const key = useMemo(() => storageKey(moduleSlug, topicSlug), [moduleSlug, topicSlug]);
+  const key = useMemo(() => topicProgressKey(moduleSlug, topicSlug), [moduleSlug, topicSlug]);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
-      let nextChecked: number[] = [];
-      let nextNote = "";
-      try {
-        const raw = localStorage.getItem(key);
-        if (raw) {
-          const parsed = JSON.parse(raw) as Partial<StoredProgress>;
-          if (Array.isArray(parsed.checked)) nextChecked = parsed.checked.filter((value) => Number.isInteger(value)) as number[];
-          if (typeof parsed.note === "string") nextNote = parsed.note;
-        }
-      } catch {
-        // Local progress is optional; corrupt browser storage must not block content access.
-      }
-      setChecked(nextChecked);
-      setNote(nextNote);
+      setProgress(parseStoredTopicProgress(localStorage.getItem(key)));
       setLoaded(true);
     });
     return () => window.cancelAnimationFrame(frame);
   }, [key]);
 
   function persist(nextChecked: number[], nextNote: string) {
-    setChecked(nextChecked);
-    setNote(nextNote);
-    try {
-      const value: StoredProgress = { checked: nextChecked, note: nextNote, updatedAt: new Date().toISOString() };
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch {
-      // The checklist remains usable in memory if localStorage is unavailable.
-    }
+    const value: StoredTopicProgress = { checked: nextChecked, note: nextNote, updatedAt: new Date().toISOString() };
+    setProgress(value);
+    const result = safeSetLocalStorage(localStorage, key, JSON.stringify(value));
+    if (result.ok) window.dispatchEvent(new CustomEvent(RU_LIFE_PROGRESS_EVENT, { detail: { key } }));
   }
 
-  const done = checklist.length ? Math.round((checked.filter((index) => index >= 0 && index < checklist.length).length / checklist.length) * 100) : 0;
+  const done = progressPercent(progress, checklist.length);
 
-  return <section className="topic-progress-panel">
-    <header><div><span>TIẾN ĐỘ TRÊN THIẾT BỊ NÀY</span><h2>Checklist cá nhân</h2></div><strong>{loaded ? `${done}%` : "—"}</strong></header>
-    <div className="topic-progress-bar"><i style={{ width: `${done}%` }} /></div>
+  return <section className="topic-progress-panel" aria-labelledby="topic-progress-title">
+    <header><div><span>TIẾN ĐỘ TRÊN THIẾT BỊ NÀY</span><h2 id="topic-progress-title">Checklist cá nhân</h2></div><strong>{loaded ? `${done}%` : "—"}</strong></header>
+    <div className="topic-progress-bar" role="progressbar" aria-label="Tiến độ checklist" aria-valuemin={0} aria-valuemax={100} aria-valuenow={done}><i style={{ width: `${done}%` }} /></div>
     <div className="topic-checklist">
       {checklist.map((item, index) => {
-        const active = checked.includes(index);
+        const active = progress.checked.includes(index);
         return <label key={item} className={active ? "done" : ""}>
-          <input type="checkbox" checked={active} onChange={() => persist(active ? checked.filter((value) => value !== index) : [...checked, index], note)} />
-          <span><b>{active ? "✓" : index + 1}</b>{item}</span>
+          <input type="checkbox" checked={active} onChange={() => persist(active ? progress.checked.filter((value) => value !== index) : [...progress.checked, index], progress.note)} />
+          <span><b aria-hidden="true">{active ? "✓" : index + 1}</b>{item}</span>
         </label>;
       })}
     </div>
-    <label className="topic-note"><span>Ghi chú của tôi</span><textarea value={note} onChange={(event) => persist(checked, event.target.value)} placeholder="Ghi lại thông tin cần nhớ trên thiết bị này…" rows={5} /></label>
-    <p className="topic-local-note">Tiến độ và ghi chú hiện chỉ lưu cục bộ trên thiết bị đang sử dụng; không phải dữ liệu quản trị và không thay đổi quyền truy cập.</p>
+    <label className="topic-note"><span>Ghi chú của tôi</span><textarea value={progress.note} onChange={(event) => persist(progress.checked, event.target.value)} placeholder="Ghi lại thông tin cần nhớ trên thiết bị này…" rows={5} /></label>
+    <p className="topic-local-note">Tiến độ và ghi chú chỉ lưu cục bộ trên thiết bị này; nếu trình duyệt từ chối ghi, workspace sẽ hiển thị cảnh báo thay vì im lặng bỏ qua.</p>
   </section>;
 }

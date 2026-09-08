@@ -2,31 +2,13 @@
 
 ## Mục tiêu
 
-Nội dung Hòa nhập Nga phải phát triển độc lập với lớp quản trị thiết bị. `Application-Management` không chứa các trang, route, checklist hay dữ liệu sinh hoạt của RU_LIFE.
+RU_LIFE là Web App độc lập. `Application-Management` chỉ quản lý quyền thiết bị, phiên, trạng thái và kiểm soát từ xa; không chứa route nội dung, checklist, ghi chú, bookmark, reminder, deadline, backup, migration hay runtime của Hòa nhập Nga.
 
-## Cấu trúc cố định
+Tất cả `/app/*` đi qua `app/app/layout.tsx`, vì vậy đều bắt buộc phiên RU_LIFE hợp lệ, heartbeat và introspection với Application-Management trước khi các runtime dữ liệu cá nhân được mount.
 
-`/app` là dashboard sau khi thiết bị đã được Quản trị ứng dụng cấp quyền.
+## Catalog V1 — 20/20 topic
 
-Nội dung được tổ chức theo năm lớp:
-
-1. **Module** — một mảng lớn của cuộc sống/học tập tại Nga.
-2. **Topic** — một tình huống hoặc nhóm đầu việc có thể cập nhật độc lập.
-3. **Content blocks** — hướng dẫn, tình huống, quy trình, mẫu câu.
-4. **Source/Freshness** — nguồn tham chiếu, ngày kiểm tra và mức độ cần rà soát.
-5. **Local progress** — checklist và ghi chú cá nhân lưu trên thiết bị.
-
-Routes:
-
-- `/app`
-- `/app/<module>`
-- `/app/<module>/<topic>`
-
-Tất cả route dưới `/app/*` đi qua `app/app/layout.tsx`, do đó đều bắt buộc có phiên thiết bị RU_LIFE hợp lệ và cùng cơ chế heartbeat/introspection với Trung tâm.
-
-## Catalog v1
-
-Catalog nằm tại `lib/content-catalog.ts`, hiện gồm 5 module:
+`lib/content-catalog.ts` chỉ mô tả cấu trúc/điều hướng, gồm 5 module × 4 topic:
 
 1. `prepare` — Chuẩn bị sang Nga.
 2. `daily-life` — Cuộc sống tại Nga.
@@ -34,91 +16,121 @@ Catalog nằm tại `lib/content-catalog.ts`, hiện gồm 5 module:
 4. `health` — Sức khỏe · y tế.
 5. `integration` — Ngôn ngữ · hòa nhập.
 
-Mỗi module hiện có 4 topic khởi tạo. Đây là dữ liệu cấu trúc để tiếp tục phát triển, không phải giới hạn cố định về số lượng chủ đề.
+Content tách theo miền và phân giải qua `lib/content-resolver.ts`. `tests/content-coverage.test.mjs` khóa 20/20 topic.
 
-Nội dung chi tiết được tách khỏi catalog. `lib/topic-content.ts` chứa content layer của Module 01; `lib/daily-life-content.ts` chứa Module 02; `lib/content-resolver.ts` là điểm phân giải chung cho renderer. Catalog chỉ mô tả cấu trúc/điều hướng, vì vậy cập nhật một topic không cần sửa cây điều hướng chung.
+## Dashboard vận hành
 
-## Trạng thái nội dung
+Dashboard hiện có tìm kiếm 20 topic, tiến độ/checklist, ghi chú, việc nên làm tiếp, lọc theo tình huống/ưu tiên/yêu thích, reminder cục bộ, deadline, lịch 7 ngày, `.ics`, source-review và quản lý backup/restore. Không tính năng nào trong nhóm này quyết định quyền thiết bị.
 
-### Module 01 — `prepare`
+## Ba miền dữ liệu cục bộ độc lập
 
-Đã có content layer thực cho:
+Không gộp ba namespace:
 
-- `documents` — Hồ sơ · giấy tờ;
-- `luggage` — Hành lý · trang bị;
-- `money-connectivity` — Tài chính · liên lạc;
-- `arrival-plan` — Kế hoạch ngày đầu.
+- Progress: `ru-life-progress:v1:*` — checklist + ghi chú.
+- Personal tools: `ru-life-tools:v1:topic:*` — favorite + reminder + trạng thái notification.
+- Deadlines: `ru-life-deadlines:v1:topic:*` — nhiều deadline trên một topic, có `checklistIndex` nullable.
 
-### Module 02 — `daily-life`
+Deadline liên kết checklist theo một chiều: hoàn thành deadline có thể hoàn thành checklist item; bỏ trạng thái hoàn thành deadline không tự bỏ checklist.
 
-Đã có content layer thực cho:
+## Backup V1.4 và tương thích V1.3
 
-- `housing` — Nhà ở · ký túc xá;
-- `transport` — Đi lại · giao thông;
-- `shopping-services` — Mua sắm · dịch vụ;
-- `safety` — An toàn · tình huống khẩn.
+`lib/local-data-backup.ts` hiện xuất schema:
 
-Topic `safety` hiện dùng nguồn MChS để xác nhận hệ thống số khẩn cấp 112 và 101/102/103/104. Topic `housing` dùng Study in Russia cho nguyên tắc ký túc xá/quota nhưng không lấy quy trình của một trường làm quy trình chung.
+`ru-life-local-backup-v2`
 
-Những topic chưa có content layer vẫn hiển thị fallback “chưa bổ sung dữ liệu chuyên sâu” thay vì tạo dữ liệu giả.
+File V1.3 dùng schema `ru-life-local-backup-v1` vẫn được chấp nhận. Khi import, dữ liệu legacy được validate rồi normalize trong bộ nhớ sang shape hiện tại trước khi ghi.
 
-## Nguyên tắc nguồn và độ mới
+Backup chỉ được chứa ba namespace dữ liệu cá nhân ở trên. Nó không được chứa:
 
-Không được hard-code một quy định dễ thay đổi rồi coi đó là kiến thức cố định.
+- cookie/session/access token;
+- P-256 device identity/private key;
+- device code hoặc approval state;
+- `managed_app_devices` / `control_devices`;
+- bất kỳ dữ liệu Application-Management nào.
 
-Các nhóm nội dung như:
+Giới hạn hiện tại: tối đa 2 MB và 200 entry. Tất cả entry phải pass validation trước khi bắt đầu replacement.
 
-- xuất nhập cảnh/cư trú;
-- giấy tờ người nước ngoài;
-- quy định trường học;
-- y tế/bảo hiểm;
-- giao thông/dịch vụ;
-- giá, phí, mốc thời hạn;
+## Restore transactional và rollback
 
-khi đi vào nội dung chi tiết phải có metadata về nguồn tham chiếu và lần kiểm tra gần nhất. `TopicContent` hiện có:
+`replaceLocalPersonalData()` thực hiện theo thứ tự:
 
-- `updatedAt`;
-- `freshness` (`verified`, `review-soon`, `stable-guidance`);
-- `blocks`;
-- `sources`.
+1. validate backup hoàn chỉnh;
+2. snapshot ba miền dữ liệu hiện tại trong bộ nhớ;
+3. thay thế dữ liệu;
+4. nếu bất kỳ lần ghi nào thất bại, xóa trạng thái ghi dở và cố phục hồi snapshot trước thao tác.
 
-Mỗi `TopicSource` lưu `publisher`, `title`, `url`, `checkedAt` và ghi chú phạm vi sử dụng nguồn.
+`components/local-data-manager.tsx` vẫn tải thêm file `before-restore` trước khi bắt đầu khôi phục. Vì vậy có hai lớp phục hồi: rollback tức thời trong runtime và file backup ngoài trình duyệt.
 
-Nguồn chính thức được ưu tiên cho quy định pháp lý/hành chính. Module 01 liên kết tới `Study in Russia` và hệ thống e-visa của Cục Lãnh sự Bộ Ngoại giao Nga khi nội dung liên quan tới nhập cảnh/visa. Module 02 liên kết `Study in Russia` cho ký túc xá và MChS cho số điện thoại khẩn cấp.
+Nếu chính rollback runtime cũng không ghi được, UI phải báo rõ để người dùng phục hồi từ file `before-restore`; không được báo thành công giả.
 
-Thông tin phụ thuộc hãng bay, ngân hàng, nhà mạng, hãng vận tải, cửa hàng hoặc giá thị trường không được đóng băng thành số liệu cố định; giao diện yêu cầu kiểm tra lại nhà cung cấp ở thời điểm sử dụng.
+Xóa dữ liệu tiếp tục chỉ xóa theo miền và không dùng `localStorage.clear()`.
 
-Nếu nguồn chưa được xác minh, giao diện phải thể hiện trạng thái chưa hoàn thiện thay vì suy đoán.
+## Migration trạng thái cục bộ V1.4
 
-## Tiến độ cục bộ
+`lib/local-state-migration.ts` dùng marker:
 
-`components/topic-progress.tsx` lưu dữ liệu với namespace `ru-life-progress:v1:*` trong `localStorage`.
+`ru-life-local-state-version`
 
-Dữ liệu này:
+Phiên bản hiện tại: `2`.
 
-- chỉ phục vụ người đang dùng thiết bị;
-- không phải quyền truy cập;
-- không thay đổi device identity P-256;
-- không gửi sang API quản trị;
-- có thể mất nếu người dùng xóa dữ liệu trình duyệt.
+Marker này chỉ là metadata migration nội bộ của RU_LIFE, không phải identity, session hoặc quyền thiết bị.
 
-Nếu sau này cần đồng bộ đa thiết bị, phải thiết kế một miền dữ liệu người dùng riêng; không được tận dụng `managed_app_devices` hoặc `control_devices` làm kho nội dung cá nhân.
+`components/local-state-runtime.tsx` được mount trong protected layout sau khi `readDeviceSession()` hợp lệ. Runtime:
 
-## Ranh giới giao diện
+- đọc version hiện tại;
+- normalize progress/tools/deadlines cũ;
+- chỉ ghi version mới sau khi toàn bộ migration thành công;
+- nếu migration lỗi, cố rollback snapshot cũ;
+- phát refresh event sau migration thành công.
 
-- `app/globals.css`: shell công khai, access gate và workspace nền tảng.
-- `app/content.css`: dashboard nội dung, module/topic, source/freshness và local progress.
+## Ghi localStorage có kiểm soát
 
-Không đưa style nội dung vào component quản trị thiết bị. Tách CSS giúp nâng cấp nội dung mà không ảnh hưởng màn hình cấp quyền.
+`lib/local-storage-safe.ts` tập trung các lần ghi quan trọng qua `safeSetLocalStorage()`.
+
+Các component progress, tools, dashboard favorite, deadlines, linked-checklist và reminder persistence đều dùng lớp này. Khi trình duyệt ném `QuotaExceededError` hoặc lỗi storage khác, runtime phát `ru-life-storage-error` và `LocalStateRuntime` hiển thị cảnh báo thay vì âm thầm bỏ qua.
+
+`navigator.storage.estimate()` chỉ dùng để hiển thị ước lượng usage/quota của **toàn bộ origin**. Nó không phải số dung lượng riêng của localStorage RU_LIFE và không được dùng như bảo đảm còn đủ chỗ cho lần ghi tiếp theo.
+
+## `.ics`
+
+`buildDeadlineCalendar()` xuất deadline chưa hoàn thành ra iCalendar. `.ics` là snapshot khi tải, không phải đồng bộ hai chiều và không yêu cầu Google Calendar API.
+
+## Source review
+
+Mốc kiểm soát nội bộ:
+
+- `review-soon`: 30 ngày;
+- `verified`: 90 ngày;
+- `stable-guidance`: 365 ngày.
+
+Đây không phải ngày hết hiệu lực pháp lý. Nội dung hành chính, pháp lý, y tế, giá/phí hoặc điều kiện nhà cung cấp vẫn phải kiểm tra nguồn chính thức tại thời điểm sử dụng.
+
+## CSS và responsive boundary
+
+- `app/globals.css` — public/access gate;
+- `app/workspace.css` — protected shell/navigation;
+- `app/content.css` — content/dashboard/topic/progress;
+- `app/tools.css` — favorite/filter/reminder;
+- `app/deadlines.css` — deadline/source review;
+- `app/backup.css` — backup/migration/storage warning.
+
+Regression hiện khóa breakpoint và cách stack layout cho desktop/tablet/phone, bao gồm 900 px và 620 px ở khu backup. Đây là **source/layout contract**, không phải bằng chứng rằng UI đã được kiểm tra trên mọi trình duyệt hoặc thiết bị vật lý. Kiểm thử thiết bị thật vẫn là một gate riêng.
 
 ## Ranh giới bảo mật
 
-- `app/app/layout.tsx`: bảo vệ toàn bộ workspace.
-- `DeviceHeartbeat`: heartbeat + kiểm tra thu hồi phiên.
-- `WorkspaceNavigation`: chỉ điều hướng nội dung, không quyết định quyền.
-- Các file content chỉ chứa nội dung, không chứa secret hay logic quản trị.
+- `app/app/layout.tsx`: bảo vệ workspace.
+- `DeviceHeartbeat`: heartbeat + revocation check.
+- `LocalReminderRuntime` và `LocalStateRuntime`: chỉ chạy trong protected workspace.
+- content/progress/tools/deadline/backup/migration không chứa secret hoặc logic cấp quyền.
 - Service worker không cache `/app*` hoặc `/api/*`.
+- Không dùng control-plane tables làm kho dữ liệu cá nhân.
 
-## Hướng phát triển tiếp theo
+Nếu cần đồng bộ đa thiết bị trong tương lai, phải xây user-data domain riêng. Backup/migration RU_LIFE không bao giờ là cơ chế nhân bản quyền thiết bị.
 
-Ưu tiên Module 03 — Học tập · thủ tục. Phần nhập học, cư trú và giấy tờ người nước ngoài phải dùng nguồn chính thức và metadata độ mới chặt hơn Module 01/02 vì sai thời hạn có thể gây hậu quả hành chính. Kế hoạch học tập và đầu mối liên hệ có thể dùng dữ liệu cấu trúc ổn định, tách khỏi các quy định pháp lý.
+## Hướng phát triển sau V1.4
+
+1. kiểm thử trực tiếp trên browser desktop/tablet/phone thực;
+2. kiểm thử fault injection cho quota và rollback bằng môi trường browser automation;
+3. rà source-review theo mức rủi ro cụ thể;
+4. kiểm thử file backup legacy với nhiều mẫu dữ liệu thực;
+5. chỉ sau các gate trên mới cân nhắc đồng bộ user-data đa thiết bị.
