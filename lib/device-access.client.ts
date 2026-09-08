@@ -21,26 +21,9 @@ export type ManagedDevice = {
   active: boolean;
 };
 
-type DeviceKeyRecord = {
-  id: "p256";
-  privateKey: CryptoKey;
-  publicKey: CryptoKey;
-};
-
-type GatewayErrorBody = {
-  error?: string;
-  code?: string;
-  device?: ManagedDevice;
-};
-
-type ClientHintValues = {
-  platform?: string;
-  model?: string;
-  mobile?: boolean;
-  architecture?: string;
-  bitness?: string;
-};
-
+type DeviceKeyRecord = { id: "p256"; privateKey: CryptoKey; publicKey: CryptoKey };
+type GatewayErrorBody = { error?: string; code?: string; device?: ManagedDevice };
+type ClientHintValues = { platform?: string; model?: string; mobile?: boolean; architecture?: string; bitness?: string };
 type NavigatorWithUAData = Navigator & {
   userAgentData?: {
     mobile?: boolean;
@@ -52,7 +35,6 @@ type NavigatorWithUAData = Navigator & {
 export class DeviceGatewayError extends Error {
   code: string;
   device?: ManagedDevice;
-
   constructor(message: string, code = "DEVICE_GATEWAY_ERROR", device?: ManagedDevice) {
     super(message);
     this.code = code;
@@ -63,14 +45,14 @@ export class DeviceGatewayError extends Error {
 const DB_NAME = "ru-life-device-access";
 const STORE_NAME = "crypto";
 const RECORD_KEY = "p256";
-const DEFAULT_CONTROL_CENTER = "https://quan-ly-hoc-tap.dinhnam3391.chatgpt.site";
+const DEFAULT_APPLICATION_MANAGEMENT = "https://learning-management.boiech-ai.workers.dev";
 
-function controlCenterBaseUrl() {
-  return (process.env.NEXT_PUBLIC_CONTROL_CENTER_BASE_URL || DEFAULT_CONTROL_CENTER).replace(/\/$/, "");
+function applicationManagementBaseUrl() {
+  return (process.env.NEXT_PUBLIC_APPLICATION_MANAGEMENT_BASE_URL || DEFAULT_APPLICATION_MANAGEMENT).replace(/\/$/, "");
 }
 
 function gatewayUrl() {
-  return `${controlCenterBaseUrl()}/api/apps/hoa-nhap-nga/device`;
+  return `${applicationManagementBaseUrl()}/api/apps/hoa-nhap-nga/device`;
 }
 
 function base64Url(bytes: ArrayBuffer) {
@@ -113,17 +95,11 @@ export async function getOrCreateDeviceKeyPair() {
   if (!window.isSecureContext || !window.crypto?.subtle || !window.indexedDB) {
     throw new DeviceGatewayError("Thiết bị cần mở Hòa nhập Nga bằng HTTPS để tạo khóa bảo mật.", "SECURE_CONTEXT_REQUIRED");
   }
-
   const database = await openDatabase();
   try {
     const existing = await readKeyRecord(database);
     if (existing?.privateKey && existing?.publicKey) return existing;
-
-    const pair = await crypto.subtle.generateKey(
-      { name: "ECDSA", namedCurve: "P-256" },
-      false,
-      ["sign", "verify"],
-    );
+    const pair = await crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, false, ["sign", "verify"]);
     const record: DeviceKeyRecord = { id: RECORD_KEY, privateKey: pair.privateKey, publicKey: pair.publicKey };
     await writeKeyRecord(database, record);
     return record;
@@ -153,24 +129,14 @@ function detectOsName(ua: string, platformHint: string) {
 }
 
 function classifyDevice(input: {
-  ua: string;
-  mobileHint: boolean | undefined;
-  platformHint: string;
-  modelHint: string;
-  touchPoints: number;
-  coarsePointer: boolean;
-  screenWidth: number;
-  screenHeight: number;
+  ua: string; mobileHint: boolean | undefined; platformHint: string; modelHint: string;
+  touchPoints: number; coarsePointer: boolean; screenWidth: number; screenHeight: number;
 }) {
   const { ua, mobileHint, platformHint, modelHint, touchPoints, coarsePointer, screenWidth, screenHeight } = input;
   const shortestSide = Math.min(screenWidth, screenHeight);
   const platform = platformHint.toLowerCase();
   const model = modelHint.toLowerCase();
-
-  // iPadOS may identify itself as Macintosh. Touch capability is the reliable discriminator here.
-  if (/ipad/i.test(ua) || (platform.includes("mac") && touchPoints > 1)) {
-    return { deviceClass: "tablet" as const, confidence: 98, source: "ipad-signal" };
-  }
+  if (/ipad/i.test(ua) || (platform.includes("mac") && touchPoints > 1)) return { deviceClass: "tablet" as const, confidence: 98, source: "ipad-signal" };
   if (/iphone|ipod/i.test(ua)) return { deviceClass: "phone" as const, confidence: 99, source: "iphone-ua" };
   if (/android/i.test(ua)) {
     if (/mobile/i.test(ua) || mobileHint === true) return { deviceClass: "phone" as const, confidence: 96, source: "android-mobile" };
@@ -178,9 +144,7 @@ function classifyDevice(input: {
   }
   if (model.includes("ipad") || model.includes("tablet")) return { deviceClass: "tablet" as const, confidence: 92, source: "model" };
   if (model.includes("iphone") || mobileHint === true) return { deviceClass: "phone" as const, confidence: 90, source: "client-hints-mobile" };
-  if (/windows|macintosh|cros|linux/i.test(ua) || /windows|mac|chrome os|linux/.test(platform)) {
-    return { deviceClass: "computer" as const, confidence: 94, source: "desktop-platform" };
-  }
+  if (/windows|macintosh|cros|linux/i.test(ua) || /windows|mac|chrome os|linux/.test(platform)) return { deviceClass: "computer" as const, confidence: 94, source: "desktop-platform" };
   if (coarsePointer && touchPoints > 0) {
     if (shortestSide >= 600) return { deviceClass: "tablet" as const, confidence: 72, source: "touch-screen-size" };
     return { deviceClass: "phone" as const, confidence: 70, source: "touch-screen-size" };
@@ -196,9 +160,7 @@ async function browserProfile() {
     if (nav.userAgentData?.getHighEntropyValues) {
       highEntropy = await nav.userAgentData.getHighEntropyValues(["platform", "model", "mobile", "architecture", "bitness"]);
     }
-  } catch {
-    highEntropy = {};
-  }
+  } catch { highEntropy = {}; }
 
   const platformHint = highEntropy.platform || nav.userAgentData?.platform || navigator.platform || "";
   const mobileHint = typeof highEntropy.mobile === "boolean" ? highEntropy.mobile : nav.userAgentData?.mobile;
@@ -210,18 +172,10 @@ async function browserProfile() {
   }
 
   const coarsePointer = window.matchMedia?.("(pointer: coarse)").matches ?? false;
-  const classification = classifyDevice({
-    ua,
-    mobileHint,
-    platformHint,
-    modelHint,
-    touchPoints: navigator.maxTouchPoints || 0,
-    coarsePointer,
-    screenWidth: window.screen.width,
-    screenHeight: window.screen.height,
-  });
+  const classification = classifyDevice({ ua, mobileHint, platformHint, modelHint, touchPoints: navigator.maxTouchPoints || 0, coarsePointer, screenWidth: window.screen.width, screenHeight: window.screen.height });
 
   return {
+    userAgent: ua.slice(0, 500),
     deviceClass: classification.deviceClass,
     classificationConfidence: classification.confidence,
     classificationSource: classification.source,
@@ -243,18 +197,12 @@ async function browserProfile() {
 async function gatewayPost<T>(payload: Record<string, unknown>) {
   let response: Response;
   try {
-    response = await fetch(gatewayUrl(), {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload),
-      cache: "no-store",
-    });
+    response = await fetch(gatewayUrl(), { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload), cache: "no-store" });
   } catch {
-    throw new DeviceGatewayError("Không thể kết nối Trung tâm quản trị. Kiểm tra mạng rồi thử lại.", "CONTROL_CENTER_UNREACHABLE");
+    throw new DeviceGatewayError("Không thể kết nối Application Management. Kiểm tra mạng rồi thử lại.", "APPLICATION_MANAGEMENT_UNREACHABLE");
   }
-
   const body = await response.json().catch(() => ({})) as T & GatewayErrorBody;
-  if (!response.ok) throw new DeviceGatewayError(body.error || "Trung tâm quản trị từ chối yêu cầu.", body.code || "CONTROL_CENTER_REJECTED", body.device);
+  if (!response.ok) throw new DeviceGatewayError(body.error || "Application Management từ chối yêu cầu.", body.code || "APPLICATION_MANAGEMENT_REJECTED", body.device);
   return body;
 }
 
@@ -274,28 +222,17 @@ async function signChallenge(privateKey: CryptoKey, deviceId: string, challenge:
 
 export async function authorizeDevice(keys: DeviceKeyRecord, device: ManagedDevice) {
   if (device.status !== "approved") throw new DeviceGatewayError(
-    device.status === "blocked" ? "Thiết bị đã bị Trung tâm quản trị khóa." : "Thiết bị đang chờ Trung tâm quản trị cấp quyền.",
+    device.status === "blocked" ? "Thiết bị đã bị Application Management khóa." : "Thiết bị đang chờ Application Management cấp quyền.",
     device.status === "blocked" ? "DEVICE_BLOCKED" : "DEVICE_PENDING",
     device,
   );
-
   const proof = await gatewayPost<{ challenge: string; expiresAt: number; device: ManagedDevice }>({ action: "challenge", deviceId: device.deviceId });
   const signature = await signChallenge(keys.privateKey, device.deviceId, proof.challenge);
-  return gatewayPost<{ accessToken: string; expiresAt: number; device: ManagedDevice }>({
-    action: "authorize",
-    deviceId: device.deviceId,
-    challenge: proof.challenge,
-    signature,
-  });
+  return gatewayPost<{ accessToken: string; expiresAt: number; device: ManagedDevice }>({ action: "authorize", deviceId: device.deviceId, challenge: proof.challenge, signature });
 }
 
 export async function establishLocalSession(accessToken: string) {
-  const response = await fetch("/api/device/session", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ accessToken }),
-    cache: "no-store",
-  });
+  const response = await fetch("/api/device/session", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ accessToken }), cache: "no-store" });
   const body = await response.json().catch(() => ({})) as { ok?: boolean; error?: string };
   if (!response.ok || !body.ok) throw new DeviceGatewayError(body.error || "Không thể tạo phiên Hòa nhập Nga.", "LOCAL_SESSION_FAILED");
 }
