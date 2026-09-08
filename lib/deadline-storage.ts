@@ -9,6 +9,7 @@ export type StoredDeadline = {
   dueAt: string;
   urgency: DeadlineUrgency;
   completed: boolean;
+  checklistIndex: number | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -49,6 +50,7 @@ export function parseStoredTopicDeadlines(raw: string | null): StoredTopicDeadli
         dueAt: value.dueAt,
         urgency: isUrgency(value.urgency) ? value.urgency : "normal" as DeadlineUrgency,
         completed: value.completed === true,
+        checklistIndex: Number.isInteger(value.checklistIndex) && Number(value.checklistIndex) >= 0 ? Number(value.checklistIndex) : null,
         createdAt: typeof value.createdAt === "string" ? value.createdAt : "",
         updatedAt: typeof value.updatedAt === "string" ? value.updatedAt : "",
       }];
