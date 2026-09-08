@@ -12,6 +12,19 @@ type DeviceSessionClaims = {
   exp: number;
 };
 
+type IntrospectionState = "valid" | "invalid" | "unavailable";
+
+type IntrospectionResult = {
+  state: IntrospectionState;
+  code: string;
+};
+
+const DEFAULT_CONTROL_CENTER = "https://quan-ly-hoc-tap.dinhnam3391.chatgpt.site";
+
+function controlCenterBaseUrl() {
+  return (process.env.NEXT_PUBLIC_CONTROL_CENTER_BASE_URL || DEFAULT_CONTROL_CENTER).replace(/\/$/, "");
+}
+
 function fromBase64Url(value: string) {
   if (!/^[A-Za-z0-9_-]+$/.test(value)) throw new Error("INVALID_BASE64URL");
   const padded = value.replaceAll("-", "+").replaceAll("_", "/").padEnd(Math.ceil(value.length / 4) * 4, "=");
@@ -49,10 +62,45 @@ export async function verifyManagedAppAccessToken(token: string): Promise<Device
   return claims as DeviceSessionClaims;
 }
 
+async function introspectWithControlCenter(token: string): Promise<IntrospectionResult> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 2500);
+  try {
+    const response = await fetch(`${controlCenterBaseUrl()}/api/apps/hoa-nhap-nga/session`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ accessToken: token }),
+      cache: "no-store",
+      signal: controller.signal,
+    });
+    const body = await response.json().catch(() => ({})) as { ok?: boolean; code?: string };
+    if (response.ok && body.ok) return { state: "valid", code: "SESSION_ACTIVE" };
+    if (response.status === 403 || response.status === 401 || response.status === 400) {
+      return { state: "invalid", code: body.code || "SESSION_REVOKED" };
+    }
+    return { state: "unavailable", code: body.code || `CONTROL_HTTP_${response.status}` };
+  } catch {
+    return { state: "unavailable", code: "CONTROL_CENTER_UNREACHABLE" };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+export async function verifyManagedAppSession(token: string, options: { allowControlUnavailable?: boolean } = {}) {
+  const claims = await verifyManagedAppAccessToken(token);
+  const introspection = await introspectWithControlCenter(token);
+  if (introspection.state === "invalid") throw new Error(introspection.code);
+  if (introspection.state === "unavailable" && !options.allowControlUnavailable) throw new Error(introspection.code);
+  return claims;
+}
+
 export async function readDeviceSession() {
   const store = await cookies();
   const token = store.get(DEVICE_SESSION_COOKIE)?.value;
   if (!token) return null;
-  try { return await verifyManagedAppAccessToken(token); }
-  catch { return null; }
+  try {
+    return await verifyManagedAppSession(token, { allowControlUnavailable: true });
+  } catch {
+    return null;
+  }
 }
