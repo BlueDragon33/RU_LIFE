@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import DeviceHeartbeat from "@/components/device-heartbeat";
 import LocalReminderRuntime from "@/components/local-reminder-runtime";
+import LocalStateRuntime from "@/components/local-state-runtime";
 import WorkspaceNavigation from "@/components/workspace-navigation";
 import { readDeviceSession } from "@/lib/device-session.server";
 import "../workspace.css";
@@ -18,6 +19,7 @@ export default async function ProtectedWorkspaceLayout({ children }: Readonly<{ 
   return <main className="workspace-shell">
     <DeviceHeartbeat />
     <LocalReminderRuntime />
+    <LocalStateRuntime />
     <a className="skip-link" href="#workspace-content">Bỏ qua điều hướng</a>
     <aside className="workspace-side">
       <div className="workspace-brand"><span>RU</span><div><small>RU_LIFE</small><strong>Hòa nhập Nga</strong></div></div>
