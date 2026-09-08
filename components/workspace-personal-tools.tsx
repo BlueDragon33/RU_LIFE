@@ -10,6 +10,7 @@ import {
   topicToolsKey,
   type StoredTopicTools,
 } from "@/lib/personal-tools-storage";
+import { safeSetLocalStorage } from "@/lib/local-storage-safe";
 import { situationLabel, situationOptions, type SituationId } from "@/lib/topic-situations";
 
 export type PersonalToolsTopic = {
@@ -27,11 +28,7 @@ type ToolsSnapshot = Record<string, StoredTopicTools>;
 type PriorityFilter = "all" | PersonalToolsTopic["priority"];
 type SituationFilter = "all" | SituationId;
 
-const priorityLabel = {
-  essential: "Cần ưu tiên",
-  recommended: "Nên chuẩn bị",
-  reference: "Tra cứu",
-} as const;
+const priorityLabel = { essential: "Cần ưu tiên", recommended: "Nên chuẩn bị", reference: "Tra cứu" } as const;
 
 function keyFor(topic: PersonalToolsTopic) {
   return topicToolsKey(topic.moduleSlug, topic.topicSlug);
@@ -91,19 +88,10 @@ export default function WorkspacePersonalTools({ topics }: { topics: PersonalToo
   function toggleFavorite(topic: PersonalToolsTopic) {
     const key = keyFor(topic);
     const current = tools[key] || { ...EMPTY_TOPIC_TOOLS };
-    const next: StoredTopicTools = {
-      ...current,
-      favorite: !current.favorite,
-      topicTitle: topic.title,
-      updatedAt: new Date().toISOString(),
-    };
+    const next: StoredTopicTools = { ...current, favorite: !current.favorite, topicTitle: topic.title, updatedAt: new Date().toISOString() };
     setTools((snapshot) => ({ ...snapshot, [key]: next }));
-    try {
-      localStorage.setItem(key, JSON.stringify(next));
-      window.dispatchEvent(new CustomEvent(RU_LIFE_TOOLS_EVENT, { detail: { key } }));
-    } catch {
-      // Keep the optimistic in-memory favorite state if localStorage is unavailable.
-    }
+    const result = safeSetLocalStorage(localStorage, key, JSON.stringify(next));
+    if (result.ok) window.dispatchEvent(new CustomEvent(RU_LIFE_TOOLS_EVENT, { detail: { key } }));
   }
 
   const favorites = useMemo(() => topics.filter((topic) => (tools[keyFor(topic)] || EMPTY_TOPIC_TOOLS).favorite), [tools, topics]);
@@ -123,7 +111,7 @@ export default function WorkspacePersonalTools({ topics }: { topics: PersonalToo
   }), [favoritesOnly, priorityFilter, situationFilter, tools, topics]);
 
   return <section className="personal-tools" aria-labelledby="personal-tools-title">
-    <div className="section-heading personal-tools-heading"><div><span>RU_LIFE V1.1 · CÔNG CỤ CÁ NHÂN</span><h2 id="personal-tools-title">Lọc nhanh · yêu thích · việc sắp tới</h2></div><p>Mọi trạng thái ở phần này chỉ lưu trên trình duyệt của thiết bị đang dùng. Không gửi bookmark, lịch nhắc hay bộ lọc sang Application-Management.</p></div>
+    <div className="section-heading personal-tools-heading"><div><span>RU_LIFE V1.4 · CÔNG CỤ CÁ NHÂN</span><h2 id="personal-tools-title">Lọc nhanh · yêu thích · việc sắp tới</h2></div><p>Mọi trạng thái chỉ lưu trên trình duyệt. Lỗi ghi do quota/storage được chuyển thành cảnh báo chung của workspace, không âm thầm bỏ qua.</p></div>
 
     <div className="personal-tools-summary">
       <article><span>YÊU THÍCH</span><strong>{loaded ? favorites.length : "—"}</strong><p>Chủ đề được đánh dấu để mở lại nhanh.</p></article>
@@ -159,7 +147,7 @@ export default function WorkspacePersonalTools({ topics }: { topics: PersonalToo
 
       <section className="reminders-panel" aria-labelledby="reminders-title">
         <header><span>VIỆC SẮP TỚI</span><h3 id="reminders-title">Nhắc việc trên thiết bị</h3></header>
-        {reminders.length ? <div>{reminders.slice(0, 6).map(({ topic, stored, timestamp }) => <Link href={`/app/${topic.moduleSlug}/${topic.topicSlug}`} className={now && timestamp <= now ? "overdue" : ""} key={keyFor(topic)}><span>{now && timestamp <= now ? "ĐẾN HẠN" : "SẮP TỚI"} · {formatReminder(stored.reminderAt)}</span><strong>{topic.title}</strong><p>{stored.reminderNote || "Mở chủ đề để xem việc đã đặt nhắc."}</p></Link>)}</div> : <p>Chưa có nhắc việc. Mở một chủ đề và đặt thời điểm nhắc tại khung “Công cụ cá nhân V1.1”.</p>}
+        {reminders.length ? <div>{reminders.slice(0, 6).map(({ topic, stored, timestamp }) => <Link href={`/app/${topic.moduleSlug}/${topic.topicSlug}`} className={now && timestamp <= now ? "overdue" : ""} key={keyFor(topic)}><span>{now && timestamp <= now ? "ĐẾN HẠN" : "SẮP TỚI"} · {formatReminder(stored.reminderAt)}</span><strong>{topic.title}</strong><p>{stored.reminderNote || "Mở chủ đề để xem việc đã đặt nhắc."}</p></Link>)}</div> : <p>Chưa có nhắc việc. Mở một chủ đề và đặt thời điểm nhắc tại khung công cụ cá nhân.</p>}
       </section>
     </div>
   </section>;
