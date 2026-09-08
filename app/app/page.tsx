@@ -1,33 +1,48 @@
 import Link from "next/link";
+import WorkspaceDashboard, { type DashboardTopic } from "@/components/workspace-dashboard";
 import { ruLifeModules, topicCount } from "@/lib/content-catalog";
+import { getResolvedTopicContent } from "@/lib/content-resolver";
 
 export default function ProtectedAppPage() {
+  const dashboardTopics: DashboardTopic[] = ruLifeModules.flatMap((moduleData) => moduleData.topics.map((topic) => {
+    const content = getResolvedTopicContent(moduleData.slug, topic.slug);
+    return {
+      moduleSlug: moduleData.slug,
+      moduleCode: moduleData.code,
+      moduleTitle: moduleData.title,
+      stage: moduleData.stage,
+      topicSlug: topic.slug,
+      title: topic.title,
+      summary: topic.summary,
+      priority: topic.priority,
+      checklist: topic.checklist,
+      freshness: content?.freshness || "review-soon",
+      updatedAt: content?.updatedAt || "",
+    };
+  }));
+
   return <>
     <header className="workspace-hero">
-      <div><span>HÒA NHẬP NGA · KHÔNG GIAN CÁ NHÂN</span><h1>Mọi việc cần nhớ khi sống và học tập tại Nga</h1><p>Thông tin được chia theo tình huống và tiến trình sử dụng. Bộ khung này tách hoàn toàn khỏi Quản trị ứng dụng; Trung tâm chỉ quản lý quyền thiết bị.</p></div>
+      <div><span>HÒA NHẬP NGA · KHÔNG GIAN CÁ NHÂN</span><h1>Mọi việc cần nhớ khi sống và học tập tại Nga</h1><p>20 chủ đề V1 đã có nội dung thực, được chia theo tình huống và tiến trình sử dụng. Trung tâm quản trị chỉ kiểm soát quyền thiết bị; tiến độ và ghi chú cá nhân vẫn thuộc RU_LIFE trên thiết bị này.</p></div>
       <span className="session-ok">THIẾT BỊ HỢP LỆ</span>
     </header>
 
-    <section className="workspace-overview">
-      <article><span>MODULE</span><strong>{ruLifeModules.length}</strong><p>Nhóm nội dung độc lập, có thể mở rộng mà không phá cấu trúc chung.</p></article>
-      <article><span>CHỦ ĐỀ KHỞI TẠO</span><strong>{topicCount()}</strong><p>Các khung chủ đề đã sẵn sàng để bổ sung nội dung có nguồn và ngày cập nhật.</p></article>
-      <article><span>TIẾN ĐỘ</span><strong>CỤC BỘ</strong><p>Checklist và ghi chú cá nhân lưu trên chính thiết bị, không trộn với dữ liệu quản trị.</p></article>
-    </section>
+    <WorkspaceDashboard topics={dashboardTopics} />
 
     <section className="module-section">
-      <div className="section-heading"><div><span>BẢN ĐỒ NỘI DUNG</span><h2>Chọn khu vực cần xử lý</h2></div><p>Mỗi module có route riêng và các chủ đề con độc lập để sau này cập nhật từng phần mà không phải sửa toàn bộ Web App.</p></div>
+      <div className="section-heading"><div><span>BẢN ĐỒ NỘI DUNG · {topicCount()} CHỦ ĐỀ</span><h2>Chọn khu vực cần xử lý</h2></div><p>Mỗi module và chủ đề có route riêng. Có thể đi sâu, cập nhật nguồn hoặc chỉnh checklist từng phần mà không ảnh hưởng lớp cấp quyền thiết bị.</p></div>
       <div className="module-grid">
-        {ruLifeModules.map((module) => <Link href={`/app/${module.slug}`} className="module-card" key={module.slug}>
-          <header><span>{module.stage}</span><b>{module.code}</b></header>
-          <h3>{module.title}</h3>
-          <p>{module.description}</p>
-          <footer><span>{module.topics.length} chủ đề</span><strong>Mở module →</strong></footer>
+        {ruLifeModules.map((moduleData) => <Link href={`/app/${moduleData.slug}`} className="module-card" key={moduleData.slug}>
+          <header><span>{moduleData.stage}</span><b>{moduleData.code}</b></header>
+          <h3>{moduleData.title}</h3>
+          <p>{moduleData.description}</p>
+          <footer><span>{moduleData.topics.length} chủ đề</span><strong>Mở module →</strong></footer>
         </Link>)}
       </div>
     </section>
 
     <section className="workspace-next">
-      <span>KIẾN TRÚC NỘI DUNG V1</span><h2>Nội dung có thể đi sâu dần mà không ảnh hưởng lớp cấp quyền</h2><p>Các module, topic, checklist và ghi chú nằm trong RU_LIFE. P-256, session, heartbeat, introspection và quyền thiết bị tiếp tục do lớp tích hợp với Quản trị ứng dụng kiểm soát độc lập.</p>
+      <span>RU_LIFE V1 · 20/20 CONTENT COVERAGE</span><h2>Kiến trúc nội dung đã đủ để chuyển sang tối ưu trải nghiệm sử dụng</h2><p>Module, topic, nguồn, checklist và ghi chú vẫn nằm trong RU_LIFE. P-256, session, heartbeat, introspection và quyền thiết bị tiếp tục được quản lý độc lập qua Application-Management.</p>
     </section>
   </>;
 }
