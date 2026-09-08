@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import TopicProgress from "@/components/topic-progress";
+import TopicTools from "@/components/topic-tools";
 import { getRuLifeTopic } from "@/lib/content-catalog";
 import { getResolvedTopicContent } from "@/lib/content-resolver";
 
@@ -59,7 +60,10 @@ export default async function TopicPage({ params }: { params: Promise<{ module: 
           <article className="topic-block"><span>03 · NGUỒN & ĐỘ MỚI</span><h2>Không đóng băng thông tin có thể thay đổi</h2><p>Với thông tin về thủ tục, cư trú, giao thông, y tế hoặc quy định, trang sẽ ghi rõ nguồn tham chiếu và lần kiểm tra gần nhất trước khi coi là thông tin đang dùng.</p><div className="source-state"><span>TRẠNG THÁI NGUỒN</span><strong>Chưa bổ sung dữ liệu chuyên sâu</strong><p>Bộ khung hiện chỉ chứa nội dung cấu trúc, không giả định các quy định hiện hành.</p></div></article>
         </>}
       </section>
-      <aside className="topic-side"><TopicProgress moduleSlug={moduleData.slug} topicSlug={topic.slug} checklist={topic.checklist} /></aside>
+      <aside className="topic-side">
+        <TopicProgress moduleSlug={moduleData.slug} topicSlug={topic.slug} checklist={topic.checklist} />
+        <TopicTools moduleSlug={moduleData.slug} topicSlug={topic.slug} title={topic.title} />
+      </aside>
     </div>
 
     <footer className="topic-footer"><Link href={`/app/${moduleData.slug}`}>← Quay lại {moduleData.title}</Link><span>RU_LIFE · nội dung độc lập với Quản trị ứng dụng</span></footer>
