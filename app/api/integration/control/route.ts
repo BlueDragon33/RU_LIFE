@@ -6,6 +6,7 @@ const RESPONSE_PREFIX = "ru-life-control-response:v1:";
 function noStoreHeaders() {
   return {
     "cache-control": "no-store, private",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
     "x-content-type-options": "nosniff",
   };
 }
@@ -23,8 +24,10 @@ function fromBase64Url(value: string) {
 }
 
 async function secretKey(usages: KeyUsage[]) {
-  const secret = process.env.RU_LIFE_CONTROL_SERVICE_SECRET;
-  if (!secret || secret.length < 32) throw new Error("SERVICE_SECRET_UNAVAILABLE");
+  const workers = await import("cloudflare:workers");
+  const values = workers.env as unknown as Record<string, unknown>;
+  const secret = typeof values.RU_LIFE_CONTROL_SERVICE_SECRET === "string" ? values.RU_LIFE_CONTROL_SERVICE_SECRET : "";
+  if (secret.length < 32) throw new Error("SERVICE_SECRET_UNAVAILABLE");
   return crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(secret),
@@ -57,6 +60,9 @@ async function responseProof(nonce: string, checkedAt: number) {
 function capabilities() {
   return {
     independentRuntime: true,
+    databaseOwnership: "RU_LIFE",
+    deviceRegistryOwnership: "RU_LIFE",
+    sessionOwnership: "RU_LIFE",
     deviceRegistration: true,
     p256Challenge: true,
     serverSession: true,
@@ -72,7 +78,7 @@ export async function GET() {
   return Response.json({
     ok: true,
     app: { id: "hoa-nhap-nga", runtime: "RU_LIFE" },
-    protocol: "ru-life-control-v1",
+    protocol: "ru-life-control-v2",
     capabilities: capabilities(),
     checkedAt: Date.now(),
   }, { headers: noStoreHeaders() });
@@ -96,7 +102,7 @@ export async function POST(request: Request) {
     return Response.json({
       ok: true,
       app: { id: "hoa-nhap-nga", runtime: "RU_LIFE" },
-      protocol: "ru-life-control-v1",
+      protocol: "ru-life-control-v2",
       checkedAt,
       proof: await responseProof(nonce, checkedAt),
       capabilities: capabilities(),
