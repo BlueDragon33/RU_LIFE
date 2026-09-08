@@ -2,18 +2,18 @@
 
 ## Mục tiêu
 
-Nội dung Hòa nhập Nga phải phát triển độc lập với lớp quản trị thiết bị. `Application-Management` không chứa các trang, route, checklist hay dữ liệu sinh hoạt của RU_LIFE.
+RU_LIFE là Web App độc lập. `Application-Management` chỉ quản lý quyền thiết bị, phiên, trạng thái và kiểm soát từ xa; không chứa route nội dung, checklist, ghi chú hay runtime của Hòa nhập Nga.
 
 ## Cấu trúc cố định
 
-`/app` là dashboard sau khi thiết bị đã được Quản trị ứng dụng cấp quyền.
+`/app` là dashboard sau khi thiết bị được Quản trị ứng dụng cấp quyền.
 
-Nội dung được tổ chức theo năm lớp:
+Nội dung tổ chức theo năm lớp:
 
-1. **Module** — một mảng lớn của cuộc sống/học tập tại Nga.
-2. **Topic** — một tình huống hoặc nhóm đầu việc có thể cập nhật độc lập.
-3. **Content blocks** — hướng dẫn, tình huống, quy trình, mẫu câu.
-4. **Source/Freshness** — nguồn tham chiếu, ngày kiểm tra và mức độ cần rà soát.
+1. **Module** — mảng lớn của cuộc sống/học tập tại Nga.
+2. **Topic** — tình huống hoặc nhóm đầu việc cập nhật độc lập.
+3. **Content blocks** — hướng dẫn, quy trình, tình huống và mẫu câu.
+4. **Source/Freshness** — nguồn, ngày kiểm tra và mức cần rà soát.
 5. **Local progress** — checklist và ghi chú cá nhân lưu trên thiết bị.
 
 Routes:
@@ -22,11 +22,11 @@ Routes:
 - `/app/<module>`
 - `/app/<module>/<topic>`
 
-Tất cả route dưới `/app/*` đi qua `app/app/layout.tsx`, do đó đều bắt buộc có phiên thiết bị RU_LIFE hợp lệ và cùng cơ chế heartbeat/introspection với Trung tâm.
+Tất cả `/app/*` đi qua `app/app/layout.tsx`, vì vậy cùng bắt buộc phiên RU_LIFE hợp lệ, heartbeat và introspection với Application-Management.
 
-## Catalog v1
+## Catalog V1 — 20/20 topic có content layer
 
-Catalog nằm tại `lib/content-catalog.ts`, hiện gồm 5 module:
+`lib/content-catalog.ts` chỉ mô tả cấu trúc/điều hướng, gồm 5 module × 4 topic:
 
 1. `prepare` — Chuẩn bị sang Nga.
 2. `daily-life` — Cuộc sống tại Nga.
@@ -34,91 +34,98 @@ Catalog nằm tại `lib/content-catalog.ts`, hiện gồm 5 module:
 4. `health` — Sức khỏe · y tế.
 5. `integration` — Ngôn ngữ · hòa nhập.
 
-Mỗi module hiện có 4 topic khởi tạo. Đây là dữ liệu cấu trúc để tiếp tục phát triển, không phải giới hạn cố định về số lượng chủ đề.
+Content được tách theo miền:
 
-Nội dung chi tiết được tách khỏi catalog. `lib/topic-content.ts` chứa content layer của Module 01; `lib/daily-life-content.ts` chứa Module 02; `lib/content-resolver.ts` là điểm phân giải chung cho renderer. Catalog chỉ mô tả cấu trúc/điều hướng, vì vậy cập nhật một topic không cần sửa cây điều hướng chung.
+- `lib/topic-content.ts` — Module 01;
+- `lib/daily-life-content.ts` — Module 02;
+- `lib/study-procedures-content.ts` — Module 03;
+- `lib/health-content.ts` — Module 04;
+- `lib/integration-content.ts` — Module 05;
+- `lib/content-resolver.ts` — điểm phân giải chung.
 
-## Trạng thái nội dung
+`tests/content-coverage.test.mjs` khóa 20/20 topic. Nếu một topic mất content entry hoặc resolver mất một module, CI phải fail.
 
-### Module 01 — `prepare`
+## Dashboard vận hành V1
 
-Đã có content layer thực cho:
+`components/workspace-dashboard.tsx` biến `/app` từ trang giới thiệu thành bảng điều khiển sử dụng thật:
 
-- `documents` — Hồ sơ · giấy tờ;
-- `luggage` — Hành lý · trang bị;
-- `money-connectivity` — Tài chính · liên lạc;
-- `arrival-plan` — Kế hoạch ngày đầu.
+- tìm nhanh trong 20 topic theo module, tiêu đề, mô tả và checklist;
+- phím `/` đưa focus vào ô tìm kiếm;
+- hiển thị số topic hoàn thành, tỷ lệ checklist và số topic có ghi chú;
+- hiển thị số topic `review-soon` cần rà soát thường xuyên;
+- chọn “Việc nên làm tiếp” theo thứ tự `essential` → `recommended` → `reference`;
+- search và thống kê chỉ chạy trên dữ liệu RU_LIFE/localStorage, không gọi API quản trị.
 
-### Module 02 — `daily-life`
-
-Đã có content layer thực cho:
-
-- `housing` — Nhà ở · ký túc xá;
-- `transport` — Đi lại · giao thông;
-- `shopping-services` — Mua sắm · dịch vụ;
-- `safety` — An toàn · tình huống khẩn.
-
-Topic `safety` hiện dùng nguồn MChS để xác nhận hệ thống số khẩn cấp 112 và 101/102/103/104. Topic `housing` dùng Study in Russia cho nguyên tắc ký túc xá/quota nhưng không lấy quy trình của một trường làm quy trình chung.
-
-Những topic chưa có content layer vẫn hiển thị fallback “chưa bổ sung dữ liệu chuyên sâu” thay vì tạo dữ liệu giả.
-
-## Nguyên tắc nguồn và độ mới
-
-Không được hard-code một quy định dễ thay đổi rồi coi đó là kiến thức cố định.
-
-Các nhóm nội dung như:
-
-- xuất nhập cảnh/cư trú;
-- giấy tờ người nước ngoài;
-- quy định trường học;
-- y tế/bảo hiểm;
-- giao thông/dịch vụ;
-- giá, phí, mốc thời hạn;
-
-khi đi vào nội dung chi tiết phải có metadata về nguồn tham chiếu và lần kiểm tra gần nhất. `TopicContent` hiện có:
-
-- `updatedAt`;
-- `freshness` (`verified`, `review-soon`, `stable-guidance`);
-- `blocks`;
-- `sources`.
-
-Mỗi `TopicSource` lưu `publisher`, `title`, `url`, `checkedAt` và ghi chú phạm vi sử dụng nguồn.
-
-Nguồn chính thức được ưu tiên cho quy định pháp lý/hành chính. Module 01 liên kết tới `Study in Russia` và hệ thống e-visa của Cục Lãnh sự Bộ Ngoại giao Nga khi nội dung liên quan tới nhập cảnh/visa. Module 02 liên kết `Study in Russia` cho ký túc xá và MChS cho số điện thoại khẩn cấp.
-
-Thông tin phụ thuộc hãng bay, ngân hàng, nhà mạng, hãng vận tải, cửa hàng hoặc giá thị trường không được đóng băng thành số liệu cố định; giao diện yêu cầu kiểm tra lại nhà cung cấp ở thời điểm sử dụng.
-
-Nếu nguồn chưa được xác minh, giao diện phải thể hiện trạng thái chưa hoàn thiện thay vì suy đoán.
+Dashboard nhận `freshness`/`updatedAt` từ content resolver. Ngày kiểm tra nguồn chi tiết vẫn nằm ở trang topic; dashboard không thay thế metadata nguồn.
 
 ## Tiến độ cục bộ
 
-`components/topic-progress.tsx` lưu dữ liệu với namespace `ru-life-progress:v1:*` trong `localStorage`.
+`lib/progress-storage.ts` là hợp đồng duy nhất cho namespace `ru-life-progress:v1:*`.
 
-Dữ liệu này:
+`components/topic-progress.tsx` và dashboard cùng dùng:
 
-- chỉ phục vụ người đang dùng thiết bị;
+- `topicProgressKey`;
+- `parseStoredTopicProgress`;
+- `validCheckedCount`;
+- `progressPercent`.
+
+Khi checklist/ghi chú thay đổi, topic phát sự kiện cục bộ `ru-life-progress-changed` để UI có thể cập nhật mà không liên quan Application-Management.
+
+Dữ liệu tiến độ:
+
+- chỉ phục vụ người dùng trên thiết bị hiện tại;
 - không phải quyền truy cập;
-- không thay đổi device identity P-256;
+- không thay đổi P-256 device identity;
 - không gửi sang API quản trị;
 - có thể mất nếu người dùng xóa dữ liệu trình duyệt.
 
-Nếu sau này cần đồng bộ đa thiết bị, phải thiết kế một miền dữ liệu người dùng riêng; không được tận dụng `managed_app_devices` hoặc `control_devices` làm kho nội dung cá nhân.
+Nếu sau này đồng bộ đa thiết bị, phải xây miền dữ liệu người dùng riêng; không dùng `managed_app_devices` hoặc `control_devices` làm kho nội dung cá nhân.
 
-## Ranh giới giao diện
+## Nguyên tắc nguồn và độ mới
 
-- `app/globals.css`: shell công khai, access gate và workspace nền tảng.
-- `app/content.css`: dashboard nội dung, module/topic, source/freshness và local progress.
+Không hard-code quy định dễ thay đổi rồi coi là kiến thức cố định.
 
-Không đưa style nội dung vào component quản trị thiết bị. Tách CSS giúp nâng cấp nội dung mà không ảnh hưởng màn hình cấp quyền.
+`TopicContent` duy trì:
+
+- `updatedAt`;
+- `freshness`: `verified`, `review-soon`, `stable-guidance`;
+- `blocks`;
+- `sources`.
+
+`TopicSource` lưu publisher, title, URL, `checkedAt` và phạm vi dùng nguồn.
+
+Các nhóm xuất nhập cảnh/cư trú, giấy tờ người nước ngoài, y tế/bảo hiểm, quy định trường, giao thông/dịch vụ, giá/phí/thời hạn phải dùng nguồn phù hợp và được rà soát theo thời điểm. Dữ liệu phụ thuộc hãng bay, ngân hàng, nhà mạng, cửa hàng hoặc giá thị trường không được đóng băng thành số liệu cố định.
+
+## Ranh giới CSS
+
+CSS được chia đúng trách nhiệm:
+
+- `app/globals.css` — biến toàn cục + landing/access gate công khai;
+- `app/workspace.css` — protected shell, sidebar, navigation, device badge, skip link;
+- `app/content.css` — dashboard, module/topic, source/freshness, checklist và responsive nội dung.
+
+`content.css` và `workspace.css` chỉ được import từ `app/app/layout.tsx`; trang access gate không tải lớp giao diện nội dung protected.
+
+## Accessibility / responsive
+
+V1 có các contract cơ bản:
+
+- skip link tới `#workspace-content`;
+- focus-visible rõ ràng;
+- checklist dùng checkbox thật và giữ keyboard focus;
+- progress dùng `role="progressbar"` + ARIA values;
+- search có label ẩn và phím tắt `/`;
+- `prefers-reduced-motion` tắt animation không cần thiết;
+- dashboard/module/topic chuyển lưới 4 → 2 → 1 cột theo viewport.
 
 ## Ranh giới bảo mật
 
 - `app/app/layout.tsx`: bảo vệ toàn bộ workspace.
 - `DeviceHeartbeat`: heartbeat + kiểm tra thu hồi phiên.
-- `WorkspaceNavigation`: chỉ điều hướng nội dung, không quyết định quyền.
-- Các file content chỉ chứa nội dung, không chứa secret hay logic quản trị.
+- `WorkspaceNavigation`: chỉ điều hướng, không quyết định quyền.
+- Content/progress files không chứa secret hoặc logic quản trị.
 - Service worker không cache `/app*` hoặc `/api/*`.
 
-## Hướng phát triển tiếp theo
+## Hướng phát triển sau V1
 
-Ưu tiên Module 03 — Học tập · thủ tục. Phần nhập học, cư trú và giấy tờ người nước ngoài phải dùng nguồn chính thức và metadata độ mới chặt hơn Module 01/02 vì sai thời hạn có thể gây hậu quả hành chính. Kế hoạch học tập và đầu mối liên hệ có thể dùng dữ liệu cấu trúc ổn định, tách khỏi các quy định pháp lý.
+Không mở thêm module chỉ để tăng số lượng. Ưu tiên tiếp theo là nâng chất lượng trải nghiệm và dữ liệu hiện có: rà nội dung từng topic, làm nguồn/freshness dễ bảo trì hơn, bổ sung điều hướng theo tình huống, kiểm thử thiết bị thật desktop/tablet/phone và sau đó mới quyết định tính năng V2 như bookmark, lịch nhắc hoặc đồng bộ người dùng độc lập.
