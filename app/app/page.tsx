@@ -1,36 +1,33 @@
-import { redirect } from "next/navigation";
-import DeviceHeartbeat from "@/components/device-heartbeat";
-import { readDeviceSession } from "@/lib/device-session.server";
+import Link from "next/link";
+import { ruLifeModules, topicCount } from "@/lib/content-catalog";
 
-export const dynamic = "force-dynamic";
+export default function ProtectedAppPage() {
+  return <>
+    <header className="workspace-hero">
+      <div><span>HÒA NHẬP NGA · KHÔNG GIAN CÁ NHÂN</span><h1>Mọi việc cần nhớ khi sống và học tập tại Nga</h1><p>Thông tin được chia theo tình huống và tiến trình sử dụng. Bộ khung này tách hoàn toàn khỏi Quản trị ứng dụng; Trung tâm chỉ quản lý quyền thiết bị.</p></div>
+      <span className="session-ok">THIẾT BỊ HỢP LỆ</span>
+    </header>
 
-export default async function ProtectedAppPage() {
-  const session = await readDeviceSession();
-  if (!session) redirect("/");
-
-  return <main className="workspace-shell">
-    <DeviceHeartbeat />
-    <aside className="workspace-side">
-      <div className="workspace-brand"><span>RU</span><div><small>RU_LIFE</small><strong>Hòa nhập Nga</strong></div></div>
-      <nav>
-        <button className="active">Tổng quan</button>
-        <button disabled>Chuẩn bị sang Nga</button>
-        <button disabled>Cuộc sống tại Nga</button>
-        <button disabled>Học tập · thủ tục</button>
-        <button disabled>Sức khỏe · thuốc</button>
-      </nav>
-      <div className="device-badge"><small>THIẾT BỊ ĐÃ DUYỆT</small><strong>{session.deviceCode}</strong><span>Heartbeat 60 giây · quyền do Quản trị ứng dụng cấp</span></div>
-    </aside>
-    <section className="workspace-main">
-      <header><div><span>HÒA NHẬP NGA · KẾT NỐI QUẢN TRỊ</span><h1>Khung Web App độc lập đã hoạt động</h1><p>Thiết bị đã vượt qua xác minh khóa P-256 và token của Quản trị ứng dụng.</p></div><span className="session-ok">ĐÃ CẤP QUYỀN</span></header>
-      <section className="workspace-cards">
-        <article><span>01</span><strong>Thiết bị riêng</strong><p>Mã {session.deviceCode}; không dùng quyền đăng nhập của Quản trị ứng dụng làm quyền người dùng.</p></article>
-        <article><span>02</span><strong>Heartbeat 60 giây</strong><p>RU_LIFE cập nhật trạng thái online mỗi phút, đồng bộ lại profile kỹ thuật và tự rời ứng dụng nếu Trung tâm thu hồi hoặc khóa quyền.</p></article>
-        <article><span>03</span><strong>Runtime tách biệt</strong><p>Giao diện, PWA, cache và nội dung Hòa nhập Nga nằm trong RU_LIFE; không nằm trong Application-Management.</p></article>
-      </section>
-      <section className="workspace-next">
-        <span>NỀN TẢNG QUẢN TRỊ ĐÃ SẴN SÀNG</span><h2>Kết nối thiết bị được duy trì trong suốt phiên sử dụng</h2><p>Phiên được gia hạn định kỳ bằng challenge + chữ ký P-256. Mất mạng tạm thời không tự đăng xuất; nhưng khi Trung tâm trả trạng thái pending hoặc blocked, RU_LIFE xóa phiên cục bộ và quay về màn hình chờ cấp quyền.</p>
-      </section>
+    <section className="workspace-overview">
+      <article><span>MODULE</span><strong>{ruLifeModules.length}</strong><p>Nhóm nội dung độc lập, có thể mở rộng mà không phá cấu trúc chung.</p></article>
+      <article><span>CHỦ ĐỀ KHỞI TẠO</span><strong>{topicCount()}</strong><p>Các khung chủ đề đã sẵn sàng để bổ sung nội dung có nguồn và ngày cập nhật.</p></article>
+      <article><span>TIẾN ĐỘ</span><strong>CỤC BỘ</strong><p>Checklist và ghi chú cá nhân lưu trên chính thiết bị, không trộn với dữ liệu quản trị.</p></article>
     </section>
-  </main>;
+
+    <section className="module-section">
+      <div className="section-heading"><div><span>BẢN ĐỒ NỘI DUNG</span><h2>Chọn khu vực cần xử lý</h2></div><p>Mỗi module có route riêng và các chủ đề con độc lập để sau này cập nhật từng phần mà không phải sửa toàn bộ Web App.</p></div>
+      <div className="module-grid">
+        {ruLifeModules.map((module) => <Link href={`/app/${module.slug}`} className="module-card" key={module.slug}>
+          <header><span>{module.stage}</span><b>{module.code}</b></header>
+          <h3>{module.title}</h3>
+          <p>{module.description}</p>
+          <footer><span>{module.topics.length} chủ đề</span><strong>Mở module →</strong></footer>
+        </Link>)}
+      </div>
+    </section>
+
+    <section className="workspace-next">
+      <span>KIẾN TRÚC NỘI DUNG V1</span><h2>Nội dung có thể đi sâu dần mà không ảnh hưởng lớp cấp quyền</h2><p>Các module, topic, checklist và ghi chú nằm trong RU_LIFE. P-256, session, heartbeat, introspection và quyền thiết bị tiếp tục do lớp tích hợp với Quản trị ứng dụng kiểm soát độc lập.</p>
+    </section>
+  </>;
 }
