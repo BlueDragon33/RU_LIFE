@@ -13,6 +13,7 @@ import {
   type StoredTopicDeadlines,
 } from "@/lib/deadline-storage";
 import { parseStoredTopicProgress, RU_LIFE_PROGRESS_EVENT, topicProgressKey } from "@/lib/progress-storage";
+import { safeSetLocalStorage } from "@/lib/local-storage-safe";
 
 function localInputToIso(value: string) {
   if (!value) return "";
@@ -61,10 +62,8 @@ export default function TopicDeadlines({ moduleSlug, topicSlug, title, checklist
 
   function persist(next: StoredTopicDeadlines) {
     setData(next);
-    try {
-      localStorage.setItem(key, JSON.stringify(next));
-      window.dispatchEvent(new CustomEvent(RU_LIFE_DEADLINE_EVENT, { detail: { key } }));
-    } catch {}
+    const result = safeSetLocalStorage(localStorage, key, JSON.stringify(next));
+    if (result.ok) window.dispatchEvent(new CustomEvent(RU_LIFE_DEADLINE_EVENT, { detail: { key } }));
   }
 
   function addDeadline() {
@@ -87,13 +86,11 @@ export default function TopicDeadlines({ moduleSlug, topicSlug, title, checklist
   function completeLinkedChecklist(index: number) {
     if (index < 0 || index >= checklist.length) return;
     const progressKey = topicProgressKey(moduleSlug, topicSlug);
-    try {
-      const progress = parseStoredTopicProgress(localStorage.getItem(progressKey));
-      if (progress.checked.includes(index)) return;
-      const next = { ...progress, checked: [...progress.checked, index], updatedAt: new Date().toISOString() };
-      localStorage.setItem(progressKey, JSON.stringify(next));
-      window.dispatchEvent(new CustomEvent(RU_LIFE_PROGRESS_EVENT, { detail: { key: progressKey } }));
-    } catch {}
+    const progress = parseStoredTopicProgress(localStorage.getItem(progressKey));
+    if (progress.checked.includes(index)) return;
+    const next = { ...progress, checked: [...progress.checked, index], updatedAt: new Date().toISOString() };
+    const result = safeSetLocalStorage(localStorage, progressKey, JSON.stringify(next));
+    if (result.ok) window.dispatchEvent(new CustomEvent(RU_LIFE_PROGRESS_EVENT, { detail: { key: progressKey } }));
   }
 
   function toggleCompleted(deadline: StoredDeadline) {
@@ -112,8 +109,8 @@ export default function TopicDeadlines({ moduleSlug, topicSlug, title, checklist
   }), [data.items]);
 
   return <section className="topic-deadlines-panel" aria-labelledby="topic-deadlines-title">
-    <header><div><span>QUẢN LÝ THỜI HẠN V1.3</span><h2 id="topic-deadlines-title">Deadline · checklist</h2></div><strong>{loaded ? data.items.filter((item) => !item.completed).length : "—"}</strong></header>
-    <p className="deadline-panel-note">Có thể gắn một deadline với một checklist item. Khi hoàn thành deadline, item liên kết được đánh dấu hoàn thành; bỏ hoàn thành deadline không tự bỏ checklist để tránh mất trạng thái người dùng.</p>
+    <header><div><span>QUẢN LÝ THỜI HẠN V1.4</span><h2 id="topic-deadlines-title">Deadline · checklist</h2></div><strong>{loaded ? data.items.filter((item) => !item.completed).length : "—"}</strong></header>
+    <p className="deadline-panel-note">Có thể gắn một deadline với một checklist item. Khi hoàn thành deadline, item liên kết được đánh dấu hoàn thành; bỏ hoàn thành deadline không tự bỏ checklist. Lỗi ghi localStorage được báo ở workspace.</p>
     <div className="deadline-form">
       <label><span>Tên việc</span><input type="text" value={taskTitle} onChange={(event) => setTaskTitle(event.target.value)} placeholder={`Ví dụ: rà lại ${title}`} maxLength={160} /></label>
       <label><span>Hạn hoàn thành</span><input type="datetime-local" value={dueInput} onChange={(event) => setDueInput(event.target.value)} /></label>
