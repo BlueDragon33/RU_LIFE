@@ -46,6 +46,6 @@ export default async function ModulePage({ params }: { params: Promise<{ module:
       </div>
     </section>
 
-    <section className="module-principle premium-principle"><span>NGUYÊN TẮC NỘI DUNG</span><h2>Thông tin thay đổi theo thời gian luôn đi kèm nguồn và mốc kiểm tra</h2><p>Với thủ tục, cư trú, y tế và quy định tại Nga, RU_LIFE không coi dữ liệu biến động là cố định. Mỗi chủ đề có trạng thái độ mới, nguồn tham chiếu và mốc rà soát nội bộ riêng.</p></section>
+    <section className="module-principle premium-principle"><span>NGUYÊN TẮC NỘI DUNG</span><h2>Thông tin thay đổi theo thời gian sẽ có nguồn và mốc cập nhật riêng</h2><p>Với thủ tục, cư trú, y tế và quy định tại Nga, RU_LIFE không coi dữ liệu biến động là cố định. Mỗi chủ đề có trạng thái độ mới, nguồn tham chiếu và mốc rà soát nội bộ riêng.</p></section>
   </>;
 }
