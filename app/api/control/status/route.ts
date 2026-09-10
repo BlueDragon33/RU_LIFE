@@ -3,6 +3,16 @@ import { getRuLifeDatabase, ruLifeErrorResponse } from "@/lib/device-registry.se
 
 export const dynamic = "force-dynamic";
 
+async function deploymentMetadata() {
+  const workers = await import("cloudflare:workers");
+  const values = workers.env as unknown as Record<string, unknown>;
+  return {
+    channel: typeof values.RU_LIFE_DEPLOYMENT_CHANNEL === "string" ? values.RU_LIFE_DEPLOYMENT_CHANNEL : "unknown",
+    revision: typeof values.RU_LIFE_BUILD_REVISION === "string" ? values.RU_LIFE_BUILD_REVISION : "unknown",
+    source: typeof values.RU_LIFE_BUILD_SOURCE === "string" ? values.RU_LIFE_BUILD_SOURCE : "BlueDragon33/RU_LIFE",
+  };
+}
+
 export async function OPTIONS(request: Request) {
   return controlPreflight(request);
 }
@@ -17,6 +27,7 @@ export async function GET(request: Request) {
       application: "ru-life",
       appId: "hoa-nhap-nga",
       protocol: "ru-life-control-v2",
+      deployment: await deploymentMetadata(),
       ownership: {
         runtime: "RU_LIFE",
         database: "RU_LIFE",
