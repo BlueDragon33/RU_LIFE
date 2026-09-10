@@ -24,7 +24,7 @@ const localBindingConfig = {
   vars: localVars,
   d1_databases: d1 ? [{
     binding: d1,
-    database_name: "ru-life-db",
+    database_name: "ru-life-local",
     database_id: process.env.RU_LIFE_DATABASE_ID || LOCAL_ONLY_DATABASE_ID,
   }] : [],
 };
