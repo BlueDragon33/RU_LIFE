@@ -3,6 +3,8 @@ CREATE TABLE IF NOT EXISTS ru_life_control_commands (
   device_id TEXT NOT NULL,
   operation TEXT NOT NULL,
   expected_status TEXT NOT NULL,
+  user_name TEXT,
+  user_code TEXT,
   state TEXT DEFAULT 'processing' NOT NULL,
   result_status TEXT,
   actor TEXT NOT NULL,
