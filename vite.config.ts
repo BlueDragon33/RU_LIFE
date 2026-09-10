@@ -6,6 +6,7 @@ import { sites } from "./build/sites-vite-plugin";
 const LOCAL_ONLY_DATABASE_ID = "00000000-0000-0000-0000-000000000001";
 const { d1 } = hostingConfig;
 const allowLan = process.env.LOCAL_CONTROL_ALLOW_LAN === "true";
+const cloudflareConfigPath = process.env.CLOUDFLARE_VITE_WRANGLER_CONFIG_PATH?.trim();
 
 const localVars = [
   "RU_LIFE_CONTROL_SERVICE_SECRET",
@@ -34,6 +35,17 @@ export default defineConfig(async () => {
   process.env.WRANGLER_LOG_PATH ??= ".wrangler/logs";
   process.env.MINIFLARE_REGISTRY_PATH ??= ".wrangler/registry";
   const { cloudflare } = await import("@cloudflare/vite-plugin");
+  const cloudflareOptions = cloudflareConfigPath
+    ? {
+        configPath: cloudflareConfigPath,
+        viteEnvironment: { name: "rsc", childEnvironments: ["ssr"] },
+        inspectorPort: false as const,
+      }
+    : {
+        config: localBindingConfig,
+        viteEnvironment: { name: "rsc", childEnvironments: ["ssr"] },
+        inspectorPort: false as const,
+      };
   return {
     server: {
       host: "0.0.0.0",
@@ -42,11 +54,7 @@ export default defineConfig(async () => {
     plugins: [
       vinext(),
       sites(),
-      cloudflare({
-        viteEnvironment: { name: "rsc", childEnvironments: ["ssr"] },
-        inspectorPort: false,
-        config: localBindingConfig,
-      }),
+      cloudflare(cloudflareOptions),
     ],
   };
 });
