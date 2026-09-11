@@ -32,8 +32,8 @@ for (const token of [
 }
 if (template.includes('"database_name": "ru-life-local"')) throw new Error("Preview không được dùng D1 local.");
 if (template.includes('00000000-0000-0000-0000-000000000001')) throw new Error("Preview template không được chứa local D1 placeholder ID.");
-if (!prepare.includes("RU_LIFE_PREVIEW_D1_DATABASE_ID") || !prepare.includes("RU_LIFE_PRODUCTION_D1_DATABASE_ID")) {
-  throw new Error("Prepare script thiếu guard preview/production D1.");
+if (!prepare.includes('d1Uuid("RU_LIFE_PRODUCTION_D1_DATABASE_ID")') || !prepare.includes('d1Uuid("RU_LIFE_PREVIEW_D1_DATABASE_ID")')) {
+  throw new Error("Prepare script phải bắt buộc guard preview/production D1.");
 }
 if (!prepare.includes(".chatgpt.site")) throw new Error("Prepare script phải chặn ChatGPT Sites origin trong preview mới.");
 if (!vite.includes("CLOUDFLARE_VITE_WRANGLER_CONFIG_PATH")) throw new Error("Vite chưa hỗ trợ preview config path.");
@@ -44,7 +44,7 @@ for (const marker of ["redirect.configPath", "RU_LIFE_PREVIEW_D1_DATABASE_ID", "
 
 if (!workflow.includes("workflow_dispatch")) throw new Error("RU preview deploy phải manual-only.");
 if (/\n\s*push\s*:/.test(workflow)) throw new Error("RU preview chưa được auto-deploy theo push.");
-for (const token of ["DEPLOY_PREVIEW", "RU_LIFE_PREVIEW_D1_DATABASE_ID", "RU_LIFE_CONTROL_SERVICE_SECRET", "ru-life-preview-db --remote", "npm run cloudflare:artifact:check", "wrangler deploy"]) {
+for (const token of ["DEPLOY_PREVIEW", "RU_LIFE_PREVIEW_D1_DATABASE_ID", "RU_LIFE_PRODUCTION_D1_DATABASE_ID", "RU_LIFE_CONTROL_SERVICE_SECRET", "ru-life-preview-db --remote", "npm run cloudflare:artifact:check", "wrangler deploy"]) {
   if (!workflow.includes(token)) throw new Error(`RU preview workflow thiếu: ${token}`);
 }
 if (workflow.includes("ru-life-local --remote")) throw new Error("RU preview tuyệt đối không migrate local database qua remote.");
@@ -72,4 +72,4 @@ if (!status.includes("RU_LIFE_BUILD_REVISION") || !status.includes("RU_LIFE_DEPL
   throw new Error("Control status chưa công bố deployment revision/channel.");
 }
 
-console.log("RU_LIFE Cloudflare preview scaffold PASS: manual-only, isolated D1, exact control origin, generated artifact verified.");
+console.log("RU_LIFE Cloudflare preview scaffold PASS: manual-only, isolated D1, fail-closed production guard, exact control origin, generated artifact verified.");
