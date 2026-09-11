@@ -28,7 +28,6 @@ jobs:
       RU_LIFE_CONTROL_SERVICE_SECRET: ${{ secrets.RU_LIFE_CONTROL_SERVICE_SECRET }}
       APPLICATION_MANAGEMENT_PREVIEW_ORIGIN: ${{ vars.APPLICATION_MANAGEMENT_PREVIEW_ORIGIN }}
       RU_LIFE_PREVIEW_ORIGIN: ${{ vars.RU_LIFE_PREVIEW_ORIGIN }}
-      CLOUDFLARE_VITE_WRANGLER_CONFIG_PATH: wrangler.cloudflare.preview.jsonc
     steps:
       - name: Require explicit preview confirmation
         shell: bash
@@ -78,6 +77,8 @@ jobs:
         run: npx wrangler d1 migrations apply ru-life-preview-db --remote --config wrangler.cloudflare.preview.jsonc
 
       - name: Build with Cloudflare preview bindings
+        env:
+          CLOUDFLARE_VITE_WRANGLER_CONFIG_PATH: wrangler.cloudflare.preview.jsonc
         run: npm run build
 
       - name: Verify generated deployment artifact
