@@ -2,7 +2,7 @@
 
 ## Ranh giới bắt buộc
 
-- `BlueDragon33/RU_LIFE` là Web App/PWA **Hòa nhập Nga** độc lập và sở hữu runtime, D1, registry thiết bị `HN-`, challenge, session ledger và audit.
+- `BlueDragon33/RU_LIFE` là Web App/PWA **Hòa nhập Nga** độc lập và sở hữu runtime, D1, registry thiết bị `HN-`, challenge, session ledger, command ledger và audit.
 - `BlueDragon33/Application-Management` là control-plane quản trị; không lưu registry/session HN trong database Trung tâm.
 - Không import runtime giữa hai repo, không iframe, không dùng database Bơi ếch hoặc Health_Care.
 - RU_LIFE không có form đăng nhập trực tiếp. Người dùng chỉ vào `/app` sau khi thiết bị được cấp quyền.
@@ -50,31 +50,45 @@ Actions: `register`, `challenge`, `authorize`.
 - `POST /api/device/session`
 - `DELETE /api/device/session`
 
-### Remote admin — Application Management chỉ gọi qua signed ticket
+### Remote admin — Application Management chỉ gọi qua signed/opaque ticket
 
 - `GET|POST /api/control/devices`
+- `POST /api/control/device-commands`
 - `GET|POST /api/control/sessions`
 - `GET /api/control/audit`
 - `GET /api/control/status`
 
-Vé browser admin:
+Vé browser admin canonical:
 - issuer `application-management`;
 - audience `ru-life-control`;
 - app `hoa-nhap-nga`;
 - chứa actor, role, central control-device id, jti và expiry ngắn hạn.
 
+Opaque ticket `ru-life-control-opaque-v1` chỉ được introspect tại **đúng** `APPLICATION_MANAGEMENT_ORIGIN` đã cấu hình. RU_LIFE không còn thử fallback sang ChatGPT Site hay Worker quản trị cũ. Nếu origin chưa cấu hình hoặc sai origin, control path fail closed.
+
 ### Integration liveness
 
-RU_LIFE vẫn cung cấp `GET|POST /api/integration/control` để kiểm tra secret/capabilities mà không trả dữ liệu người dùng.
+RU_LIFE vẫn cung cấp `GET|POST /api/integration/control` để kiểm tra secret/capabilities mà không trả dữ liệu người dùng. `/api/control/status` công bố ownership, capabilities và deployment metadata để Trung tâm xác minh đúng runtime đang chạy.
 
 ## Biến môi trường
 
-### RU_LIFE
+### RU_LIFE local
 
 ```env
 RU_LIFE_CONTROL_SERVICE_SECRET=<secret RU_LIFE riêng, tối thiểu 32 ký tự>
-APPLICATION_MANAGEMENT_ORIGIN=https://learning-management.boiech-ai.workers.dev
-RU_LIFE_DATABASE_ID=<D1 database id production của RU_LIFE>
+APPLICATION_MANAGEMENT_ORIGIN=http://127.0.0.1:3000
+LOCAL_CONTROL_PLANE=true
+RU_LIFE_DATABASE_ID=00000000-0000-0000-0000-000000000001
+```
+
+HTTP chỉ được chấp nhận cho loopback khi `LOCAL_CONTROL_PLANE=true`.
+
+### RU_LIFE preview/production
+
+```env
+RU_LIFE_CONTROL_SERVICE_SECRET=<secret app-scoped, tối thiểu 32 ký tự>
+APPLICATION_MANAGEMENT_ORIGIN=https://<application-management-origin>
+RU_LIFE_DATABASE_ID=<D1 database id thuộc đúng môi trường RU_LIFE>
 ```
 
 Không cần biến `NEXT_PUBLIC_*` để đăng ký hoặc xác thực thiết bị HN; browser chỉ gọi same-origin RU_LIFE.
@@ -82,11 +96,27 @@ Không cần biến `NEXT_PUBLIC_*` để đăng ký hoặc xác thực thiết 
 ### Application Management
 
 ```env
-RU_LIFE_BASE_URL=<origin production của RU_LIFE>
+RU_LIFE_BASE_URL=https://<ru-life-origin>
 RU_LIFE_CONTROL_SERVICE_SECRET=<cùng giá trị với RU_LIFE>
 ```
 
 `RU_LIFE_CONTROL_SERVICE_SECRET` không được xuất hiện trong mã client hoặc biến `NEXT_PUBLIC_*`. Không dùng `MEDICINE_*`, `HEALTH_*` hoặc secret Bơi ếch cho Hòa nhập Nga.
+
+## Cloudflare preview
+
+Preview sử dụng Worker `ru-life-preview` và D1 `ru-life-preview-db`. Workflow `.github/workflows/deploy-preview.yml` chỉ chạy thủ công và yêu cầu xác nhận `DEPLOY_PREVIEW`.
+
+GitHub Environment `ru-life-preview` cần:
+
+- Secret `CLOUDFLARE_API_TOKEN`;
+- Secret `CLOUDFLARE_ACCOUNT_ID`;
+- Secret `RU_LIFE_PREVIEW_D1_DATABASE_ID`;
+- Secret `RU_LIFE_CONTROL_SERVICE_SECRET`;
+- tùy chọn Secret `RU_LIFE_PRODUCTION_D1_DATABASE_ID` để guard không dùng nhầm production;
+- Variable `APPLICATION_MANAGEMENT_PREVIEW_ORIGIN`;
+- Variable `RU_LIFE_PREVIEW_ORIGIN` sau khi Worker có URL thực.
+
+Preview không được dùng D1 local placeholder, không được dùng D1 production, và `APPLICATION_MANAGEMENT_PREVIEW_ORIGIN` không được trỏ về `*.chatgpt.site`. Production auto-deploy vẫn tắt cho tới khi kiểm chứng E2E.
 
 ## PWA và thu hồi quyền
 
