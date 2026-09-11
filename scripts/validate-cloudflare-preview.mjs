@@ -42,6 +42,16 @@ for (const token of ["DEPLOY_PREVIEW", "RU_LIFE_PREVIEW_D1_DATABASE_ID", "RU_LIF
   if (!workflow.includes(token)) throw new Error(`RU preview workflow thiếu: ${token}`);
 }
 if (workflow.includes("ru-life-local --remote")) throw new Error("RU preview tuyệt đối không migrate local database qua remote.");
+const jobEnvSection = workflow.split("steps:")[0] ?? "";
+if (jobEnvSection.includes("CLOUDFLARE_VITE_WRANGLER_CONFIG_PATH")) {
+  throw new Error("Không được chọn preview Wrangler config ở job env trước khi file được materialize.");
+}
+const materializeIndex = workflow.indexOf("Materialize isolated preview config");
+const previewBuildIndex = workflow.indexOf("Build with Cloudflare preview bindings");
+const scopedConfigIndex = workflow.indexOf("CLOUDFLARE_VITE_WRANGLER_CONFIG_PATH", materializeIndex);
+if (materializeIndex < 0 || previewBuildIndex < materializeIndex || scopedConfigIndex < materializeIndex || scopedConfigIndex > previewBuildIndex + 250) {
+  throw new Error("Preview Wrangler config chỉ được scope vào build sau bước materialize.");
+}
 
 for (const forbidden of ["PRIMARY_CONTROL_CENTER_ORIGIN", "LEGACY_CONTROL_CENTER_ORIGIN", "quan-ly-hoc-tap.dinhnam3391.chatgpt.site", "learning-management.boiech-ai.workers.dev"]) {
   if (auth.includes(forbidden)) throw new Error(`Control auth còn fallback legacy: ${forbidden}`);
@@ -53,4 +63,4 @@ if (!status.includes("RU_LIFE_BUILD_REVISION") || !status.includes("RU_LIFE_DEPL
   throw new Error("Control status chưa công bố deployment revision/channel.");
 }
 
-console.log("RU_LIFE Cloudflare preview scaffold PASS: manual-only, isolated D1, exact control origin, no ChatGPT Sites fallback.");
+console.log("RU_LIFE Cloudflare preview scaffold PASS: manual-only, isolated D1, exact control origin, safe build order, no ChatGPT Sites fallback.");
