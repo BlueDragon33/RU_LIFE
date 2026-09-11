@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 20
     env:
       RU_LIFE_CONTROL_SERVICE_SECRET: 0123456789abcdef0123456789abcdef
-      APPLICATION_MANAGEMENT_ORIGIN: https://learning-management.boiech-ai.workers.dev
+      APPLICATION_MANAGEMENT_ORIGIN: https://application-management-preview.example.com
       RU_LIFE_DATABASE_ID: 00000000-0000-0000-0000-000000000001
     steps:
       - uses: actions/checkout@v4
@@ -27,7 +27,6 @@ jobs:
           set -euo pipefail
           test -f .openai/hosting.json
           test -f vite.config.ts
-          test -f worker/index.ts
           test -f drizzle/0000_ru_life_device_gateway.sql
           test -f lib/device-registry.server.ts
           test -f lib/control-auth.server.ts
@@ -43,6 +42,8 @@ jobs:
             echo 'RU_LIFE must own its HN device/session path and must not reuse Health/legacy central contracts.'
             exit 1
           fi
+      - name: Validate Cloudflare preview boundary
+        run: npm run validate:cloudflare-preview
       - name: Lint
         run: npm run lint
       - name: Build
