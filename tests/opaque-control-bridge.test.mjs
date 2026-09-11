@@ -31,8 +31,8 @@ test("browser CORS is fail-closed and only allows the exact configured Applicati
   const auth = await source("../lib/control-auth.server.ts");
   const devices = await source("../app/api/control/devices/route.ts");
   assert.match(auth, /trustedControlOrigin/);
-  assert.match(auth, /Boolean\(configuredOrigin\)/);
-  assert.match(auth, /value\.replace\(\/\\\/$\/, ""\) === configuredOrigin/);
+  assert.match(auth, /return Boolean\(configuredOrigin\) && value\.replace/);
+  assert.match(auth, /=== configuredOrigin/);
   assert.match(auth, /CONTROL_ORIGIN_FORBIDDEN/);
   assert.match(auth, /authorization\.startsWith\("Bearer "\)/);
   assert.match(devices, /requireControlService/);
