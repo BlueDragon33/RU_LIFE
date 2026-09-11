@@ -1,7 +1,5 @@
 import { RuLifeAccessError, type ControlRole } from "./device-registry.server";
 
-const PRIMARY_CONTROL_CENTER_ORIGIN = "https://quan-ly-hoc-tap.dinhnam3391.chatgpt.site";
-const LEGACY_CONTROL_CENTER_ORIGIN = "https://learning-management.boiech-ai.workers.dev";
 const TOKEN_AUDIENCE = "ru-life-control";
 const TOKEN_ISSUER = "application-management";
 const TOKEN_APP = "hoa-nhap-nga";
@@ -18,28 +16,36 @@ export type ControlServiceIdentity = {
 type Configuration = {
   secret: string;
   origin: string;
-  configuredOrigin: string;
 };
+
+function normalizedControlOrigin(value: unknown, allowLocalHttp: boolean) {
+  const raw = typeof value === "string" ? value.trim().replace(/\/$/, "") : "";
+  if (!raw) return "";
+  try {
+    const url = new URL(raw);
+    if (url.username || url.password || url.pathname !== "/" || url.search || url.hash) return "";
+    if (url.protocol === "https:") return url.origin;
+    const loopback = url.hostname === "localhost" || url.hostname === "127.0.0.1" || url.hostname === "[::1]" || url.hostname === "::1";
+    if (allowLocalHttp && url.protocol === "http:" && loopback) return url.origin;
+    return "";
+  } catch {
+    return "";
+  }
+}
 
 async function configuration(): Promise<Configuration> {
   const workers = await import("cloudflare:workers");
   const values = workers.env as unknown as Record<string, unknown>;
   const secret = typeof values.RU_LIFE_CONTROL_SERVICE_SECRET === "string" ? values.RU_LIFE_CONTROL_SERVICE_SECRET : "";
-  const configuredOrigin = typeof values.APPLICATION_MANAGEMENT_ORIGIN === "string"
-    ? values.APPLICATION_MANAGEMENT_ORIGIN.replace(/\/$/, "")
-    : "";
+  const allowLocalHttp = values.LOCAL_CONTROL_PLANE === "true";
   return {
     secret,
-    configuredOrigin,
-    origin: configuredOrigin || PRIMARY_CONTROL_CENTER_ORIGIN,
+    origin: normalizedControlOrigin(values.APPLICATION_MANAGEMENT_ORIGIN, allowLocalHttp),
   };
 }
 
 function trustedControlOrigin(value: string, configuredOrigin: string) {
-  if (!value) return false;
-  if (configuredOrigin && value === configuredOrigin) return true;
-  if (value === PRIMARY_CONTROL_CENTER_ORIGIN || value === LEGACY_CONTROL_CENTER_ORIGIN) return true;
-  return /^https:\/\/[a-z0-9-]+\.dinhnam3391\.chatgpt\.site$/i.test(value);
+  return Boolean(configuredOrigin) && value.replace(/\/$/, "") === configuredOrigin;
 }
 
 async function digest(value: string) {
@@ -121,64 +127,58 @@ function roleFrom(value: unknown): ControlRole | null {
 async function opaqueTicket(request: Request, supplied: string): Promise<ControlServiceIdentity | null> {
   if (!validOpaqueToken(supplied)) return null;
   const config = await configuration();
+  if (!config.origin) {
+    throw new RuLifeAccessError("Chưa cấu hình origin của Application Management để xác minh vé opaque.", 503, "CONTROL_CENTER_ORIGIN_UNCONFIGURED");
+  }
   const requestOrigin = (request.headers.get("origin") ?? "").replace(/\/$/, "");
-  const candidates = [
-    trustedControlOrigin(requestOrigin, config.configuredOrigin) ? requestOrigin : "",
-    config.origin,
-    PRIMARY_CONTROL_CENTER_ORIGIN,
-    LEGACY_CONTROL_CENTER_ORIGIN,
-  ].filter((value, index, list) => value && list.indexOf(value) === index && trustedControlOrigin(value, config.configuredOrigin));
+  if (requestOrigin && !trustedControlOrigin(requestOrigin, config.origin)) {
+    throw new RuLifeAccessError("Origin không được phép dùng vé quản trị RU_LIFE.", 403, "CONTROL_ORIGIN_FORBIDDEN");
+  }
 
-  let unavailable = false;
-  for (const origin of candidates) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), INTROSPECTION_TIMEOUT_MS);
-    try {
-      const response = await fetch(`${origin}/api/apps/hoa-nhap-nga/bridge/introspect`, {
-        method: "POST",
-        cache: "no-store",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ token: supplied }),
-        signal: controller.signal,
-      });
-      if (!response.ok) {
-        if (response.status >= 500) unavailable = true;
-        continue;
-      }
-      const data = await response.json() as Record<string, unknown>;
-      const actor = typeof data.actor === "string" ? data.actor.trim().toLowerCase().slice(0, 160) : "";
-      const role = roleFrom(data.role);
-      const controlDeviceId = typeof data.controlDeviceId === "string" && /^[a-f0-9]{64}$/.test(data.controlDeviceId)
-        ? data.controlDeviceId
-        : null;
-      const ticketId = typeof data.ticketId === "string" && /^[A-Za-z0-9_-]{16,100}$/.test(data.ticketId)
-        ? data.ticketId
-        : null;
-      const expiresAt = typeof data.expiresAt === "number" ? data.expiresAt : 0;
-      if (
-        data.ok === true
-        && data.application === "ru-life"
-        && data.protocol === OPAQUE_PROTOCOL
-        && actor.includes("@")
-        && role
-        && controlDeviceId
-        && ticketId
-        && expiresAt > Date.now()
-        && expiresAt <= Date.now() + 10 * 60 * 1000
-      ) {
-        return { actor, role, controlDeviceId, ticketId };
-      }
-    } catch {
-      unavailable = true;
-    } finally {
-      clearTimeout(timer);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), INTROSPECTION_TIMEOUT_MS);
+  try {
+    const response = await fetch(`${config.origin}/api/apps/hoa-nhap-nga/bridge/introspect`, {
+      method: "POST",
+      cache: "no-store",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ token: supplied }),
+      signal: controller.signal,
+    });
+    if (!response.ok) {
+      if (response.status >= 500) throw new RuLifeAccessError("Trung tâm quản trị tạm thời không thể xác minh vé.", 503, "CONTROL_INTROSPECTION_UNAVAILABLE");
+      throw new RuLifeAccessError("Vé quản trị đã hết hạn hoặc không hợp lệ.", 403, "CONTROL_TICKET_FORBIDDEN");
     }
-  }
-
-  if (unavailable) {
+    const data = await response.json() as Record<string, unknown>;
+    const actor = typeof data.actor === "string" ? data.actor.trim().toLowerCase().slice(0, 160) : "";
+    const role = roleFrom(data.role);
+    const controlDeviceId = typeof data.controlDeviceId === "string" && /^[a-f0-9]{64}$/.test(data.controlDeviceId)
+      ? data.controlDeviceId
+      : null;
+    const ticketId = typeof data.ticketId === "string" && /^[A-Za-z0-9_-]{16,100}$/.test(data.ticketId)
+      ? data.ticketId
+      : null;
+    const expiresAt = typeof data.expiresAt === "number" ? data.expiresAt : 0;
+    if (
+      data.ok === true
+      && data.application === "ru-life"
+      && data.protocol === OPAQUE_PROTOCOL
+      && actor.includes("@")
+      && role
+      && controlDeviceId
+      && ticketId
+      && expiresAt > Date.now()
+      && expiresAt <= Date.now() + 10 * 60 * 1000
+    ) {
+      return { actor, role, controlDeviceId, ticketId };
+    }
+    throw new RuLifeAccessError("Vé quản trị đã hết hạn hoặc không hợp lệ.", 403, "CONTROL_TICKET_FORBIDDEN");
+  } catch (error) {
+    if (error instanceof RuLifeAccessError) throw error;
     throw new RuLifeAccessError("Không thể xác minh vé với Trung tâm quản trị.", 503, "CONTROL_INTROSPECTION_UNAVAILABLE");
+  } finally {
+    clearTimeout(timer);
   }
-  throw new RuLifeAccessError("Vé quản trị đã hết hạn hoặc không hợp lệ.", 403, "CONTROL_TICKET_FORBIDDEN");
 }
 
 export async function requireControlService(request: Request): Promise<ControlServiceIdentity> {
@@ -214,7 +214,7 @@ export async function requireControlService(request: Request): Promise<ControlSe
 async function corsHeaders(request: Request): Promise<Record<string, string>> {
   const config = await configuration();
   const requestOrigin = (request.headers.get("origin") ?? "").replace(/\/$/, "");
-  return trustedControlOrigin(requestOrigin, config.configuredOrigin) ? {
+  return trustedControlOrigin(requestOrigin, config.origin) ? {
     "access-control-allow-origin": requestOrigin,
     "access-control-allow-methods": "GET, POST, OPTIONS",
     "access-control-allow-headers": "authorization, content-type",
@@ -238,7 +238,7 @@ export async function controlResponse(data: unknown, status = 200, request?: Req
 export async function controlPreflight(request: Request) {
   const config = await configuration();
   const requestOrigin = (request.headers.get("origin") ?? "").replace(/\/$/, "");
-  if (!trustedControlOrigin(requestOrigin, config.configuredOrigin)) return new Response(null, { status: 403 });
+  if (!trustedControlOrigin(requestOrigin, config.origin)) return new Response(null, { status: 403 });
   return new Response(null, { status: 204, headers: await corsHeaders(request) });
 }
 

@@ -22,4 +22,12 @@ Phân loại chỉ phục vụ UX/quản trị. Danh tính bảo mật là finge
 
 Application Management có thể khóa thiết bị, bật/tắt quyền sửa hoặc thu hồi session bằng vé quản trị ngắn hạn. Trạng thái thật vẫn được ghi trong database RU_LIFE; request người dùng bình thường không phụ thuộc runtime của Application Management.
 
+## Hosting và migration Cloudflare
+
+GitHub là source of truth. Runtime online mục tiêu là Cloudflare Workers + D1 riêng của RU_LIFE; local runtime vẫn hoạt động độc lập qua `wrangler.local.jsonc` và không dùng database preview/production.
+
+Nhánh migration đã bổ sung đường deploy **preview manual-only** với Worker `ru-life-preview` và D1 `ru-life-preview-db`. Preview bắt buộc dùng D1 ID riêng, không được dùng placeholder local hoặc D1 production. `APPLICATION_MANAGEMENT_ORIGIN` phải là đúng HTTPS origin của control-plane tương ứng; không còn fallback cứng sang ChatGPT Sites hoặc Worker quản trị cũ.
+
+Production auto-deploy vẫn tắt cho tới khi preview được kiểm chứng E2E. Không đặt secret hoặc D1 ID thật trong repo.
+
 Xem [`CONTROL_INTEGRATION.md`](CONTROL_INTEGRATION.md) để biết contract chi tiết.

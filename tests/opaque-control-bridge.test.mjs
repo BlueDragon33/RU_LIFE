@@ -6,14 +6,16 @@ async function source(path) {
   return readFile(new URL(path, import.meta.url), "utf8");
 }
 
-test("RU_LIFE accepts short-lived opaque bridge tickets by introspecting Application Management", async () => {
+test("RU_LIFE accepts short-lived opaque bridge tickets by introspecting only the configured Application Management origin", async () => {
   const auth = await source("../lib/control-auth.server.ts");
   assert.match(auth, /ru-life-control-opaque-v1/);
   assert.match(auth, /\^v1\\\.rulb_/);
   assert.match(auth, /\/api\/apps\/hoa-nhap-nga\/bridge\/introspect/);
   assert.match(auth, /CONTROL_INTROSPECTION_UNAVAILABLE/);
-  assert.match(auth, /PRIMARY_CONTROL_CENTER_ORIGIN/);
-  assert.match(auth, /quan-ly-hoc-tap\.dinhnam3391\.chatgpt\.site/);
+  assert.match(auth, /CONTROL_CENTER_ORIGIN_UNCONFIGURED/);
+  assert.match(auth, /APPLICATION_MANAGEMENT_ORIGIN/);
+  assert.match(auth, /normalizedControlOrigin/);
+  assert.doesNotMatch(auth, /PRIMARY_CONTROL_CENTER_ORIGIN|LEGACY_CONTROL_CENTER_ORIGIN|\.chatgpt\.site|learning-management\.boiech-ai\.workers\.dev/);
 });
 
 test("opaque bridge auth remains app-admin only and does not move HN state into the control plane", async () => {
@@ -25,11 +27,22 @@ test("opaque bridge auth remains app-admin only and does not move HN state into 
   assert.match(registry, /ru_life_sessions/);
 });
 
-test("browser CORS allows the current Application Management ChatGPT Site while control endpoints still require a bearer ticket", async () => {
+test("browser CORS is fail-closed and only allows the exact configured Application Management origin", async () => {
   const auth = await source("../lib/control-auth.server.ts");
   const devices = await source("../app/api/control/devices/route.ts");
   assert.match(auth, /trustedControlOrigin/);
-  assert.match(auth, /\.dinhnam3391\\\.chatgpt\\\.site/);
+  assert.match(auth, /return Boolean\(configuredOrigin\) && value\.replace/);
+  assert.match(auth, /=== configuredOrigin/);
+  assert.match(auth, /CONTROL_ORIGIN_FORBIDDEN/);
   assert.match(auth, /authorization\.startsWith\("Bearer "\)/);
   assert.match(devices, /requireControlService/);
+});
+
+test("local HTTP control origin is accepted only when LOCAL_CONTROL_PLANE is explicitly enabled", async () => {
+  const auth = await source("../lib/control-auth.server.ts");
+  assert.match(auth, /LOCAL_CONTROL_PLANE/);
+  assert.match(auth, /allowLocalHttp/);
+  assert.match(auth, /localhost/);
+  assert.match(auth, /127\.0\.0\.1/);
+  assert.match(auth, /url\.protocol === "http:" && loopback/);
 });

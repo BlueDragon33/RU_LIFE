@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "ru-life-preview",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-09-10",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "assets": {
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "images": {
+    "binding": "IMAGES"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ru-life-preview-db",
+      "database_id": "__RU_LIFE_PREVIEW_D1_DATABASE_ID__",
+      "migrations_dir": "drizzle"
+    }
+  ],
+  "vars": {
+    "APPLICATION_MANAGEMENT_ORIGIN": "__APPLICATION_MANAGEMENT_PREVIEW_ORIGIN__",
+    "RU_LIFE_DEPLOYMENT_CHANNEL": "cloudflare-preview",
+    "RU_LIFE_BUILD_REVISION": "__RU_LIFE_BUILD_REVISION__",
+    "RU_LIFE_BUILD_SOURCE": "BlueDragon33/RU_LIFE"
+  }
+}
