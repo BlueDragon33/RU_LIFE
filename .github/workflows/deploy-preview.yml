@@ -82,20 +82,7 @@ jobs:
         run: npm run build
 
       - name: Verify generated deployment artifact
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -f dist/wrangler.json
-          test -f dist/server/index.js
-          test -f .wrangler/deploy/config.json
-          if grep -R "00000000-0000-0000-0000-000000000001" dist/wrangler.json .wrangler/deploy/config.json; then
-            echo '::error::Generated preview artifact references the RU_LIFE local D1 placeholder.'
-            exit 1
-          fi
-          if [[ -n "${RU_LIFE_PRODUCTION_D1_DATABASE_ID:-}" ]] && grep -R "$RU_LIFE_PRODUCTION_D1_DATABASE_ID" dist/wrangler.json .wrangler/deploy/config.json; then
-            echo '::error::Generated preview artifact references RU_LIFE production D1.'
-            exit 1
-          fi
+        run: npm run cloudflare:artifact:check
 
       - name: Deploy RU_LIFE preview Worker
         run: npx wrangler deploy
