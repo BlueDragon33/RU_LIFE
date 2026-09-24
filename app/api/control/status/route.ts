@@ -38,6 +38,7 @@ export async function GET(request: Request) {
       },
       endpoints: {
         devices: "/api/control/devices",
+        automation: "/api/control/automation",
         deviceCommands: "/api/control/device-commands",
         sessions: "/api/control/sessions",
         audit: "/api/control/audit",
@@ -46,6 +47,7 @@ export async function GET(request: Request) {
         deviceRegistration: true,
         p256Challenge: true,
         deviceApproval: true,
+        deviceAutoApproval: true,
         deviceIdempotentCommands: true,
         optimisticConcurrency: true,
         accessAndEditSeparated: true,

@@ -1,4 +1,5 @@
 export type ControlRole = "viewer" | "reviewer" | "publisher" | "owner";
+import { readRuLifeAutomation } from "./device-automation.server";
 export type RuDeviceStatus = "pending" | "approved" | "blocked";
 export type RuDeviceClass = "computer" | "phone" | "tablet" | "unknown";
 
@@ -218,6 +219,8 @@ export async function registerRuLifeDevice(publicKey: unknown, profileValue: unk
   const profile = classification.profile;
   const database = await getRuLifeDatabase();
   const existing = await deviceRow(deviceId);
+  const automation = !existing ? await readRuLifeAutomation() : { autoApproveDevices: false };
+  const autoApprove = !existing && automation.autoApproveDevices;
   const osName = text(profile.osName, 80) || null;
   const browserName = text(profile.browserName, 80) || null;
   const modelHint = text(profile.modelHint, 100) || null;
@@ -244,14 +247,17 @@ export async function registerRuLifeDevice(publicKey: unknown, profileValue: unk
       deviceId,
     ).run();
   } else {
+    const deviceCode = displayCodeFor(deviceId);
     await database.prepare(
       `INSERT INTO ru_life_devices
         (device_id, display_code, public_key_jwk, detected_device_class, device_class, classification_confidence,
-         classification_source, os_name, browser_name, model_hint, screen, profile_json)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         classification_source, os_name, browser_name, model_hint, screen, profile_json,
+         status, user_name, user_code, approved_at, approved_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+         CASE WHEN ? = 1 THEN CURRENT_TIMESTAMP ELSE NULL END, ?)`,
     ).bind(
       deviceId,
-      displayCodeFor(deviceId),
+      deviceCode,
       serialized,
       classification.deviceClass,
       classification.deviceClass,
@@ -262,11 +268,17 @@ export async function registerRuLifeDevice(publicKey: unknown, profileValue: unk
       modelHint,
       screen,
       JSON.stringify(profile),
+      autoApprove ? "approved" : "pending",
+      autoApprove ? "Thiết bị Hòa nhập Nga" : null,
+      autoApprove ? deviceCode : null,
+      autoApprove ? 1 : 0,
+      autoApprove ? "automatic-rule" : null,
     ).run();
     await audit("system", "device_registered", deviceId, {
       deviceCode: displayCodeFor(deviceId),
       detectedDeviceClass: classification.deviceClass,
     });
+    if (autoApprove) await audit("automatic-rule", "device_auto_approved", deviceId, { deviceCode });
   }
 
   const row = await deviceRow(deviceId);
