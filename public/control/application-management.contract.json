@@ -1,0 +1,43 @@
+{
+  "schema": "application-management.contract/v1",
+  "protocol": "ru-life-control-v2",
+  "application": {
+    "id": "ru-life",
+    "name": "Hòa nhập Nga",
+    "shortName": "Hòa nhập Nga",
+    "category": "Nga",
+    "repository": "BlueDragon33/RU_LIFE",
+    "version": "0.2.0"
+  },
+  "capabilities": {
+    "webLaunch": true,
+    "deviceRegistry": true,
+    "deviceApproval": true,
+    "deviceBlock": true,
+    "deviceUnblock": false,
+    "deviceEditPermission": true,
+    "deviceIdempotentCommands": true,
+    "optimisticConcurrency": true,
+    "sessions": true,
+    "audit": true,
+    "contentReview": false,
+    "payments": false,
+    "reports": false
+  },
+  "endpoints": {
+    "status": "/api/control/status",
+    "devices": "/api/control/devices",
+    "deviceCommands": "/api/control/device-commands"
+  },
+  "policy": {
+    "remoteAdminReady": false,
+    "credentialRequired": true,
+    "credentialEnv": "RU_LIFE_CONTROL_SERVICE_SECRET"
+  },
+  "boundary": {
+    "deviceRegistryOwner": "RU_LIFE",
+    "sessionOwner": "RU_LIFE",
+    "sharedDatabaseWithApplicationManagement": false,
+    "directLogin": false
+  }
+}
