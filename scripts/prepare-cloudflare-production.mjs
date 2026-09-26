@@ -15,8 +15,10 @@ function d1Uuid(name) {
   }
   return value;
 }
-function httpsOrigin(name) {
-  const raw = required(name);
+function httpsOrigin(name, optional = false) {
+  const raw = String(process.env[name] ?? "").trim();
+  if (!raw && optional) return "";
+  if (!raw) throw new Error(`${name} chưa được cấu hình.`);
   const url = new URL(raw);
   if (url.protocol !== "https:" || url.username || url.password || url.pathname !== "/" || url.search || url.hash) {
     throw new Error(`${name} phải là HTTPS origin thuần.`);
@@ -29,12 +31,12 @@ if (!/^[A-Za-z0-9._-]{7,80}$/.test(revision)) throw new Error("RU_LIFE_BUILD_REV
 const productionId = d1Uuid("RU_LIFE_PRODUCTION_D1_DATABASE_ID");
 const previewId = d1Uuid("RU_LIFE_PREVIEW_D1_DATABASE_ID");
 if (productionId === previewId) throw new Error("Production không được dùng chung D1 với Preview.");
-const managerOrigin = httpsOrigin("APPLICATION_MANAGEMENT_PRODUCTION_ORIGIN");
+const managerOrigin = httpsOrigin("APPLICATION_MANAGEMENT_PRODUCTION_ORIGIN", true);
 const rendered = fs.readFileSync(TEMPLATE, "utf8")
   .replace("__RU_LIFE_PRODUCTION_D1_DATABASE_ID__", productionId)
   .replace("__APPLICATION_MANAGEMENT_PRODUCTION_ORIGIN__", managerOrigin)
   .replace("__RU_LIFE_BUILD_REVISION__", revision)
-  .replace("__RU_LIFE_ACCESS_MODE__", String(process.env.RU_LIFE_ACCESS_MODE || "managed").trim().toLowerCase() === "standalone" ? "standalone" : "managed");
+  .replace("__RU_LIFE_ACCESS_MODE__", String(process.env.RU_LIFE_ACCESS_MODE || "standalone").trim().toLowerCase() === "standalone" ? "standalone" : "managed");
 if (/__[A-Z0-9_]+__/.test(rendered)) throw new Error("Production config vẫn còn placeholder.");
 fs.writeFileSync(TARGET, rendered, { mode: 0o600 });
 console.log(`Prepared ${TARGET} for revision ${revision}.`);
