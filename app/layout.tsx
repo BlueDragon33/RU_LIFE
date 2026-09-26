@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   title: { default: "Hòa nhập Nga", template: "%s · Hòa nhập Nga" },
   description: "Web App độc lập hỗ trợ cuộc sống, học tập và hòa nhập tại Nga.",
   applicationName: "Hòa nhập Nga",
+  icons: { icon: "/icon.svg?v=site-id-1", shortcut: "/icon.svg?v=site-id-1" },
+  appleWebApp: { capable: true, title: "Hòa nhập Nga", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {
