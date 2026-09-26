@@ -28,6 +28,7 @@ jobs:
       RU_LIFE_CONTROL_SERVICE_SECRET: ${{ secrets.RU_LIFE_CONTROL_SERVICE_SECRET }}
       APPLICATION_MANAGEMENT_PRODUCTION_ORIGIN: ${{ vars.APPLICATION_MANAGEMENT_PRODUCTION_ORIGIN }}
       RU_LIFE_PRODUCTION_ORIGIN: ${{ vars.RU_LIFE_PRODUCTION_ORIGIN }}
+      RU_LIFE_ACCESS_MODE: managed
     steps:
       - name: Require explicit production confirmation
         run: |
