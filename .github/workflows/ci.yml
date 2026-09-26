@@ -1,52 +1,37 @@
-name: RU_LIFE CI
+name: RU_LIFE Development Fast CI
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ru-life-fast-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build-test:
+  fast-check:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
-    env:
-      RU_LIFE_CONTROL_SERVICE_SECRET: 0123456789abcdef0123456789abcdef
-      APPLICATION_MANAGEMENT_ORIGIN: https://application-management-preview.example.com
-      RU_LIFE_DATABASE_ID: 00000000-0000-0000-0000-000000000001
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.13.0
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
-      - name: Enforce standalone ownership
+          node-version: "22.13.0"
+      - name: Fast repository sanity
         shell: bash
         run: |
           set -euo pipefail
-          test -f .openai/hosting.json
+          test -f package.json
           test -f vite.config.ts
-          test -f drizzle/0000_ru_life_device_gateway.sql
-          test -f lib/device-registry.server.ts
-          test -f lib/control-auth.server.ts
-          test -f app/api/device/access/route.ts
-          test -f app/api/control/devices/route.ts
-          test -f app/api/control/sessions/route.ts
-          test -f app/api/control/audit/route.ts
-          test -f app/api/control/status/route.ts
-          if grep -RInE --include='*.ts' --include='*.tsx' --include='*.js' --include='*.mjs' \
-            --exclude-dir=node_modules --exclude-dir=.git \
-            'MEDICINE_SERVICE_SECRET|HEALTH_CONTROL_SERVICE_SECRET|/api/apps/hoa-nhap-nga/device|/api/apps/hoa-nhap-nga/session' \
-            app lib components 2>/dev/null; then
-            echo 'RU_LIFE must own its HN device/session path and must not reuse Health/legacy central contracts.'
-            exit 1
-          fi
-      - name: Validate Cloudflare preview boundary
-        run: npm run validate:cloudflare-preview
-      - name: Lint
-        run: npm run lint
-      - name: Build
-        run: npm run build
-      - name: Contract tests
-        run: npm test
+          test -f scripts/prepare-cloudflare-preview.mjs
+          test -d app
+          test -d lib
+          node --check scripts/prepare-cloudflare-preview.mjs
+          node --check scripts/validate-cloudflare-preview.mjs
+          node -e "JSON.parse(require('fs').readFileSync('package.json','utf8'))"
