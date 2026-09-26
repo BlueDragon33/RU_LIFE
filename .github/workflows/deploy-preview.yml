@@ -1,8 +1,6 @@
 name: RU_LIFE Cloudflare Preview Deploy
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
