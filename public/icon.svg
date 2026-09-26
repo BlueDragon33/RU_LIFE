@@ -1,4 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="116" fill="#101a2d"/>
-  <path d="M128 132h112c82 0 132 41 132 112 0 50-25 86-69 103l77 37h-91l-62-31h-19v31h-80V132Zm80 67v89h32c33 0 52-15 52-45 0-29-19-44-52-44h-32Z" fill="#f7f9fc"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Hòa nhập Nga">
+  <defs><linearGradient id="g" x1="8" y1="6" x2="56" y2="58"><stop stop-color="#1e3f72"/><stop offset="1" stop-color="#0a1830"/></linearGradient></defs>
+  <rect width="64" height="64" rx="16" fill="url(#g)"/>
+  <path d="M13 15h38v26H32l-10 8v-8h-9V15Z" fill="#fff"/>
+  <text x="32" y="34" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="800" fill="#1e3f72">Я</text>
+  <circle cx="49" cy="48" r="8" fill="#e75f5f" stroke="#fff" stroke-width="2"/>
+  <path d="M49 43v10M44 48h10" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
 </svg>
