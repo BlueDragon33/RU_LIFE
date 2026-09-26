@@ -33,7 +33,8 @@ const managerOrigin = httpsOrigin("APPLICATION_MANAGEMENT_PRODUCTION_ORIGIN");
 const rendered = fs.readFileSync(TEMPLATE, "utf8")
   .replace("__RU_LIFE_PRODUCTION_D1_DATABASE_ID__", productionId)
   .replace("__APPLICATION_MANAGEMENT_PRODUCTION_ORIGIN__", managerOrigin)
-  .replace("__RU_LIFE_BUILD_REVISION__", revision);
+  .replace("__RU_LIFE_BUILD_REVISION__", revision)
+  .replace("__RU_LIFE_ACCESS_MODE__", String(process.env.RU_LIFE_ACCESS_MODE || "managed").trim().toLowerCase() === "standalone" ? "standalone" : "managed");
 if (/__[A-Z0-9_]+__/.test(rendered)) throw new Error("Production config vẫn còn placeholder.");
 fs.writeFileSync(TARGET, rendered, { mode: 0o600 });
 console.log(`Prepared ${TARGET} for revision ${revision}.`);
