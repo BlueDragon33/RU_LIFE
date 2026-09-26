@@ -1,0 +1,18 @@
+{
+  "name": "Hòa nhập Nga",
+  "short_name": "Hòa nhập Nga",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#07152f",
+  "theme_color": "#07152f",
+  "description": "Ứng dụng hỗ trợ cuộc sống, học tập và hòa nhập tại Nga.",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
