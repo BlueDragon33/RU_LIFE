@@ -5,6 +5,8 @@ import { readDeviceSession } from "@/lib/device-session.server";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
+  const managedAccess = String(process.env.RU_LIFE_ACCESS_MODE || "standalone").trim().toLowerCase() === "managed";
+  if (!managedAccess) redirect("/app");
   const session = await readDeviceSession();
   if (session) redirect("/app");
 
