@@ -10,7 +10,7 @@ export async function OPTIONS(request: Request) {
 export async function GET(request: Request) {
   try {
     await requireControlService(request);
-    return controlResponse({ ok: true, application: "ru-life", devices: await listRuLifeDevices() }, 200, request);
+    return controlResponse({ ok: true, application: "ru-life", deviceDelete: true, devices: await listRuLifeDevices() }, 200, request);
   } catch (error) {
     return withControlCors(request, ruLifeErrorResponse(error));
   }
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
       ok: true,
       application: "ru-life",
       device,
-      devices: await listRuLifeDevices(),
+      deviceDelete: true, devices: await listRuLifeDevices(),
       sessions: await listRuLifeSessions(),
     }, 200, request);
   } catch (error) {

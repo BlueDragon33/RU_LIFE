@@ -437,7 +437,7 @@ export async function verifyRuLifeAccessToken(tokenValue: unknown, touch = true)
 export async function listRuLifeDevices() {
   const database = await getRuLifeDatabase();
   const rows = await database.prepare(
-    "SELECT * FROM ru_life_devices ORDER BY CASE status WHEN 'pending' THEN 0 WHEN 'approved' THEN 1 ELSE 2 END, last_seen_at DESC LIMIT 400",
+    "SELECT * FROM ru_life_devices ORDER BY CASE status WHEN 'pending' THEN 0 WHEN 'approved' THEN 1 ELSE 2 END, last_seen_at DESC",
   ).all<RuDeviceRow>();
   return rows.results.map(publicDevice);
 }
