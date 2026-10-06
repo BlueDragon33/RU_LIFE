@@ -110,11 +110,12 @@ test("access and edit rights remain separate and blocking a device revokes activ
   assert.match(registry, /USER_BINDING_REQUIRED/);
 });
 
-test("all protected workspace routes reject browsers without a valid RU-owned device session", async () => {
+test("managed workspace requires an RU-owned session while standalone mode remains directly usable", async () => {
   const layout = await source("../app/app/layout.tsx");
-  assert.match(layout, /readDeviceSession\(\)/);
-  assert.match(layout, /if \(!session\) redirect\("\/"\)/);
-  assert.match(layout, /<DeviceHeartbeat \/>/);
+  assert.match(layout, /RU_LIFE_ACCESS_MODE/);
+  assert.match(layout, /const session = managedAccess \? await readDeviceSession\(\) : null/);
+  assert.match(layout, /if \(managedAccess && !session\) redirect\("\/"\)/);
+  assert.match(layout, /managedAccess \? <DeviceHeartbeat \/> : null/);
   assert.match(layout, /<WorkspaceNavigation \/>/);
 });
 
