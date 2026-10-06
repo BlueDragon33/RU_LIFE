@@ -1,4 +1,4 @@
-name: RU_LIFE Development Fast CI
+name: RU_LIFE Build + Site Integrity CI
 
 on:
   push:
@@ -11,27 +11,110 @@ permissions:
   contents: read
 
 concurrency:
-  group: ru-life-fast-${{ github.ref }}
+  group: ru-life-integrity-\${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  fast-check:
+  build-and-site-integrity:
     runs-on: ubuntu-24.04
-    timeout-minutes: 3
+    timeout-minutes: 15
+    env:
+      PUBLIC_SITE: https://hoa-nhap-nga.dinhnam3391.chatgpt.site
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22.13.0"
-      - name: Fast repository sanity
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Lint and regression tests
+        run: |
+          npm run lint
+          npm test
+
+      - name: Build exact RU_LIFE artifact
+        run: npm run build
+
+      - name: Verify Sites binding is preserved
         shell: bash
         run: |
           set -euo pipefail
-          test -f package.json
-          test -f vite.config.ts
-          test -f scripts/prepare-cloudflare-preview.mjs
-          test -d app
-          test -d lib
-          node --check scripts/prepare-cloudflare-preview.mjs
-          node --check scripts/validate-cloudflare-preview.mjs
-          node -e "JSON.parse(require('fs').readFileSync('package.json','utf8'))"
+          test -f dist/.openai/hosting.json
+          node --input-type=module - <<'NODE'
+          import fs from "node:fs";
+          const v=JSON.parse(fs.readFileSync("dist/.openai/hosting.json","utf8"));
+          if(v.project_id!=="ru-life-standalone") throw new Error("Unexpected Site project_id: "+v.project_id);
+          if(v.d1!=="DB") throw new Error("Unexpected D1 binding: "+v.d1);
+          console.log("Sites binding PASS:", v.project_id, v.d1);
+          NODE
+
+      - name: Start built app and verify /app CSS/static/SW v2
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run start -- --host 127.0.0.1 --port 3000 >/tmp/ru-life-local.log 2>&1 &
+          PID=$!
+          trap 'kill $PID 2>/dev/null || true; cat /tmp/ru-life-local.log || true' EXIT
+          for i in {1..30}; do
+            if curl --fail --silent --show-error --max-time 3 http://127.0.0.1:3000/app >/tmp/app.html; then break; fi
+            sleep 1
+          done
+          test -s /tmp/app.html
+          grep -q 'workspace-shell' /tmp/app.html
+          grep -q 'Dashboard Hòa nhập Nga' /tmp/app.html
+          curl --fail --silent --show-error http://127.0.0.1:3000/sw.js >/tmp/sw.js
+          grep -q 'ru-life-shell-v2' /tmp/sw.js
+          grep -q 'url.pathname.startsWith("/_next/")' /tmp/sw.js
+          grep -q 'url.pathname.startsWith("/assets/")' /tmp/sw.js
+          ! grep -q 'caches.match("/")' /tmp/sw.js
+
+          node --input-type=module - <<'NODE'
+          import fs from "node:fs";
+          const html=fs.readFileSync('/tmp/app.html','utf8');
+          const hrefs=[...html.matchAll(/<link[^>]+rel=["']stylesheet["'][^>]+href=["']([^"']+)["']/gi)].map(m=>m[1]);
+          if(!hrefs.length) throw new Error('No stylesheet links found in /app HTML');
+          fs.writeFileSync('/tmp/css-links.txt',hrefs.join('\n'));
+          console.log('stylesheets',hrefs);
+          NODE
+          while IFS= read -r href; do
+            [[ "$href" =~ ^https?:// ]] && url="$href" || url="http://127.0.0.1:3000$href"
+            headers="$(curl --fail --silent --show-error --head "$url")"
+            echo "$headers"
+            echo "$headers" | tr -d '\r' | grep -Eiq '^content-type:[[:space:]]*text/css([;[:space:]]|$)'
+          done </tmp/css-links.txt
+
+      - name: Probe current published Site
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Probing $PUBLIC_SITE"
+          curl --fail --silent --show-error --location --max-time 20 "$PUBLIC_SITE/app" >/tmp/public-app.html
+          test -s /tmp/public-app.html
+          grep -q 'workspace-shell' /tmp/public-app.html || { echo '::error::Published /app is not the premium workspace artifact.'; head -c 1500 /tmp/public-app.html; exit 1; }
+          grep -q 'Dashboard Hòa nhập Nga' /tmp/public-app.html || { echo '::error::Published /app does not contain premium dashboard markup.'; exit 1; }
+
+          curl --fail --silent --show-error --location --max-time 20 "$PUBLIC_SITE/sw.js" >/tmp/public-sw.js
+          grep -q 'ru-life-shell-v2' /tmp/public-sw.js || { echo '::error::Published Site is still serving an old service worker.'; cat /tmp/public-sw.js; exit 1; }
+
+          node --input-type=module - <<'NODE'
+          import fs from "node:fs";
+          const html=fs.readFileSync('/tmp/public-app.html','utf8');
+          const hrefs=[...html.matchAll(/<link[^>]+rel=["']stylesheet["'][^>]+href=["']([^"']+)["']/gi)].map(m=>m[1]);
+          if(!hrefs.length) throw new Error('Published /app has no stylesheet links');
+          fs.writeFileSync('/tmp/public-css-links.txt',hrefs.join('\n'));
+          console.log('published stylesheets',hrefs);
+          NODE
+          while IFS= read -r href; do
+            [[ "$href" =~ ^https?:// ]] && url="$href" || url="$PUBLIC_SITE$href"
+            headers="$(curl --fail --silent --show-error --head --location --max-time 20 "$url")"
+            echo "Checking $url"
+            echo "$headers" | tr -d '\r' | grep -Eiq '^content-type:[[:space:]]*text/css([;[:space:]]|$)' || {
+              echo '::error::A published stylesheet is not being served as text/css.'
+              echo "$headers"
+              exit 1
+            }
+          done </tmp/public-css-links.txt
+          echo "Published Site premium CSS/static/SW v2 PASS."
