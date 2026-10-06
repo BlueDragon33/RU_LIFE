@@ -2,7 +2,9 @@
   "name": "ru-life",
   "version": "0.2.0",
   "private": true,
-  "engines": { "node": ">=22.13.0" },
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vinext build",
@@ -12,7 +14,8 @@
     "validate:cloudflare-preview": "node scripts/validate-cloudflare-preview.mjs",
     "cloudflare:preview:prepare": "node scripts/prepare-cloudflare-preview.mjs",
     "cloudflare:artifact:check": "node scripts/validate-cloudflare-build-artifact.mjs",
-    "gate": "npm run lint && npm run build && npm test && npm run validate:cloudflare-preview"
+    "gate": "npm run lint && npm run build && npm test && npm run validate:cloudflare-preview",
+    "validate:content-intelligence": "node scripts/validate-content-intelligence.mjs"
   },
   "dependencies": {
     "next": "16.2.6",
