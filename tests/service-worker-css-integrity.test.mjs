@@ -16,12 +16,15 @@ test("service worker never substitutes HTML for CSS or JavaScript assets", async
   assert.doesNotMatch(sw, /cache\.put\(request/);
 });
 
-test("RU_LIFE forces the corrected service worker to refresh without cached script bytes", async () => {
-  const register = await source("../components/service-worker-register.tsx");
-  assert.match(register, /updateViaCache: "none"/);
-  assert.match(register, /registration\.update\(\)/);
-  assert.match(register, /controllerchange/);
-  assert.match(register, /window\.location\.reload\(\)/);
+test("root HTML can recover from the stale RU_LIFE service worker even when app JS is unavailable", async () => {
+  const root = await source("../app/layout.tsx");
+  assert.match(root, /ru-life-style-recovery-v3/);
+  assert.match(root, /navigator\.serviceWorker\.getRegistrations\(\)/);
+  assert.match(root, /registration\.unregister\(\)/);
+  assert.match(root, /key\.startsWith\("ru-life-shell-"\)/);
+  assert.match(root, /window\.location\.replace\(/);
+  assert.match(root, /dangerouslySetInnerHTML/);
+  assert.doesNotMatch(root, /ServiceWorkerRegister/);
 });
 
 test("root and protected layouts keep their stylesheet entry points", async () => {
