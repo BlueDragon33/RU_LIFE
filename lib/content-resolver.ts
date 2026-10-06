@@ -1,3 +1,5 @@
+import { getKnowledgeSources, getKnowledgeUnit } from "./content-intelligence/registry";
+import type { KnowledgeSourceV1, KnowledgeUnitV1 } from "./content-intelligence/types";
 import { dailyLifeContent } from "./daily-life-content";
 import { healthContent } from "./health-content";
 import { integrationContent } from "./integration-content";
@@ -11,4 +13,12 @@ export function getResolvedTopicContent(moduleSlug: string, topicSlug: string): 
   if (moduleSlug === "health") return healthContent[topicSlug] || null;
   if (moduleSlug === "integration") return integrationContent[topicSlug] || null;
   return null;
+}
+
+export function getResolvedKnowledgeUnit(moduleSlug: string, topicSlug: string): KnowledgeUnitV1 | null {
+  return getKnowledgeUnit(moduleSlug, topicSlug);
+}
+
+export function getResolvedKnowledgeSources(unit: KnowledgeUnitV1): KnowledgeSourceV1[] {
+  return getKnowledgeSources(unit);
 }
