@@ -27,12 +27,12 @@ test("root HTML can recover from the stale RU_LIFE service worker even when app 
   assert.doesNotMatch(root, /ServiceWorkerRegister/);
 });
 
-test("root and protected layouts keep their stylesheet entry points", async () => {
+test("all RU_LIFE stylesheet entry points are loaded from the root layout", async () => {
   const root = await source("../app/layout.tsx");
   const protectedLayout = await source("../app/app/layout.tsx");
-  assert.match(root, /import "\.\/globals\.css"/);
-  assert.match(root, /import "\.\/public-premium\.css"/);
   for (const stylesheet of [
+    "globals.css",
+    "public-premium.css",
     "workspace.css",
     "content.css",
     "tools.css",
@@ -41,6 +41,7 @@ test("root and protected layouts keep their stylesheet entry points", async () =
     "premium-theme.css",
     "premium-deep.css",
   ]) {
-    assert.match(protectedLayout, new RegExp(stylesheet.replace(".", "\\.")));
+    assert.match(root, new RegExp(`import "\\.\\/${stylesheet.replace(".", "\\.")}"`));
+    assert.doesNotMatch(protectedLayout, new RegExp(stylesheet.replace(".", "\\.")));
   }
 });
