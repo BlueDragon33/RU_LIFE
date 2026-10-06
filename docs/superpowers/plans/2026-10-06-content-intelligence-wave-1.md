@@ -460,9 +460,10 @@ git commit -m "feat: add migration registration knowledge unit"
 - Create: `tests/content-intelligence-resolver.test.mjs`
 
 **Interfaces:**
-- Consumes: canonical JSON from Task 2; `KnowledgeUnitV1`.
+- Consumes: canonical unit/source JSON from Task 2; `KnowledgeUnitV1`; `KnowledgeSourceV1`.
 - Produces:
   - `getResolvedKnowledgeUnit(moduleSlug: string, topicSlug: string): KnowledgeUnitV1 | null`
+  - `getResolvedKnowledgeSources(unit: KnowledgeUnitV1): KnowledgeSourceV1[]`
   - existing `getResolvedTopicContent(moduleSlug, topicSlug)` remains backward-compatible.
 
 - [ ] **Step 1: Write the failing resolver test**
@@ -493,17 +494,22 @@ Import the JSON module and type-check it with:
 const migrationRegistration = migrationRegistrationJson as KnowledgeUnitV1;
 ```
 
-Expose a map keyed by:
+Expose a knowledge map keyed by:
 
 ```text
 <moduleSlug>:<topicSlug>
 ```
 
-and:
+and a source map keyed by stable source ID.
+
+Export:
 
 ```ts
 export function getKnowledgeUnit(moduleSlug: string, topicSlug: string): KnowledgeUnitV1 | null
+export function getKnowledgeSources(unit: KnowledgeUnitV1): KnowledgeSourceV1[]
 ```
+
+`getKnowledgeSources` must preserve `unit.provenance.sourceIds` order, omit no known referenced source, and throw during development/build validation if a referenced source is missing. Do not fetch sources over the network at render time.
 
 Do not add a database or dynamic network loader.
 
@@ -513,6 +519,7 @@ Add:
 
 ```ts
 export function getResolvedKnowledgeUnit(moduleSlug: string, topicSlug: string): KnowledgeUnitV1 | null
+export function getResolvedKnowledgeSources(unit: KnowledgeUnitV1): KnowledgeSourceV1[]
 ```
 
 delegating to the registry.
@@ -746,7 +753,7 @@ git commit -m "feat: add journey map and decision tree"
 - Create: `tests/content-intelligence-route-integration.test.mjs`
 
 **Interfaces:**
-- Consumes: `getResolvedKnowledgeUnit`, `KnowledgeExperience`, existing legacy `getResolvedTopicContent`, `TopicProgress`, `TopicTools`, `TopicDeadlines`.
+- Consumes: `getResolvedKnowledgeUnit`, `getResolvedKnowledgeSources`, `KnowledgeExperience`, existing legacy `getResolvedTopicContent`, `TopicProgress`, `TopicTools`, `TopicDeadlines`.
 - Produces: same topic route, selecting intelligence renderer when a Knowledge Unit exists and legacy renderer otherwise.
 
 - [ ] **Step 1: Write the failing route integration test**
@@ -755,8 +762,8 @@ Pin Review Focus #3 and #4.
 
 Assert the page:
 
-- calls both `getResolvedKnowledgeUnit` and existing `getResolvedTopicContent`;
-- renders `KnowledgeExperience` when the intelligence unit exists;
+- calls `getResolvedKnowledgeUnit`, `getResolvedKnowledgeSources`, and existing `getResolvedTopicContent`;
+- renders `KnowledgeExperience` with both the unit and its resolved source array when the intelligence unit exists;
 - preserves the current legacy content branch for other topics;
 - still passes exactly `moduleData.slug`, `topic.slug`, `topic.title`, and `topic.checklist` into personal tools;
 - does not change the route structure;
@@ -776,9 +783,10 @@ At route resolution:
 
 ```ts
 const intelligence = getResolvedKnowledgeUnit(moduleData.slug, topic.slug);
+const intelligenceSources = intelligence ? getResolvedKnowledgeSources(intelligence) : [];
 ```
 
-If present, render `KnowledgeExperience` in the main content region.
+If present, render `KnowledgeExperience unit={intelligence} sources={intelligenceSources}` in the main content region.
 
 If absent, render the current `TopicContent` flow unchanged.
 
