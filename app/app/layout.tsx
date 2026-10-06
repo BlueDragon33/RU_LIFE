@@ -5,13 +5,6 @@ import LocalReminderRuntime from "@/components/local-reminder-runtime";
 import LocalStateRuntime from "@/components/local-state-runtime";
 import WorkspaceNavigation from "@/components/workspace-navigation";
 import { readDeviceSession } from "@/lib/device-session.server";
-import "../workspace.css";
-import "../content.css";
-import "../tools.css";
-import "../deadlines.css";
-import "../backup.css";
-import "../premium-theme.css";
-import "../premium-deep.css";
 
 export const dynamic = "force-dynamic";
 
