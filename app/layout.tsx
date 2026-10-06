@@ -1,6 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./public-premium.css";
+import "./workspace.css";
+import "./content.css";
+import "./tools.css";
+import "./deadlines.css";
+import "./backup.css";
+import "./premium-theme.css";
+import "./premium-deep.css";
 
 export const metadata: Metadata = {
   title: { default: "Hòa nhập Nga", template: "%s · Hòa nhập Nga" },

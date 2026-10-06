@@ -6,13 +6,13 @@ async function source(path) {
   return readFile(new URL(path, import.meta.url), "utf8");
 }
 
-test("premium interface is loaded only inside the protected RU_LIFE workspace", async () => {
+test("premium interface CSS is rooted globally while protected session logic stays in /app", async () => {
   const root = await source("../app/layout.tsx");
   const layout = await source("../app/app/layout.tsx");
   const css = await source("../app/premium-theme.css");
-  assert.doesNotMatch(root, /premium-theme\.css/);
+  assert.match(root, /import "\.\/premium-theme\.css"/);
   assert.match(layout, /readDeviceSession\(\)/);
-  assert.match(layout, /import "\.\.\/premium-theme\.css"/);
+  assert.doesNotMatch(layout, /import "\.\.\/premium-theme\.css"/);
   assert.match(css, /\.workspace-shell/);
   assert.match(css, /\.workspace-side/);
   assert.match(css, /\.workspace-topbar/);
