@@ -81,13 +81,13 @@ test("source review alerts use explicit internal windows and never claim legal e
   assert.match(board, /không chứng minh quy định còn hiệu lực đến ngày đó/i);
 });
 
-test("deadline styles are loaded only inside the protected RU_LIFE workspace", async () => {
+test("deadline styles are bundled at the root while deadline UI remains in the RU_LIFE workspace", async () => {
   const rootLayout = await source("../app/layout.tsx");
   const protectedLayout = await source("../app/app/layout.tsx");
   const css = await source("../app/deadlines.css");
 
-  assert.doesNotMatch(rootLayout, /deadlines\.css/);
-  assert.match(protectedLayout, /import "\.\.\/deadlines\.css"/);
+  assert.match(rootLayout, /import "\.\/deadlines\.css"/);
+  assert.doesNotMatch(protectedLayout, /deadlines\.css/);
   assert.match(protectedLayout, /readDeviceSession\(\)/);
   assert.match(css, /\.topic-deadlines-panel/);
   assert.match(css, /\.source-review-inline/);
