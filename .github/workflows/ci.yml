@@ -90,14 +90,29 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          failures=0
           echo "Probing $PUBLIC_SITE"
+
           curl --fail --silent --show-error --location --max-time 20 "$PUBLIC_SITE/app" >/tmp/public-app.html
           test -s /tmp/public-app.html
-          grep -q 'workspace-shell' /tmp/public-app.html || { echo '::error::Published /app is not the premium workspace artifact.'; head -c 1500 /tmp/public-app.html; exit 1; }
-          grep -q 'Dashboard Hòa nhập Nga' /tmp/public-app.html || { echo '::error::Published /app does not contain premium dashboard markup.'; exit 1; }
+          if grep -q 'workspace-shell' /tmp/public-app.html && grep -q 'Dashboard Hòa nhập Nga' /tmp/public-app.html; then
+            echo "Published /app premium markup PASS."
+          else
+            echo '::error::Published /app is not the premium workspace artifact.'
+            head -c 1500 /tmp/public-app.html
+            echo
+            failures=1
+          fi
 
           curl --fail --silent --show-error --location --max-time 20 "$PUBLIC_SITE/sw.js" >/tmp/public-sw.js
-          grep -q 'ru-life-shell-v2' /tmp/public-sw.js || { echo '::error::Published Site is still serving an old service worker.'; cat /tmp/public-sw.js; exit 1; }
+          if grep -q 'ru-life-shell-v2' /tmp/public-sw.js; then
+            echo "Published service worker v2 PASS."
+          else
+            echo '::error::Published Site is still serving a pre-v2 service worker.'
+            head -c 2000 /tmp/public-sw.js
+            echo
+            failures=1
+          fi
 
           node --input-type=module - <<'NODE'
           import fs from "node:fs";
@@ -111,10 +126,17 @@ jobs:
             [[ "$href" =~ ^https?:// ]] && url="$href" || url="$PUBLIC_SITE$href"
             headers="$(curl --fail --silent --show-error --head --location --max-time 20 "$url")"
             echo "Checking $url"
-            echo "$headers" | tr -d '\r' | grep -Eiq '^content-type:[[:space:]]*text/css([;[:space:]]|$)' || {
+            if echo "$headers" | tr -d '\r' | grep -Eiq '^content-type:[[:space:]]*text/css([;[:space:]]|$)'; then
+              echo "Stylesheet MIME PASS."
+            else
               echo '::error::A published stylesheet is not being served as text/css.'
               echo "$headers"
-              exit 1
-            }
+              failures=1
+            fi
           done </tmp/public-css-links.txt
+
+          if [[ "$failures" -ne 0 ]]; then
+            echo "::error::Published Site is stale/broken; source artifact is healthy but has not been published to the current Site."
+            exit 1
+          fi
           echo "Published Site premium CSS/static/SW v2 PASS."
