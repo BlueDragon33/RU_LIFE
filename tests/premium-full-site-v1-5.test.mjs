@@ -23,14 +23,16 @@ test("public RU_LIFE access gate uses the same flagship product language", async
   assert.match(publicCss, /@media \(max-width: 760px\)/);
 });
 
-test("module and topic routes keep the premium deep experience inside the protected workspace", async () => {
+test("module and topic routes keep the premium deep experience while its stylesheet is root-bundled", async () => {
+  const root = await source("../app/layout.tsx");
   const layout = await source("../app/app/layout.tsx");
   const modulePage = await source("../app/app/[module]/page.tsx");
   const topicPage = await source("../app/app/[module]/[topic]/page.tsx");
   const css = await source("../app/premium-deep.css");
 
   assert.match(layout, /readDeviceSession\(\)/);
-  assert.match(layout, /premium-deep\.css/);
+  assert.match(root, /import "\.\/premium-deep\.css"/);
+  assert.doesNotMatch(layout, /premium-deep\.css/);
   assert.match(modulePage, /module-hero-panel/);
   assert.match(modulePage, /premium-topic-card/);
   assert.match(topicPage, /topic-hero-panel/);
