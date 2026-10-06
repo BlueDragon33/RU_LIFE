@@ -1,0 +1,55 @@
+[
+  {
+    "id": "source:ru:115-fz-article-5",
+    "schemaVersion": 1,
+    "title": "Article 5 — Temporary stay of foreign citizens (Federal Law 115-FZ, current text)",
+    "publisher": "ConsultantPlus — consolidated current legal text",
+    "authority": "official-legal",
+    "url": "https://www.consultant.ru/document/cons_doc_LAW_37868/e9d581e7e11d7901295efd89c869ae044dd3d20f/",
+    "checkedAt": "2026-10-06",
+    "note": "Supports the current 90-calendar-day fingerprint/photo rule for non-work stays over 90 days, the 30-calendar-day medical-examination rule after the 2026 amendment, repeat-examination timing, and consequences for non-compliance."
+  },
+  {
+    "id": "source:ru:109-fz-articles-20-22",
+    "schemaVersion": 1,
+    "title": "Articles 20–22 — Migration registration at the place of stay (Federal Law 109-FZ, current text)",
+    "publisher": "ConsultantPlus — consolidated current legal text",
+    "authority": "official-legal",
+    "url": "https://www.consultant.ru/document/cons_doc_LAW_61569/5870db6b61f003dfeffe784df6b3ee9c026925ba/",
+    "checkedAt": "2026-10-06",
+    "note": "Supports the place-of-stay registration model, receiving-party duties, foreign-citizen filing cases, confirmation via the detachable notification part, and the rule that the receiving party may not seize the foreign citizen's identity/migration documents."
+  },
+  {
+    "id": "source:ru:162-fz-official-publication",
+    "schemaVersion": 1,
+    "title": "Federal Law No. 162-FZ of 10 June 2026",
+    "publisher": "Official Internet Portal of Legal Information",
+    "authority": "official-legal",
+    "url": "http://publication.pravo.gov.ru/document/0001202606100002",
+    "checkedAt": "2026-10-06",
+    "publishedAt": "2026-06-10",
+    "effectiveAt": "2026-09-01",
+    "note": "Official publication of the 2026 amendments establishing unified medical-examination rules for foreign citizens, effective 1 September 2026."
+  },
+  {
+    "id": "source:ru:prosecutor-162-fz-2026",
+    "schemaVersion": 1,
+    "title": "Unified medical-examination rules for foreign citizens from 1 September 2026",
+    "publisher": "Prosecutor's Office of the Russian Federation — regional legal education",
+    "authority": "official-government",
+    "url": "https://epp.genproc.gov.ru/ru/proc_24/activity/legal-education/explain/e8595270/",
+    "checkedAt": "2026-10-06",
+    "publishedAt": "2026-08-25",
+    "note": "Official explanatory material confirming the 1 September 2026 effective date and the 30-day-from-entry medical-examination rule."
+  },
+  {
+    "id": "source:ru:study-in-russia-education",
+    "schemaVersion": 1,
+    "title": "Education — documents foreign students need to live in Russia",
+    "publisher": "Study in Russia",
+    "authority": "official-government",
+    "url": "https://studyinrussia.ru/en/education",
+    "checkedAt": "2026-10-06",
+    "note": "Official international-student portal listing migration card, registration at place of stay, medical-examination certificates and fingerprint certificate as distinct post-entry documents."
+  }
+]
