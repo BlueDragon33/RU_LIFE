@@ -31,8 +31,9 @@ test("topic tools support favorites local reminders and browser notification opt
   assert.match(topicTools, /RU_LIFE_TOOLS_EVENT/);
 });
 
-test("local reminder runtime checks due reminders only inside the protected workspace", async () => {
+test("local reminder runtime stays inside the workspace while tool styles are bundled from the root", async () => {
   const runtime = await source("../components/local-reminder-runtime.tsx");
+  const root = await source("../app/layout.tsx");
   const layout = await source("../app/app/layout.tsx");
 
   assert.match(runtime, /REMINDER_CHECK_MS = 60_000/);
@@ -42,7 +43,8 @@ test("local reminder runtime checks due reminders only inside the protected work
   assert.match(runtime, /visibilitychange/);
   assert.match(runtime, /safeSetLocalStorage/);
   assert.match(layout, /LocalReminderRuntime/);
-  assert.match(layout, /import "\.\.\/tools\.css"/);
+  assert.match(root, /import "\.\/tools\.css"/);
+  assert.doesNotMatch(layout, /tools\.css/);
   assert.match(layout, /readDeviceSession\(\)/);
 });
 
