@@ -49,12 +49,14 @@ test("completing a linked deadline completes its checklist item one-way", async 
   assert.match(page, /checklist=\{topic\.checklist\}/);
 });
 
-test("dashboard exposes backup manager only inside protected workspace CSS boundary", async () => {
+test("dashboard keeps backup manager in the workspace while backup CSS is bundled from the root", async () => {
   const page = await source("../app/app/page.tsx");
+  const root = await source("../app/layout.tsx");
   const layout = await source("../app/app/layout.tsx");
   const css = await source("../app/backup.css");
   assert.match(page, /LocalDataManager/);
-  assert.match(layout, /import "\.\.\/backup\.css"/);
+  assert.match(root, /import "\.\/backup\.css"/);
+  assert.doesNotMatch(layout, /backup\.css/);
   assert.match(layout, /readDeviceSession\(\)/);
   assert.match(css, /\.local-data-manager/);
   assert.match(css, /\.backup-card/);
