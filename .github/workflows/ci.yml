@@ -75,7 +75,7 @@ jobs:
           const html=fs.readFileSync('/tmp/app.html','utf8');
           const hrefs=[...html.matchAll(/<link[^>]+rel=["']stylesheet["'][^>]+href=["']([^"']+)["']/gi)].map(m=>m[1]);
           if(!hrefs.length) throw new Error('No stylesheet links found in /app HTML');
-          fs.writeFileSync('/tmp/css-links.txt',hrefs.join('\n'));
+          fs.writeFileSync('/tmp/css-links.txt',hrefs.join('\n')+'\n');
           console.log('stylesheets',hrefs);
           NODE
           while IFS= read -r href; do
@@ -119,7 +119,7 @@ jobs:
           const html=fs.readFileSync('/tmp/public-app.html','utf8');
           const hrefs=[...html.matchAll(/<link[^>]+rel=["']stylesheet["'][^>]+href=["']([^"']+)["']/gi)].map(m=>m[1]);
           if(!hrefs.length) throw new Error('Published /app has no stylesheet links');
-          fs.writeFileSync('/tmp/public-css-links.txt',hrefs.join('\n'));
+          fs.writeFileSync('/tmp/public-css-links.txt',hrefs.join('\n')+'\n');
           console.log('published stylesheets',hrefs);
           NODE
           while IFS= read -r href; do
