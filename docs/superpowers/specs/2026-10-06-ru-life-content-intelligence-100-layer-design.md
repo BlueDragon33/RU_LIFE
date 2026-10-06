@@ -3,7 +3,7 @@
 **Status:** Approved architecture baseline  
 **Date:** 2026-10-06  
 **Repository:** `BlueDragon33/RU_LIFE`  
-**Constitution:** `blueprint-os:universal-century-grade` v1.1.0 · Blueprint B3 · enforcement `enforced`  
+**Constitution:** `blueprint-os:universal-century-grade` v1.2.0 · Blueprint B3 · enforcement `enforced`  
 **Production authority:** separate explicit release gate  
 **Primary companion prompt:** `prompts/RU_LIFE_CONTENT_INTELLIGENCE_100_LAYER_MASTER.md`
 
@@ -25,7 +25,7 @@ The core product promise is:
 
 ## 2. Constitutional alignment
 
-Every implementation decision under this specification MUST explicitly preserve all six inherited constitutional pillars.
+Every implementation decision under this specification MUST explicitly preserve all seven inherited constitutional pillars.
 
 ### 2.1 Structural capacity
 
@@ -50,6 +50,10 @@ Source provenance, freshness, migration, auditability, rollback, export, and res
 ### 2.6 Fortress security and disaster resilience
 
 Knowledge content, personal state, device identity, session state, entitlements, and management control must remain separate security domains. No content feature may weaken RU_LIFE's existing device/session or backup boundaries.
+
+### 2.7 Operational sovereignty and dependency minimization
+
+RU_LIFE must preserve the ability to operate without unnecessary dependence on external vendors. Prefer local-first and repository-owned contracts, use replaceable providers, avoid introducing services that merely duplicate existing capability, and ensure loss of an optional provider does not collapse ordinary knowledge access. External dependencies require a documented need, exit path, and boundary.
 
 No constitutional waiver is assumed by this design.
 
@@ -673,7 +677,7 @@ A content-intelligence feature is not complete until it passes:
 6. **UX gate** — progressive disclosure avoids overload.
 7. **Accessibility gate** — equivalent non-color/non-visual access exists.
 8. **Architecture gate** — no domain boundary is broken.
-9. **Constitution gate** — all six inherited pillars are satisfied.
+9. **Constitution gate** — all seven inherited pillars are satisfied.
 10. **Release gate** — preview/E2E verification precedes explicit Production authority.
 
 ---
