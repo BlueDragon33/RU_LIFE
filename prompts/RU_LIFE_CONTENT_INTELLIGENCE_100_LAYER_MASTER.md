@@ -5,7 +5,7 @@
 **Repository:** `BlueDragon33/RU_LIFE`  
 **Design authority:** `docs/superpowers/specs/2026-10-06-ru-life-content-intelligence-100-layer-design.md`  
 **Constitution authority:** `.blueprint/constitution-adoption.json`  
-**Constitution policy:** `blueprint-os:universal-century-grade` v1.1.0  
+**Constitution policy:** `blueprint-os:universal-century-grade` v1.2.0  
 **Blueprint level:** B3  
 **Enforcement:** enforced  
 **Production authority:** separate explicit release gate
@@ -152,6 +152,20 @@ Require strict separation of:
 - Application Management control state.
 
 A content feature MUST NOT weaken device/session boundaries or expose secrets.
+
+## 2.7 Operational Sovereignty & Dependency Minimization
+
+Require:
+
+- local-first behavior where the current architecture supports it;
+- repository-owned contracts and exportable data;
+- optional providers to be replaceable;
+- no external service merely to duplicate a capability already owned by RU_LIFE;
+- documented architectural need before adding a vendor;
+- an exit/fallback path for critical dependencies;
+- ordinary knowledge access not to collapse because an optional provider is unavailable.
+
+Provider convenience MUST NOT override architectural sovereignty.
 
 No waiver may be invented.
 
@@ -944,7 +958,7 @@ It must pass content, risk, UX, accessibility, architecture and regression tests
 
 ### L94 — Constitutional Gate
 
-Evaluate all six pillars.
+Evaluate all seven pillars.
 
 ### L95 — Security Boundary Gate
 
@@ -2160,7 +2174,7 @@ Focused tests + regression status.
 
 ## Constitutional check
 
-State effects on all six pillars.
+State effects on all seven pillars.
 
 ## Known limitations
 
