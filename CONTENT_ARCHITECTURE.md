@@ -113,6 +113,7 @@ Mốc kiểm soát nội bộ:
 - `app/tools.css` — favorite/filter/reminder;
 - `app/deadlines.css` — deadline/source review;
 - `app/backup.css` — backup/migration/storage warning.
+- `app/knowledge.css` — Content Intelligence views, map/decision, context lenses.
 
 Regression hiện khóa breakpoint và cách stack layout cho desktop/tablet/phone, bao gồm 900 px và 620 px ở khu backup. Đây là **source/layout contract**, không phải bằng chứng rằng UI đã được kiểm tra trên mọi trình duyệt hoặc thiết bị vật lý. Kiểm thử thiết bị thật vẫn là một gate riêng.
 
@@ -153,7 +154,36 @@ Personal state tiếp tục tách khỏi canonical knowledge. Progress, favorite
 
 CSS của Content Intelligence được root-bundle qua `app/knowledge.css` để giữ nguyên production static-asset contract; không đưa stylesheet trở lại nested `/app` layout.
 
-Wave 1 chỉ chứng minh một vertical slice. Migrate 19 topic còn lại, lenses, content packs, entitlement và billing là các wave độc lập sau khi vertical slice được xác minh.
+Wave 1 chứng minh vertical slice; Wave 2 sau đó đã migrate catalog 20/20. Context lenses, content packs, entitlement và billing vẫn là các lớp độc lập và phải giữ canonical truth tách khỏi presentation/commercial state.
+
+
+## Content Intelligence Wave 2 — Catalog 20/20
+
+Wave 2 đã migrate toàn bộ 20 topic hiện có sang cùng `KnowledgeUnitV1` contract mà không đổi route/module/topic slug.
+
+- `lib/content-intelligence/registry.ts` đăng ký đủ 20 Knowledge Units và source registries bằng stable IDs.
+- Legacy `TopicContent` vẫn tồn tại như compatibility boundary; catalog route hiện ưu tiên Knowledge Unit renderer.
+- Validator kiểm source/reference/map/decision integrity trên toàn catalog và yêu cầu authoritative provenance cho high-risk knowledge.
+- Local search dùng structured knowledge terms nhưng không yêu cầu API/network.
+- Chromium E2E đi qua đủ 20 route, chuyển ba reading modes và giữ personal progress sidebar.
+- Health/emergency và legal/immigration content giữ risk/source qualifiers; practical recommendations không được nâng thành official rule khi thiếu evidence.
+
+Wave 2 không thêm provider, graph database, CMS, runtime AI, entitlement hoặc billing.
+
+## Content Intelligence Wave 3 — Context Lenses
+
+Wave 3 bắt đầu lớp contextual personalization theo nguyên tắc **lens selects/emphasizes; canonical truth stays shared**.
+
+- `lib/content-intelligence/lenses.ts` là resolver repository-owned, local-first, dựa trên stable unit/decision/option IDs.
+- Lens hiện được chứng minh bằng accommodation context của `study-procedures/migration-registration`: dormitory, rental và temporary accommodation chỉ preselect nhánh decision đã tồn tại trong canonical unit.
+- Lens không copy decision prose, không sửa `KnowledgeUnitV1`, không ẩn do-not/critical/caution blocks và không thay đổi source/provenance.
+- Context state của Wave 3 chỉ sống trong React component state; không ghi localStorage/sessionStorage/cookie và không thêm profile/sensitive-data namespace.
+- Người dùng luôn có thể override nhánh đã được lens preselect bằng chính decision controls hiện có.
+- Topic không có lens rule giữ nguyên trải nghiệm cũ; unknown/empty context fail-safe về unpersonalized experience.
+- Browser E2E khóa desktop/tablet/phone behavior, keyboard/manual override, 20/20 route regression, CSS MIME và service worker v2.
+
+Wave 3 chỉ chứng minh lens architecture bằng một context có canonical decision mapping rõ ràng. Persona/location/institution lenses chỉ nên mở rộng khi có metadata/evidence riêng; không suy diễn hoặc nhân bản knowledge để lấp chỗ trống.
+
 
 ## Hướng phát triển sau V1.4
 
