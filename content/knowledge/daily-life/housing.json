@@ -1,0 +1,260 @@
+{
+  "id": "ru-life:daily-life:housing",
+  "schemaVersion": 1,
+  "moduleSlug": "daily-life",
+  "topicSlug": "housing",
+  "title": "Nhà ở · ký túc xá",
+  "summary": "Ổn định chỗ ở, đầu mối và điều kiện bàn giao; nhận phòng không đồng nghĩa nghĩa vụ đăng ký nơi lưu trú/cư trú đã hoàn tất.",
+  "provenance": {
+    "sourceIds": [
+      "source:ru:daily:housing:studyinrussia"
+    ],
+    "verifiedAt": "2026-10-07",
+    "freshness": "verified"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "housing:idea:separate",
+      "text": "Nhận phòng và thủ tục cư trú là hai luồng khác nhau; chỗ ở phải có thông tin bàn giao/đầu mối, còn đăng ký nơi lưu trú phải theo quy trình riêng.",
+      "sourceIds": [
+        "source:ru:daily:housing:studyinrussia"
+      ]
+    },
+    "purpose": {
+      "id": "housing:purpose:stable",
+      "text": "Giúp ổn định nơi ở, ghi nhận tình trạng phòng và không bỏ sót đầu mối/thủ tục sau khi đến.",
+      "sourceIds": [
+        "source:ru:daily:housing:studyinrussia"
+      ]
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "housing:logic:before",
+        "text": "Trước khi nhận phòng, xác nhận địa chỉ, giờ làm việc, đầu mối, giấy tờ và khoản thanh toán theo chính trường/chỗ ở.",
+        "sourceIds": [
+          "source:ru:daily:housing:studyinrussia"
+        ]
+      },
+      {
+        "id": "housing:logic:separate",
+        "text": "Được nhận phòng không chứng minh đăng ký nơi lưu trú/cư trú đã hoàn tất; phải hỏi đầu mối sinh viên quốc tế/ký túc xá về luồng đó.",
+        "sourceIds": [
+          "source:ru:daily:housing:studyinrussia"
+        ]
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "housing:scope:institution",
+        "text": "Quy trình nhận phòng cụ thể phụ thuộc trường/ký túc xá hoặc hợp đồng thuê; RU_LIFE không đóng băng một danh mục chung.",
+        "sourceIds": [
+          "source:ru:daily:housing:studyinrussia"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "housing:action:confirm",
+        "text": "Xác nhận địa chỉ, giờ tiếp nhận và người phụ trách trước khi đến.",
+        "sourceIds": [
+          "source:ru:daily:housing:studyinrussia"
+        ]
+      },
+      {
+        "id": "housing:action:inspect",
+        "text": "Khi nhận phòng, chụp tình trạng phòng/đồ đạc, kiểm tra khóa, điện, nước, sưởi và báo lỗi qua kênh chính thức.",
+        "sourceIds": []
+      },
+      {
+        "id": "housing:action:migration",
+        "text": "Sau khi ổn định chỗ ở, hỏi đầu mối phù hợp về đăng ký nơi lưu trú/cư trú và giấy tờ cần xử lý.",
+        "sourceIds": [
+          "source:ru:daily:housing:studyinrussia"
+        ]
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "housing:outcome:settled",
+        "text": "Bạn có chỗ ở được bàn giao rõ ràng, biết đầu mối xử lý sự cố và biết thủ tục cư trú nào còn phải xác nhận.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "housing:remember:address",
+        "text": "Lưu địa chỉ và đầu mối chỗ ở.",
+        "sourceIds": []
+      },
+      {
+        "id": "housing:remember:inspect",
+        "text": "Ghi/chụp tình trạng phòng khi nhận.",
+        "sourceIds": []
+      },
+      {
+        "id": "housing:remember:not-migration",
+        "text": "Nhận phòng ≠ hoàn tất đăng ký nơi lưu trú/cư trú.",
+        "sourceIds": [
+          "source:ru:daily:housing:studyinrussia"
+        ]
+      }
+    ],
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [],
+    "memoryAnchor": {
+      "id": "housing:anchor:two-tracks",
+      "text": "CHỖ Ở/BÀN GIAO là một việc; CƯ TRÚ/NƠI LƯU TRÚ là một việc khác.",
+      "sourceIds": [
+        "source:ru:daily:housing:studyinrussia"
+      ]
+    }
+  },
+  "journey": {
+    "stages": [
+      "Xác nhận trước khi đến",
+      "Nhận phòng",
+      "Kiểm tra bàn giao",
+      "Lưu đầu mối",
+      "Kiểm tra cư trú"
+    ],
+    "triggers": [
+      {
+        "id": "housing:trigger:arrival",
+        "text": "Bạn chuẩn bị nhận phòng hoặc vừa đổi chỗ ở.",
+        "sourceIds": [
+          "source:ru:daily:housing:studyinrussia"
+        ]
+      }
+    ],
+    "checklist": [
+      {
+        "id": "housing:check:address",
+        "text": "Lưu thông tin chỗ ở.",
+        "sourceIds": []
+      },
+      {
+        "id": "housing:check:contact",
+        "text": "Ghi lại đầu mối cần liên hệ.",
+        "sourceIds": []
+      },
+      {
+        "id": "housing:check:items",
+        "text": "Lập danh sách vật dụng còn thiếu.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [],
+    "decisions": [],
+    "requiredMaterials": [],
+    "completionEvidence": [],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "housing:node:start",
+          "label": "Xác nhận nơi ở",
+          "kind": "stage",
+          "evidenceId": "housing:next:contact"
+        },
+        {
+          "id": "housing:node:inspect",
+          "label": "Nhận phòng & bàn giao",
+          "kind": "action",
+          "evidenceId": "housing:action:inspect"
+        },
+        {
+          "id": "housing:node:migration",
+          "label": "Kiểm tra cư trú",
+          "kind": "action",
+          "evidenceId": "housing:action:migration"
+        }
+      ],
+      "edges": [
+        {
+          "from": "housing:node:start",
+          "to": "housing:node:inspect"
+        },
+        {
+          "from": "housing:node:inspect",
+          "to": "housing:node:migration"
+        }
+      ]
+    },
+    "nextAction": {
+      "id": "housing:next:contact",
+      "text": "Xác nhận địa chỉ, giờ tiếp nhận, đầu mối và bước nhận phòng của chính nơi ở.",
+      "sourceIds": [
+        "source:ru:daily:housing:studyinrussia"
+      ]
+    }
+  },
+  "risk": {
+    "categories": [
+      "safety",
+      "document-loss"
+    ],
+    "severity": "moderate",
+    "doNot": [],
+    "critical": [],
+    "cautions": [
+      {
+        "id": "housing:caution:separate",
+        "text": "Không coi việc được nhận phòng/hợp đồng chỗ ở là bằng chứng rằng đăng ký nơi lưu trú/cư trú đã xong.",
+        "sourceIds": [
+          "source:ru:daily:housing:studyinrussia"
+        ]
+      }
+    ],
+    "recommended": [
+      {
+        "id": "housing:recommend:photos",
+        "text": "Chụp tình trạng phòng và hư hỏng có sẵn trước khi sắp đồ.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "housing:uncertainty:rules",
+        "text": "Nội quy, khoản thanh toán, giấy tờ và quy trình nhận phòng phụ thuộc từng cơ sở/chỗ ở.",
+        "sourceIds": [
+          "source:ru:daily:housing:studyinrussia"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [],
+    "enTerms": [],
+    "usefulPhrases": [],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:migration-registration",
+      "label": "Đăng ký nơi lưu trú/cư trú"
+    }
+  ],
+  "searchTerms": [
+    "nhà ở",
+    "ký túc xá",
+    "nhận phòng",
+    "cư trú",
+    "nơi lưu trú",
+    "housing",
+    "dormitory"
+  ]
+}
