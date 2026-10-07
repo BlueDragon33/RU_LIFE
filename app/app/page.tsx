@@ -4,7 +4,8 @@ import WorkspaceDashboard, { type DashboardTopic } from "@/components/workspace-
 import WorkspacePersonalTools, { type PersonalToolsTopic } from "@/components/workspace-personal-tools";
 import WorkspaceDeadlineBoard, { type DeadlineBoardTopic } from "@/components/workspace-deadline-board";
 import { ruLifeModules, topicCount } from "@/lib/content-catalog";
-import { getResolvedTopicContent } from "@/lib/content-resolver";
+import { getResolvedKnowledgeUnit, getResolvedTopicContent } from "@/lib/content-resolver";
+import { buildKnowledgeSearchTerms } from "@/lib/content-intelligence/search";
 import { getTopicSituations } from "@/lib/topic-situations";
 
 const moduleIcon: Record<string, string> = {
@@ -18,6 +19,7 @@ const moduleIcon: Record<string, string> = {
 export default function ProtectedAppPage() {
   const dashboardTopics: DashboardTopic[] = ruLifeModules.flatMap((moduleData) => moduleData.topics.map((topic) => {
     const content = getResolvedTopicContent(moduleData.slug, topic.slug);
+    const intelligence = getResolvedKnowledgeUnit(moduleData.slug, topic.slug);
     return {
       moduleSlug: moduleData.slug,
       moduleCode: moduleData.code,
@@ -28,6 +30,7 @@ export default function ProtectedAppPage() {
       summary: topic.summary,
       priority: topic.priority,
       checklist: topic.checklist,
+      searchTerms: intelligence ? buildKnowledgeSearchTerms(intelligence) : [],
       freshness: content?.freshness || "review-soon",
       updatedAt: content?.updatedAt || "",
     };
