@@ -1,3 +1,9 @@
+import housingJson from "../../content/knowledge/daily-life/housing.json";
+import shoppingServicesJson from "../../content/knowledge/daily-life/shopping-services.json";
+import transportJson from "../../content/knowledge/daily-life/transport.json";
+import housingSourcesJson from "../../content/sources/daily-life/housing.sources.json";
+import shoppingServicesSourcesJson from "../../content/sources/daily-life/shopping-services.sources.json";
+import transportSourcesJson from "../../content/sources/daily-life/transport.sources.json";
 import arrivalPlanJson from "../../content/knowledge/prepare/arrival-plan.json";
 import documentsJson from "../../content/knowledge/prepare/documents.json";
 import luggageJson from "../../content/knowledge/prepare/luggage.json";
@@ -34,6 +40,12 @@ const luggage = luggageJson as KnowledgeUnitV1;
 const luggageSources = luggageSourcesJson as KnowledgeSourceV1[];
 const moneyConnectivity = moneyConnectivityJson as KnowledgeUnitV1;
 const moneyConnectivitySources = moneyConnectivitySourcesJson as KnowledgeSourceV1[];
+const housing = housingJson as KnowledgeUnitV1;
+const housingSources = housingSourcesJson as KnowledgeSourceV1[];
+const shoppingServices = shoppingServicesJson as KnowledgeUnitV1;
+const shoppingServicesSources = shoppingServicesSourcesJson as KnowledgeSourceV1[];
+const transport = transportJson as KnowledgeUnitV1;
+const transportSources = transportSourcesJson as KnowledgeSourceV1[];
 const safety = safetyJson as KnowledgeUnitV1;
 const safetySources = safetySourcesJson as KnowledgeSourceV1[];
 const careNavigation = careNavigationJson as KnowledgeUnitV1;
@@ -112,6 +124,21 @@ const registryEntries: KnowledgeRegistryEntry[] = [
     topicKey: "prepare:money-connectivity",
     unit: moneyConnectivity,
     sources: moneyConnectivitySources,
+  },
+  {
+    topicKey: "daily-life:housing",
+    unit: housing,
+    sources: housingSources,
+  },
+  {
+    topicKey: "daily-life:shopping-services",
+    unit: shoppingServices,
+    sources: shoppingServicesSources,
+  },
+  {
+    topicKey: "daily-life:transport",
+    unit: transport,
+    sources: transportSources,
   },
   {
     topicKey: "daily-life:safety",
