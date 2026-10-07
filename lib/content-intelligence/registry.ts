@@ -1,9 +1,21 @@
+import enrollmentJson from "../../content/knowledge/study-procedures/enrollment.json";
+import importantContactsJson from "../../content/knowledge/study-procedures/important-contacts.json";
 import migrationRegistrationJson from "../../content/knowledge/study-procedures/migration-registration.json";
+import studyPlanJson from "../../content/knowledge/study-procedures/study-plan.json";
+import enrollmentSourcesJson from "../../content/sources/study-procedures/enrollment.sources.json";
+import importantContactsSourcesJson from "../../content/sources/study-procedures/important-contacts.sources.json";
 import migrationRegistrationSourcesJson from "../../content/sources/study-procedures/migration-registration.sources.json";
+import studyPlanSourcesJson from "../../content/sources/study-procedures/study-plan.sources.json";
 import type { KnowledgeSourceV1, KnowledgeUnitV1 } from "./types";
 
+const enrollment = enrollmentJson as KnowledgeUnitV1;
+const enrollmentSources = enrollmentSourcesJson as KnowledgeSourceV1[];
+const importantContacts = importantContactsJson as KnowledgeUnitV1;
+const importantContactsSources = importantContactsSourcesJson as KnowledgeSourceV1[];
 const migrationRegistration = migrationRegistrationJson as KnowledgeUnitV1;
 const migrationRegistrationSources = migrationRegistrationSourcesJson as KnowledgeSourceV1[];
+const studyPlan = studyPlanJson as KnowledgeUnitV1;
+const studyPlanSources = studyPlanSourcesJson as KnowledgeSourceV1[];
 
 type KnowledgeRegistryEntry = {
   topicKey: string;
@@ -46,9 +58,24 @@ function createKnowledgeRegistry(entries: KnowledgeRegistryEntry[]) {
 
 const registryEntries: KnowledgeRegistryEntry[] = [
   {
+    topicKey: "study-procedures:enrollment",
+    unit: enrollment,
+    sources: enrollmentSources,
+  },
+  {
+    topicKey: "study-procedures:important-contacts",
+    unit: importantContacts,
+    sources: importantContactsSources,
+  },
+  {
     topicKey: "study-procedures:migration-registration",
     unit: migrationRegistration,
     sources: migrationRegistrationSources,
+  },
+  {
+    topicKey: "study-procedures:study-plan",
+    unit: studyPlan,
+    sources: studyPlanSources,
   },
 ];
 
