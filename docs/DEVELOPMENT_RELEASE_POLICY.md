@@ -40,3 +40,21 @@ At release time:
 9. Return to Development Live Mode unless instructed otherwise.
 
 The Release workflow must remain available even while Development Live Mode is the default.
+
+
+## Constitution 1.2 dependency posture
+
+Repository authority: `blueprint-os:universal-century-grade@1.2.0`.
+
+Canonical machine-readable dependency budget:
+
+`.blueprint/dependency-budget.json`
+
+Release/development rules:
+- local/standalone capability is the baseline where technically practical;
+- Cloudflare/hosted runtime is a publish adapter, not automatic canonical authority for all personal state;
+- Google Drive/Sheets/Apps Script remain optional sync/backup/projection adapters only;
+- sensitive identity/immigration documents require explicit user choice and appropriate encryption/privacy handling before remote backup;
+- raw sensitive document/profile data must not be projected to Sheets by default;
+- AI is advisory and provider-replaceable;
+- no paid provider may become mandatory for core personal-reference workflows without explicit capability-gap justification and owner approval.
