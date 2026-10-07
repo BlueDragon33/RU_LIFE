@@ -12,3 +12,46 @@ permissions:
 jobs:
   constitution:
     uses: BlueDragon33/Software-Blueprint-Hub/.github/workflows/constitution-compliance.yml@main
+
+  dependency-sovereignty:
+    name: Constitution 1.2 RU_LIFE dependency sovereignty
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate RU_LIFE dependency budget
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          adoption = json.loads(Path(".blueprint/constitution-adoption.json").read_text())
+          budget = json.loads(Path(".blueprint/dependency-budget.json").read_text())
+
+          assert adoption["policyVersion"] == "1.2.0"
+          assert "operational-sovereignty-dependency-minimization" in adoption["inheritedPillars"]
+          assert budget["policyVersion"] == "1.2.0"
+          assert budget["projectId"] == adoption["projectId"] == "project:ru-life"
+          assert budget["posture"] == "LOCAL_PERSONAL_LIFE_CORE_WITH_OPTIONAL_SYNC"
+          assert budget["complianceState"] == "MIGRATION_REQUIRED"
+          assert budget["productionAuthority"] == "separate-explicit-release-gate"
+          assert len(budget.get("migrationBlockers", [])) >= 4
+
+          deps = {item["id"]: item for item in budget["dependencies"]}
+          assert deps["local-webapp-runtime"]["class"] == "LOCAL_CORE"
+          assert deps["google-drive"]["class"] == "OPTIONAL_SYNC"
+          assert deps["google-sheets"]["class"] == "OPTIONAL_SYNC"
+          assert deps["google-sheets"]["status"] == "discouraged-for-sensitive-personal-data"
+          assert deps["chatgpt-ai"]["class"] == "OPTIONAL_INTELLIGENCE"
+
+          for dep in budget["dependencies"]:
+              assert dep.get("offlineBehavior")
+              assert dep.get("exitPath")
+
+          forbidden = set(budget["forbidden"])
+          assert "raw-passport-visa-or-credential-data-in-sheets-by-default" in forbidden
+          assert "mandatory-paid-provider-for-core-personal-reference-workflows" in forbidden
+          assert "ai-owned-immigration-or-legal-truth" in forbidden
+
+          print("RU_LIFE Constitution 1.2 dependency sovereignty: PASS")
+          PY
