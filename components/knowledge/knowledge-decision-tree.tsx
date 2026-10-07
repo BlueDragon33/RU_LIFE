@@ -13,8 +13,8 @@ function byId(items: EvidenceText[]) {
   return new Map(items.map((item) => [item.id, item]));
 }
 
-export default function KnowledgeDecisionTree({ decisions, unit }: { decisions: KnowledgeDecision[]; unit: KnowledgeUnitV1 }) {
-  const [selected, setSelected] = useState<Record<string, string>>({});
+export default function KnowledgeDecisionTree({ decisions, unit, initialSelections = {} }: { decisions: KnowledgeDecision[]; unit: KnowledgeUnitV1; initialSelections?: Readonly<Record<string, string>> }) {
+  const [selected, setSelected] = useState<Record<string, string>>({ ...initialSelections });
   const actions = byId([
     ...unit.semantics.actions,
     ...unit.journey.checklist,
