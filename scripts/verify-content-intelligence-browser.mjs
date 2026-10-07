@@ -81,6 +81,37 @@ try {
     await visible(page.locator(".knowledge-outline"), `${viewport.label} outline fallback`);
   }
 
+  const emergencyRoute = "/app/health/emergency";
+  const emergencyURL = baseURL + emergencyRoute;
+  await page.setViewportSize({ width: 1440, height: 900 });
+  let emergencyResponse = await page.goto(emergencyURL, { waitUntil: "networkidle", timeout: 30000 });
+  assert(emergencyResponse && emergencyResponse.ok(), `emergency route must load successfully: ${emergencyResponse?.status()}`);
+  await visible(page.locator(".knowledge-experience"), "emergency knowledge experience");
+  await visible(page.locator(".knowledge-risk-group.do-not"), "emergency do-not warning");
+  await visible(page.locator(".knowledge-risk-group.critical"), "emergency critical warning");
+  assert((await page.locator(".knowledge-next-action").innerText()).includes("112"), "emergency next action must keep 112 prominent");
+  assert((await page.locator(".knowledge-next-action").innerText()).includes("103"), "emergency next action must keep 103 prominent");
+  await page.getByRole("button", { name: "Tôi muốn hiểu" }).click();
+  await visible(page.locator(".knowledge-learning-view"), "emergency learning view");
+  await page.getByRole("button", { name: "Cho tôi xem toàn bộ" }).click();
+  await visible(page.locator(".knowledge-full-view"), "emergency full view");
+  await visible(page.locator(".knowledge-source-list"), "emergency source list");
+  await page.getByRole("button", { name: "Tôi cần làm gì?" }).click();
+  const emergencyMapButton = page.locator(".knowledge-map-nodes button").nth(1);
+  await emergencyMapButton.focus();
+  await page.keyboard.press("Enter");
+  assert(await emergencyMapButton.getAttribute("aria-pressed") === "true", "emergency map node must be keyboard selectable");
+  await visible(page.locator(".knowledge-outline"), "emergency outline fallback");
+  await page.setViewportSize({ width: 390, height: 844 });
+  emergencyResponse = await page.goto(emergencyURL, { waitUntil: "networkidle", timeout: 30000 });
+  assert(emergencyResponse && emergencyResponse.ok(), "emergency phone route must load");
+  const emergencyDimensions = await page.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    innerWidth: window.innerWidth,
+  }));
+  assert(emergencyDimensions.scrollWidth <= emergencyDimensions.innerWidth + 1, `emergency phone must not horizontally overflow: ${emergencyDimensions.scrollWidth} > ${emergencyDimensions.innerWidth}`);
+  await visible(page.locator(".topic-progress-panel"), "emergency personal progress sidebar");
+
   const sw = await page.request.get(baseURL + "/sw.js");
   assert(sw.ok(), "service worker must return HTTP 200");
   assert((await sw.text()).includes("ru-life-shell-v2"), "service worker must be v2");
@@ -103,6 +134,7 @@ try {
   console.log(JSON.stringify({
     status: "PASS",
     route,
+    emergencyRoute,
     modes: 3,
     mapNodes: await mapButtons.count(),
     viewports: viewports.map((entry) => entry.label),
