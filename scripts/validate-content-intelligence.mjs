@@ -96,7 +96,18 @@ function validateEvidenceSourceIds(unit, sourceIds) {
   }
 }
 
-function validateHighRisk(unit) {
+function validateHighRisk(unit, sourceById) {
+  if (unit.risk?.severity === "high" || unit.risk?.severity === "critical") {
+    const provenanceIds = unit.provenance?.sourceIds || [];
+    const authoritative = provenanceIds.some((sourceId) => {
+      const authority = sourceById.get(sourceId)?.authority;
+      return authority === "official-legal" || authority === "official-government";
+    });
+    if (!provenanceIds.length || !authoritative) {
+      fail(`high-risk unit ${unit.id || "<unknown>"} requires at least one authoritative provenance source`);
+    }
+  }
+
   for (const bucketName of ["doNot", "critical"]) {
     const bucket = unit.risk?.[bucketName] || [];
     for (const item of bucket) {
@@ -151,7 +162,7 @@ function validateDecisions(unit) {
   }
 }
 
-function validateUnit(unit, sourceIds, unitIds) {
+function validateUnit(unit, sourceIds, unitIds, sourceById) {
   if (!isObject(unit)) fail("knowledge unit must be an object");
   if (unit.schemaVersion !== 1) fail(`unit ${unit.id || "<unknown>"} schemaVersion must be 1`);
   if (typeof unit.id !== "string" || !unit.id) fail("knowledge unit id is required");
@@ -169,7 +180,7 @@ function validateUnit(unit, sourceIds, unitIds) {
   }
 
   validateEvidenceSourceIds(unit, sourceIds);
-  validateHighRisk(unit);
+  validateHighRisk(unit, sourceById);
   validateMap(unit);
   validateDecisions(unit);
 }
@@ -196,10 +207,14 @@ async function main() {
   const sources = await loadRecords(sourcePaths);
   const units = await loadRecords(unitPaths);
   const sourceIds = new Set();
+  const sourceById = new Map();
   const unitIds = new Set();
 
-  for (const source of sources) validateSource(source, sourceIds);
-  for (const unit of units) validateUnit(unit, sourceIds, unitIds);
+  for (const source of sources) {
+    validateSource(source, sourceIds);
+    sourceById.set(source.id, source);
+  }
+  for (const unit of units) validateUnit(unit, sourceIds, unitIds, sourceById);
 
   process.stdout.write(`content-intelligence validation PASS: ${sources.length} source(s), ${units.length} unit(s)\n`);
 }
