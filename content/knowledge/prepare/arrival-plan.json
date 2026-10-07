@@ -1,0 +1,320 @@
+{
+  "id": "ru-life:prepare:arrival-plan",
+  "schemaVersion": 1,
+  "moduleSlug": "prepare",
+  "topicSlug": "arrival-plan",
+  "title": "Kế hoạch ngày đầu",
+  "summary": "Trình tự từ lúc hạ cánh đến khi ổn định chỗ ở; tách di chuyển khỏi các nghĩa vụ pháp lý sau nhập cảnh.",
+  "provenance": {
+    "sourceIds": [
+      "source:ru:prepare:arrival:home",
+      "source:ru:prepare:arrival:education"
+    ],
+    "verifiedAt": "2026-10-07",
+    "freshness": "verified"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "arrival:idea:sequence",
+      "text": "Đi theo trình tự: giữ thông tin offline → xử lý cửa khẩu/hành lý → đi tới chỗ ở → báo đầu mối trường và hỏi bước hành chính tiếp theo.",
+      "sourceIds": [
+        "source:ru:prepare:arrival:home",
+        "source:ru:prepare:arrival:education"
+      ]
+    },
+    "purpose": {
+      "id": "arrival:purpose:stable",
+      "text": "Giảm lúng túng trong ngày đầu và tránh lẫn checklist di chuyển với thủ tục cư trú.",
+      "sourceIds": [
+        "source:ru:prepare:arrival:home",
+        "source:ru:prepare:arrival:education"
+      ]
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "arrival:logic:border",
+        "text": "Tại cửa khẩu dùng đúng hộ chiếu/visa của hành trình, giữ giấy tờ nhập cảnh được cấp khi áp dụng và cất cùng bộ hồ sơ chính.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home",
+          "source:ru:prepare:arrival:education"
+        ]
+      },
+      {
+        "id": "arrival:logic:school",
+        "text": "Khi tới nơi ở, xác nhận với đầu mối trường/ký túc xá rằng bạn đã đến và hỏi bước hành chính tiếp theo.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home",
+          "source:ru:prepare:arrival:education"
+        ]
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "arrival:scope:migration-separate",
+        "text": "Thời hạn và quy trình cư trú không được suy ra từ checklist di chuyển; phải theo hướng dẫn hiện hành và Knowledge Unit thủ tục riêng.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:education"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "arrival:action:offline",
+        "text": "Trước hạ cánh, mở được offline địa chỉ nơi ở, tên trường, đầu mối đón và phương án đi dự phòng.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home"
+        ]
+      },
+      {
+        "id": "arrival:action:border",
+        "text": "Tại cửa khẩu/khu hành lý, dùng đúng giấy tờ, giữ giấy tờ nhập cảnh phát sinh và xử lý thất lạc hành lý trước khi rời sân bay.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home",
+          "source:ru:prepare:arrival:education"
+        ]
+      },
+      {
+        "id": "arrival:action:host",
+        "text": "Tới chỗ ở thì báo đầu mối trường/ký túc xá và hỏi bước hành chính tiếp theo.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home",
+          "source:ru:prepare:arrival:education"
+        ]
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "arrival:outcome:arrived",
+        "text": "Bạn đã tới đúng nơi ở, giữ giấy tờ phát sinh và biết đầu mối/bước tiếp theo.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "arrival:remember:offline",
+        "text": "Địa chỉ và đầu mối phải mở được khi mất mạng.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home"
+        ]
+      },
+      {
+        "id": "arrival:remember:documents",
+        "text": "Giữ và sao lưu giấy tờ nhập cảnh phát sinh.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:education"
+        ]
+      },
+      {
+        "id": "arrival:remember:contact",
+        "text": "Tới nơi ở phải báo trường/ký túc xá và hỏi bước hành chính tiếp theo.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home",
+          "source:ru:prepare:arrival:education"
+        ]
+      }
+    ],
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [],
+    "memoryAnchor": {
+      "id": "arrival:anchor:four",
+      "text": "HẠ CÁNH → GIẤY TỜ/HÀNH LÝ → CHỖ Ở → ĐẦU MỐI TRƯỜNG.",
+      "sourceIds": [
+        "source:ru:prepare:arrival:home",
+        "source:ru:prepare:arrival:education"
+      ]
+    }
+  },
+  "journey": {
+    "stages": [
+      "Trước hạ cánh",
+      "Cửa khẩu & hành lý",
+      "Di chuyển",
+      "Tới chỗ ở",
+      "24 giờ đầu"
+    ],
+    "triggers": [
+      {
+        "id": "arrival:trigger:landing",
+        "text": "Máy bay sắp hạ cánh hoặc bạn vừa vào Nga.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home"
+        ]
+      }
+    ],
+    "checklist": [
+      {
+        "id": "arrival:check:first",
+        "text": "Xác định điểm đến đầu tiên.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home"
+        ]
+      },
+      {
+        "id": "arrival:check:address",
+        "text": "Lưu địa chỉ chỗ ở.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home"
+        ]
+      },
+      {
+        "id": "arrival:check:sequence",
+        "text": "Chuẩn bị thứ tự các việc phải làm sau khi đến.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home",
+          "source:ru:prepare:arrival:education"
+        ]
+      }
+    ],
+    "timeline": [],
+    "dependencies": [],
+    "decisions": [],
+    "requiredMaterials": [
+      {
+        "id": "arrival:material:passport",
+        "text": "Hộ chiếu/visa đúng với hành trình và giấy tờ nhập học cần thiết.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home",
+          "source:ru:prepare:arrival:education"
+        ]
+      }
+    ],
+    "completionEvidence": [
+      {
+        "id": "arrival:evidence:documents",
+        "text": "Bạn có bản chụp giấy tờ nhập cảnh mới phát sinh và đã xác nhận đã đến với đầu mối phù hợp.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:education"
+        ]
+      }
+    ],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "arrival:node:start",
+          "label": "Thông tin offline",
+          "kind": "stage",
+          "evidenceId": "arrival:next:offline"
+        },
+        {
+          "id": "arrival:node:border",
+          "label": "Cửa khẩu & hành lý",
+          "kind": "action",
+          "evidenceId": "arrival:action:border"
+        },
+        {
+          "id": "arrival:node:host",
+          "label": "Tới chỗ ở",
+          "kind": "action",
+          "evidenceId": "arrival:action:host"
+        }
+      ],
+      "edges": [
+        {
+          "from": "arrival:node:start",
+          "to": "arrival:node:border"
+        },
+        {
+          "from": "arrival:node:border",
+          "to": "arrival:node:host"
+        }
+      ]
+    },
+    "nextAction": {
+      "id": "arrival:next:offline",
+      "text": "Đảm bảo địa chỉ nơi ở, tên trường, đầu mối đón và phương án đi dự phòng có thể mở offline.",
+      "sourceIds": [
+        "source:ru:prepare:arrival:home"
+      ]
+    }
+  },
+  "risk": {
+    "categories": [
+      "immigration",
+      "safety",
+      "document-loss"
+    ],
+    "severity": "high",
+    "doNot": [
+      {
+        "id": "arrival:do-not:passport",
+        "text": "Không giao hộ chiếu hoặc toàn bộ giấy tờ cho người không có trách nhiệm xử lý thủ tục.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home"
+        ]
+      }
+    ],
+    "critical": [
+      {
+        "id": "arrival:critical:migration",
+        "text": "Không trì hoãn hoặc tự suy đoán thủ tục cư trú chỉ vì chưa bắt đầu học; hỏi đầu mối trường/ký túc xá và kiểm tra quy định hiện hành.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:education"
+        ]
+      }
+    ],
+    "cautions": [
+      {
+        "id": "arrival:caution:ride",
+        "text": "Không đổi phương án di chuyển chỉ vì lời mời chào không kiểm chứng tại sân bay.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [
+      {
+        "id": "arrival:recommend:photos",
+        "text": "Chụp giấy tờ nhập cảnh mới phát sinh và lưu bản sao số.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "arrival:uncertainty:legal",
+        "text": "Checklist ngày đầu không thay thế quy định nhập cảnh/cư trú; nghĩa vụ cụ thể theo diện và thời điểm phải được kiểm tra riêng.",
+        "sourceIds": [
+          "source:ru:prepare:arrival:home",
+          "source:ru:prepare:arrival:education"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [],
+    "enTerms": [],
+    "usefulPhrases": [],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:migration-registration",
+      "label": "Thủ tục sau nhập cảnh"
+    },
+    {
+      "type": "related-to",
+      "targetId": "ru-life:daily-life:housing",
+      "label": "Chỗ ở"
+    }
+  ],
+  "searchTerms": [
+    "ngày đầu",
+    "sân bay",
+    "nhập cảnh",
+    "hành lý",
+    "ký túc xá",
+    "đầu mối trường",
+    "arrival"
+  ]
+}
