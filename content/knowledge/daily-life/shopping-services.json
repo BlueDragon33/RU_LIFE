@@ -1,0 +1,235 @@
+{
+  "id": "ru-life:daily-life:shopping-services",
+  "schemaVersion": 1,
+  "moduleSlug": "daily-life",
+  "topicSlug": "shopping-services",
+  "title": "Mua sắm · dịch vụ",
+  "summary": "Xây hệ thống mua sắm/dịch vụ thiết yếu dùng ở bất kỳ thành phố nào; giá, khuyến mại và giờ mở cửa phải kiểm tra tại thời điểm thực tế.",
+  "provenance": {
+    "sourceIds": [],
+    "verifiedAt": "2026-10-07",
+    "freshness": "stable-guidance"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "shopping:idea:system",
+      "text": "Tổ chức theo nhóm nhu cầu: đồ cần ngay, đồ mua định kỳ và dịch vụ cần lưu; không duy trì danh sách giá/cửa hàng cố định.",
+      "sourceIds": []
+    },
+    "purpose": {
+      "id": "shopping:purpose:efficient",
+      "text": "Giảm thời gian tìm kiếm và tránh mua quá nhiều khi chưa biết điều kiện chỗ ở.",
+      "sourceIds": []
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "shopping:logic:first72",
+        "text": "Trong những ngày đầu, ưu tiên nước/thực phẩm cơ bản, vệ sinh, cáp/ổ cắm cần thiết và đồ ngủ nếu nơi ở chưa có đủ.",
+        "sourceIds": []
+      },
+      {
+        "id": "shopping:logic:dynamic",
+        "text": "Giá, khuyến mại, tồn kho và giờ mở cửa phải xem tại thời điểm mua; không coi ghi chú cũ là dữ liệu hiện hành.",
+        "sourceIds": []
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "shopping:scope:no-directory",
+        "text": "RU_LIFE không nhằm tạo directory cửa hàng/provider cố định hoặc bảng giá theo thời gian thực.",
+        "sourceIds": []
+      }
+    ],
+    "actions": [
+      {
+        "id": "shopping:action:first",
+        "text": "Lập danh sách đồ cần cho 72 giờ đầu và chỉ mua lượng phù hợp không gian thực tế.",
+        "sourceIds": []
+      },
+      {
+        "id": "shopping:action:services",
+        "text": "Lưu các nhóm địa điểm thiết yếu: thực phẩm, hiệu thuốc/y tế, giặt/sửa theo nơi ở và in/photocopy gần trường.",
+        "sourceIds": []
+      },
+      {
+        "id": "shopping:action:budget",
+        "text": "Tách chi phí bắt buộc hằng tháng khỏi chi phí mua sắm ban đầu; so sánh theo đơn vị khi hữu ích.",
+        "sourceIds": []
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "shopping:outcome:list",
+        "text": "Bạn có danh sách mua sắm/dịch vụ có thể cập nhật mà không phụ thuộc giá hoặc cửa hàng cố định.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "shopping:remember:first",
+        "text": "Mua đồ thiết yếu trước, không tích trữ khi chưa biết không gian.",
+        "sourceIds": []
+      },
+      {
+        "id": "shopping:remember:receipts",
+        "text": "Giữ hóa đơn cho đồ điện/điện tử và vật dụng có bảo hành.",
+        "sourceIds": []
+      },
+      {
+        "id": "shopping:remember:dynamic",
+        "text": "Giá, khuyến mại và giờ mở cửa phải kiểm tra tại thời điểm thực tế.",
+        "sourceIds": []
+      }
+    ],
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [],
+    "memoryAnchor": {
+      "id": "shopping:anchor:three",
+      "text": "CẦN NGAY → MUA ĐỊNH KỲ → DỊCH VỤ CẦN LƯU.",
+      "sourceIds": []
+    }
+  },
+  "journey": {
+    "stages": [
+      "72 giờ đầu",
+      "Ổn định danh sách định kỳ",
+      "Lưu dịch vụ",
+      "Theo dõi ngân sách"
+    ],
+    "triggers": [
+      {
+        "id": "shopping:trigger:arrival",
+        "text": "Bạn mới đến nơi ở hoặc cần xây danh sách mua sắm/dịch vụ dùng lâu dài.",
+        "sourceIds": []
+      }
+    ],
+    "checklist": [
+      {
+        "id": "shopping:check:regular",
+        "text": "Xác định nhóm đồ mua định kỳ.",
+        "sourceIds": []
+      },
+      {
+        "id": "shopping:check:services",
+        "text": "Lưu địa điểm dịch vụ thiết yếu.",
+        "sourceIds": []
+      },
+      {
+        "id": "shopping:check:budget",
+        "text": "Theo dõi chi tiêu ban đầu.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [],
+    "decisions": [],
+    "requiredMaterials": [],
+    "completionEvidence": [],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "shopping:node:start",
+          "label": "Nhu cầu 72 giờ",
+          "kind": "stage",
+          "evidenceId": "shopping:next:first"
+        },
+        {
+          "id": "shopping:node:regular",
+          "label": "Đồ định kỳ",
+          "kind": "action",
+          "evidenceId": "shopping:action:first"
+        },
+        {
+          "id": "shopping:node:services",
+          "label": "Dịch vụ thiết yếu",
+          "kind": "action",
+          "evidenceId": "shopping:action:services"
+        },
+        {
+          "id": "shopping:node:budget",
+          "label": "Ngân sách",
+          "kind": "action",
+          "evidenceId": "shopping:action:budget"
+        }
+      ],
+      "edges": [
+        {
+          "from": "shopping:node:start",
+          "to": "shopping:node:regular"
+        },
+        {
+          "from": "shopping:node:regular",
+          "to": "shopping:node:services"
+        },
+        {
+          "from": "shopping:node:services",
+          "to": "shopping:node:budget"
+        }
+      ]
+    },
+    "nextAction": {
+      "id": "shopping:next:first",
+      "text": "Kiểm tra nơi ở đang thiếu gì cho 72 giờ đầu trước khi mua số lượng lớn.",
+      "sourceIds": []
+    }
+  },
+  "risk": {
+    "categories": [
+      "financial"
+    ],
+    "severity": "low",
+    "doNot": [],
+    "critical": [],
+    "cautions": [
+      {
+        "id": "shopping:caution:dynamic",
+        "text": "Không dùng giá, khuyến mại, tồn kho hoặc giờ mở cửa cũ như thông tin hiện hành; kiểm tra lại tại thời điểm thực tế.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [
+      {
+        "id": "shopping:recommend:receipts",
+        "text": "Giữ hóa đơn với hàng có bảo hành và ghi chi tiêu ban đầu.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "shopping:uncertainty:city",
+        "text": "Địa điểm, giá và dịch vụ khác nhau theo thành phố/khu vực; RU_LIFE chỉ giữ phương pháp tổ chức.",
+        "sourceIds": []
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [],
+    "enTerms": [],
+    "usefulPhrases": [],
+    "cultureNotes": []
+  },
+  "relations": [],
+  "searchTerms": [
+    "mua sắm",
+    "dịch vụ",
+    "siêu thị",
+    "hiệu thuốc",
+    "photocopy",
+    "giá",
+    "khuyến mại",
+    "shopping"
+  ]
+}
