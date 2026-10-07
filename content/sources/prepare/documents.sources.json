@@ -1,0 +1,32 @@
+[
+  {
+    "id": "source:ru:prepare:documents:education",
+    "schemaVersion": 1,
+    "title": "Studying in Russia – Education / documents for life in Russia",
+    "publisher": "Study in Russia",
+    "authority": "official-government",
+    "url": "https://studyinrussia.ru/en/education",
+    "checkedAt": "2026-10-07",
+    "note": "Nguồn chính thức về nhóm giấy tờ nhập cảnh và các giấy tờ cần hoàn thiện sau khi vào Nga."
+  },
+  {
+    "id": "source:ru:prepare:documents:admission",
+    "schemaVersion": 1,
+    "title": "Online application to a Russian university – arrival in Russia",
+    "publisher": "Study in Russia",
+    "authority": "official-government",
+    "url": "https://studyinrussia.ru/en/online-admission",
+    "checkedAt": "2026-10-07",
+    "note": "Dùng để đối chiếu luồng visa học tập, thư mời và chuẩn bị hồ sơ."
+  },
+  {
+    "id": "source:ru:prepare:documents:evisa",
+    "schemaVersion": 1,
+    "title": "Unified electronic visa – official instructions",
+    "publisher": "Consular Department, Ministry of Foreign Affairs of Russia",
+    "authority": "official-government",
+    "url": "https://evisa.kdmid.ru/Home/Instruction",
+    "checkedAt": "2026-10-07",
+    "note": "Dùng để phân biệt phạm vi e-visa với mục đích học tập; không thay thế hướng dẫn visa của trường/cơ quan lãnh sự."
+  }
+]
