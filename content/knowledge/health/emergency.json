@@ -1,0 +1,321 @@
+{
+  "id": "ru-life:health:emergency",
+  "schemaVersion": 1,
+  "moduleSlug": "health",
+  "topicSlug": "emergency",
+  "title": "Cấp cứu · thông tin khẩn",
+  "summary": "Mở nhanh để gọi đúng số, truyền đạt vị trí và thông tin thiết yếu; không trì hoãn cuộc gọi để tự chẩn đoán, tìm policy hoặc tra thuốc.",
+  "provenance": {
+    "sourceIds": [
+      "source:ru:health:emergency:studyinrussia",
+      "source:ru:health:emergency:gov631"
+    ],
+    "verifiedAt": "2026-10-07",
+    "freshness": "verified"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "emergency:idea:call-first",
+      "text": "Trong tình huống có thể nguy hiểm, gọi trợ giúp trước: 112 là số khẩn cấp thống nhất, 103 là cấp cứu y tế.",
+      "sourceIds": [
+        "source:ru:health:emergency:studyinrussia",
+        "source:ru:health:emergency:gov631"
+      ]
+    },
+    "purpose": {
+      "id": "emergency:purpose:fast",
+      "text": "Giảm thời gian từ nhận biết tình huống nguy hiểm đến cuộc gọi và truyền đạt thông tin cho đội cấp cứu.",
+      "sourceIds": [
+        "source:ru:health:emergency:studyinrussia",
+        "source:ru:health:emergency:gov631"
+      ]
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "emergency:logic:info",
+        "text": "Sau khi kết nối, ưu tiên địa chỉ/điểm mốc, tình trạng chính, số người, số điện thoại gọi lại và cách tiếp cận tòa nhà.",
+        "sourceIds": [
+          "source:ru:health:emergency:studyinrussia"
+        ]
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "emergency:scope:no-diagnosis",
+        "text": "Trang này không chẩn đoán và không hướng dẫn tự điều trị; để nhân viên y tế đánh giá.",
+        "sourceIds": [
+          "source:ru:health:emergency:gov631"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "emergency:action:call",
+        "text": "Gọi 112 hoặc 103 khi cần cấp cứu y tế; nếu không chắc đầu mối, ưu tiên 112.",
+        "sourceIds": [
+          "source:ru:health:emergency:studyinrussia",
+          "source:ru:health:emergency:gov631"
+        ]
+      },
+      {
+        "id": "emergency:action:address",
+        "text": "Nói địa chỉ/điểm mốc, tình trạng chính, số người cần trợ giúp và số gọi lại.",
+        "sourceIds": [
+          "source:ru:health:emergency:studyinrussia"
+        ]
+      },
+      {
+        "id": "emergency:action:access",
+        "text": "Nếu có thể, mở đường/chuẩn bị cách vào tòa nhà để đội y tế tiếp cận.",
+        "sourceIds": []
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "emergency:outcome:handoff",
+        "text": "Đội trợ giúp có thông tin đủ để tiếp cận và tiếp nhận đánh giá chuyên môn.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "emergency:remember:112",
+        "text": "112 — số thống nhất gọi dịch vụ khẩn cấp.",
+        "sourceIds": [
+          "source:ru:health:emergency:studyinrussia"
+        ]
+      },
+      {
+        "id": "emergency:remember:103",
+        "text": "103 — cấp cứu y tế.",
+        "sourceIds": [
+          "source:ru:health:emergency:studyinrussia"
+        ]
+      },
+      {
+        "id": "emergency:remember:no-delay",
+        "text": "Không trì hoãn cuộc gọi để tìm policy, tự chẩn đoán hoặc tra thuốc.",
+        "sourceIds": [
+          "source:ru:health:emergency:gov631"
+        ]
+      }
+    ],
+    "memoryAnchor": {
+      "id": "emergency:anchor:three",
+      "text": "GỌI → ĐỊA CHỈ → TÌNH TRẠNG. Sau đó làm theo hướng dẫn của người tiếp nhận.",
+      "sourceIds": [
+        "source:ru:health:emergency:studyinrussia",
+        "source:ru:health:emergency:gov631"
+      ]
+    },
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [
+      "Tôi gọi số nào?",
+      "Địa chỉ hiện tại bằng tiếng Nga là gì?",
+      "Tình trạng chính cần nói trong một câu là gì?"
+    ]
+  },
+  "journey": {
+    "stages": [
+      "Gọi trợ giúp",
+      "Nói vị trí",
+      "Nói tình trạng",
+      "Mở đường tiếp cận",
+      "Bàn giao cho nhân viên y tế"
+    ],
+    "triggers": [
+      {
+        "id": "emergency:trigger:danger",
+        "text": "Có tình trạng có vẻ nguy hiểm, diễn biến nhanh hoặc người bệnh không thể tự di chuyển an toàn.",
+        "sourceIds": [
+          "source:ru:health:emergency:gov631"
+        ]
+      }
+    ],
+    "nextAction": {
+      "id": "emergency:next:call",
+      "text": "Gọi 112 hoặc 103 ngay; nếu không chắc cần dịch vụ nào, ưu tiên 112.",
+      "sourceIds": [
+        "source:ru:health:emergency:studyinrussia",
+        "source:ru:health:emergency:gov631"
+      ]
+    },
+    "checklist": [
+      {
+        "id": "emergency:check:id",
+        "text": "Chuẩn bị thông tin nhận dạng nếu có thể.",
+        "sourceIds": []
+      },
+      {
+        "id": "emergency:check:contact",
+        "text": "Lưu người cần liên hệ.",
+        "sourceIds": []
+      },
+      {
+        "id": "emergency:check:health",
+        "text": "Ghi dị ứng/thuốc/bệnh nền quan trọng đã biết để báo khi được hỏi.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [
+      "Địa chỉ hiện tại",
+      "Điện thoại/kênh gọi"
+    ],
+    "decisions": [],
+    "requiredMaterials": [
+      {
+        "id": "emergency:material:address",
+        "text": "Địa chỉ nơi ở bằng tiếng Nga và cách vào tòa nhà nếu có.",
+        "sourceIds": []
+      }
+    ],
+    "completionEvidence": [],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "emergency:node:start",
+          "label": "Có tình trạng khẩn",
+          "kind": "warning",
+          "evidenceId": "emergency:trigger:danger"
+        },
+        {
+          "id": "emergency:node:call",
+          "label": "Gọi 112/103",
+          "kind": "action",
+          "evidenceId": "emergency:next:call"
+        },
+        {
+          "id": "emergency:node:address",
+          "label": "Nói địa chỉ",
+          "kind": "action",
+          "evidenceId": "emergency:action:address"
+        },
+        {
+          "id": "emergency:node:access",
+          "label": "Mở đường tiếp cận",
+          "kind": "action",
+          "evidenceId": "emergency:action:access"
+        }
+      ],
+      "edges": [
+        {
+          "from": "emergency:node:start",
+          "to": "emergency:node:call"
+        },
+        {
+          "from": "emergency:node:call",
+          "to": "emergency:node:address"
+        },
+        {
+          "from": "emergency:node:address",
+          "to": "emergency:node:access"
+        }
+      ]
+    }
+  },
+  "risk": {
+    "categories": [
+      "health",
+      "safety"
+    ],
+    "severity": "critical",
+    "doNot": [
+      {
+        "id": "emergency:do-not:delay",
+        "text": "Không trì hoãn gọi 112/103 để tự chẩn đoán, tìm policy bảo hiểm hoặc tra thuốc.",
+        "sourceIds": [
+          "source:ru:health:emergency:gov631"
+        ]
+      }
+    ],
+    "critical": [
+      {
+        "id": "emergency:critical:call",
+        "text": "Nếu tình trạng có vẻ đe dọa tính mạng, ưu tiên gọi trợ giúp và làm theo hướng dẫn của người tiếp nhận.",
+        "sourceIds": [
+          "source:ru:health:emergency:gov631"
+        ]
+      }
+    ],
+    "cautions": [],
+    "recommended": [
+      {
+        "id": "emergency:recommend:phone-card",
+        "text": "Lưu địa chỉ, người liên hệ, dị ứng đã biết và thuốc quan trọng trên điện thoại để mở nhanh.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "emergency:uncertainty:assessment",
+        "text": "RU_LIFE không quyết định mức độ nghiêm trọng thay cho nhân viên y tế; khi nghi ngờ tình trạng nguy hiểm, ưu tiên gọi trợ giúp.",
+        "sourceIds": [
+          "source:ru:health:emergency:gov631"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [
+      {
+        "term": "скорая помощь",
+        "meaningVi": "cấp cứu/xe cấp cứu",
+        "sourceIds": []
+      }
+    ],
+    "enTerms": [
+      {
+        "term": "emergency medical care",
+        "meaningVi": "chăm sóc y tế cấp cứu"
+      }
+    ],
+    "usefulPhrases": [
+      {
+        "ru": "Мне нужна скорая помощь",
+        "vi": "Tôi cần xe cấp cứu.",
+        "context": "Khi gọi hoặc nhờ người khác gọi."
+      },
+      {
+        "ru": "Адрес: …",
+        "vi": "Địa chỉ là…",
+        "context": "Nói vị trí."
+      }
+    ],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:health:care-navigation",
+      "label": "Phân luồng chăm sóc"
+    },
+    {
+      "type": "related-to",
+      "targetId": "ru-life:health:insurance",
+      "label": "Bảo hiểm sau cấp cứu"
+    }
+  ],
+  "searchTerms": [
+    "cấp cứu",
+    "112",
+    "103",
+    "скорая помощь",
+    "emergency",
+    "ambulance",
+    "địa chỉ khẩn"
+  ]
+}
