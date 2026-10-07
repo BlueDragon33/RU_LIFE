@@ -1,3 +1,11 @@
+import cultureEtiquetteJson from "../../content/knowledge/integration/culture-etiquette.json";
+import dailyRussianJson from "../../content/knowledge/integration/daily-russian.json";
+import personalNotesJson from "../../content/knowledge/integration/personal-notes.json";
+import schoolRussianJson from "../../content/knowledge/integration/school-russian.json";
+import cultureEtiquetteSourcesJson from "../../content/sources/integration/culture-etiquette.sources.json";
+import dailyRussianSourcesJson from "../../content/sources/integration/daily-russian.sources.json";
+import personalNotesSourcesJson from "../../content/sources/integration/personal-notes.sources.json";
+import schoolRussianSourcesJson from "../../content/sources/integration/school-russian.sources.json";
 import housingJson from "../../content/knowledge/daily-life/housing.json";
 import shoppingServicesJson from "../../content/knowledge/daily-life/shopping-services.json";
 import transportJson from "../../content/knowledge/daily-life/transport.json";
@@ -32,6 +40,14 @@ import migrationRegistrationSourcesJson from "../../content/sources/study-proced
 import studyPlanSourcesJson from "../../content/sources/study-procedures/study-plan.sources.json";
 import type { KnowledgeSourceV1, KnowledgeUnitV1 } from "./types";
 
+const cultureEtiquette = cultureEtiquetteJson as KnowledgeUnitV1;
+const cultureEtiquetteSources = cultureEtiquetteSourcesJson as KnowledgeSourceV1[];
+const dailyRussian = dailyRussianJson as KnowledgeUnitV1;
+const dailyRussianSources = dailyRussianSourcesJson as KnowledgeSourceV1[];
+const personalNotes = personalNotesJson as KnowledgeUnitV1;
+const personalNotesSources = personalNotesSourcesJson as KnowledgeSourceV1[];
+const schoolRussian = schoolRussianJson as KnowledgeUnitV1;
+const schoolRussianSources = schoolRussianSourcesJson as KnowledgeSourceV1[];
 const arrivalPlan = arrivalPlanJson as KnowledgeUnitV1;
 const arrivalPlanSources = arrivalPlanSourcesJson as KnowledgeSourceV1[];
 const documents = documentsJson as KnowledgeUnitV1;
@@ -105,6 +121,26 @@ function createKnowledgeRegistry(entries: KnowledgeRegistryEntry[]) {
 }
 
 const registryEntries: KnowledgeRegistryEntry[] = [
+  {
+    topicKey: "integration:culture-etiquette",
+    unit: cultureEtiquette,
+    sources: cultureEtiquetteSources,
+  },
+  {
+    topicKey: "integration:daily-russian",
+    unit: dailyRussian,
+    sources: dailyRussianSources,
+  },
+  {
+    topicKey: "integration:personal-notes",
+    unit: personalNotes,
+    sources: personalNotesSources,
+  },
+  {
+    topicKey: "integration:school-russian",
+    unit: schoolRussian,
+    sources: schoolRussianSources,
+  },
   {
     topicKey: "prepare:arrival-plan",
     unit: arrivalPlan,
