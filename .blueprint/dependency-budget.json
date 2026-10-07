@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1.0.0",
+  "policyId": "blueprint-os:universal-century-grade",
+  "policyVersion": "1.2.0",
+  "projectId": "project:ru-life",
+  "blueprintLevel": "B3",
+  "posture": "LOCAL_REFERENCE_WITH_SENSITIVE_OPTIONAL_SYNC",
+  "complianceState": "MIGRATION_REQUIRED",
+  "canonicalAuthority": {
+    "referenceContent": "repository-and-app-content-packs",
+    "personalNotesAndPlans": "local-first-user-state",
+    "identityDocuments": "user-controlled-sensitive-files",
+    "ai": "optional-intelligence-only"
+  },
+  "dependencies": [
+    {
+      "id": "browser-pwa",
+      "class": "LOCAL_CORE",
+      "costClass": "local-free",
+      "purpose": "offline-capable Russia-life reference, planning, checklists and personal notes",
+      "dataBoundary": "user-controlled browser/device",
+      "offlineBehavior": "core reference and local planning remain available",
+      "exitPath": "portable JSON/files/content packs"
+    },
+    {
+      "id": "google-drive-or-equivalent",
+      "class": "OPTIONAL_SYNC",
+      "costClass": "free-or-optional-paid",
+      "purpose": "optional cross-device document/note backup and restore",
+      "dataBoundary": "ordinary docs may sync; identity/visa/passport material requires explicit sensitive-data handling and encryption where appropriate",
+      "offlineBehavior": "local app continues; sync pauses",
+      "exitPath": "ordinary portable files and export/import"
+    },
+    {
+      "id": "google-sheets-or-apps-script",
+      "class": "OPTIONAL_SYNC",
+      "costClass": "free-or-optional-paid",
+      "purpose": "optional checklist/status projection or lightweight coordination",
+      "dataBoundary": "no raw passport/visa identifiers, credentials, sessions or secrets by default",
+      "offlineBehavior": "projection/coordination unavailable only",
+      "exitPath": "local checklist/JSON export"
+    },
+    {
+      "id": "ai-provider",
+      "class": "OPTIONAL_INTELLIGENCE",
+      "costClass": "optional",
+      "purpose": "translation, explanation, planning and document assistance",
+      "dataBoundary": "only user-selected minimum necessary context",
+      "offlineBehavior": "reference/planning content remains usable without AI",
+      "exitPath": "provider can be disabled/replaced"
+    },
+    {
+      "id": "hosted-runtime",
+      "class": "OPTIONAL_PUBLISH",
+      "costClass": "free-tier-or-optional-paid",
+      "purpose": "optional public/private hosted access",
+      "dataBoundary": "app state/content according to deployment policy",
+      "offlineBehavior": "local PWA remains primary degraded path",
+      "exitPath": "static/browser app and portable state can move providers"
+    }
+  ],
+  "forbidden": [
+    "raw-passport-or-visa-data-in-google-sheets-by-default",
+    "credentials-or-session-tokens-in-drive-or-sheets",
+    "ai-owned-canonical-document-status",
+    "mandatory-paid-provider-for-basic-reference-and-planning",
+    "cloud-only-copy-of-personal-notes-without-export"
+  ],
+  "migrationBlockers": [
+    "Prove offline/local reference and note flows.",
+    "Define sensitive-document encryption/consent rules before Drive backup.",
+    "Define portable export/import for personal planning state."
+  ],
+  "productionAuthority": "separate-explicit-release-gate"
+}
