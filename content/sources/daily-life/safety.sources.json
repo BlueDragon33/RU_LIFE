@@ -1,0 +1,22 @@
+[
+  {
+    "id": "source:ru:safety:mchs-112",
+    "schemaVersion": 1,
+    "title": "Система-112 – единый номер вызова экстренных служб",
+    "publisher": "МЧС России",
+    "authority": "official-government",
+    "url": "https://50.mchs.gov.ru/deyatelnost/poleznaya-informaciya/rekomendacii-naseleniyu/sistema-112",
+    "checkedAt": "2026-10-07",
+    "note": "MChS mô tả 112 là số thống nhất gọi các dịch vụ khẩn cấp trên lãnh thổ Nga."
+  },
+  {
+    "id": "source:ru:safety:mchs-numbers",
+    "schemaVersion": 1,
+    "title": "Важно: о номерах телефонов вызова экстренных служб",
+    "publisher": "МЧС России",
+    "authority": "official-government",
+    "url": "https://60.mchs.gov.ru/deyatelnost/press-centr/novosti/5469897",
+    "checkedAt": "2026-10-07",
+    "note": "MChS nêu hệ thống số 101/102/103/104 và 112."
+  }
+]
