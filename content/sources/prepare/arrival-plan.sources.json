@@ -1,0 +1,22 @@
+[
+  {
+    "id": "source:ru:prepare:arrival:home",
+    "schemaVersion": 1,
+    "title": "Studying in Russia – Arrival in Russia",
+    "publisher": "Study in Russia",
+    "authority": "official-government",
+    "url": "https://studyinrussia.ru/en?lang=en",
+    "checkedAt": "2026-10-07",
+    "note": "Nguồn chính thức mô tả chuẩn bị nhập cảnh và thông báo trường theo diện visa/không visa."
+  },
+  {
+    "id": "source:ru:prepare:arrival:education",
+    "schemaVersion": 1,
+    "title": "Studying in Russia – documents after entry",
+    "publisher": "Study in Russia",
+    "authority": "official-government",
+    "url": "https://studyinrussia.ru/en/education",
+    "checkedAt": "2026-10-07",
+    "note": "Dùng để xác nhận nhóm giấy tờ phát sinh sau nhập cảnh; thời hạn cụ thể phải kiểm tra theo trường và quy định hiện hành."
+  }
+]
