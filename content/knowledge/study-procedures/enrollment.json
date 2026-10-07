@@ -1,0 +1,511 @@
+{
+  "id": "ru-life:study-procedures:enrollment",
+  "schemaVersion": 1,
+  "moduleSlug": "study-procedures",
+  "topicSlug": "enrollment",
+  "title": "Nhập học · xác nhận hồ sơ",
+  "summary": "Theo dõi nhập học theo từng trạng thái và xác nhận danh mục giấy tờ với đúng trường/chương trình; không coi một danh sách chung là yêu cầu mặc định cho mọi cơ sở.",
+  "provenance": {
+    "sourceIds": [
+      "source:ru:studyinrussia-admission",
+      "source:ru:studyinrussia-education"
+    ],
+    "verifiedAt": "2026-10-07",
+    "freshness": "review-soon"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "enrollment:idea:states",
+      "text": "Nhập học là một chuỗi xác nhận: có căn cứ tiếp nhận, nộp/đối chiếu hồ sơ tại trường, rồi xác nhận trạng thái nhập học và quyền truy cập hệ thống học tập.",
+      "sourceIds": [
+        "source:ru:studyinrussia-admission",
+        "source:ru:studyinrussia-education"
+      ]
+    },
+    "purpose": {
+      "id": "enrollment:purpose:proof",
+      "text": "Giúp người học biết việc nào đã hoàn thành, việc nào còn thiếu và giữ bằng chứng thay vì dựa vào cảm giác rằng hồ sơ đã được nộp.",
+      "sourceIds": [
+        "source:ru:studyinrussia-admission"
+      ]
+    },
+    "rationale": [
+      {
+        "id": "enrollment:rationale:school-specific",
+        "text": "Yêu cầu bổ sung, cách nộp và thủ tục sau tiếp nhận có thể khác theo trường, chương trình và diện nhập học.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission",
+          "source:ru:studyinrussia-education"
+        ]
+      }
+    ],
+    "logic": [
+      {
+        "id": "enrollment:logic:before",
+        "text": "Trước khi đến trường, kiểm tra hộ chiếu, giấy tờ học vấn và các tài liệu dùng cho diện nhập học của mình; đối chiếu thông tin nhận dạng và hỏi trường về bản dịch/công nhận nếu cần.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission",
+          "source:ru:studyinrussia-education"
+        ]
+      },
+      {
+        "id": "enrollment:logic:on-site",
+        "text": "Khi làm thủ tục, xác nhận bản nào chỉ cần xem, bản nào cần nộp, lưu biên nhận/xác nhận và hỏi trạng thái nhập học cùng các bước tiếp theo.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission"
+        ]
+      }
+    ],
+    "preconditions": [
+      {
+        "id": "enrollment:precondition:institution",
+        "text": "Bạn đã biết cơ sở đào tạo/chương trình dự kiến nhập học và có kênh liên hệ chính thức của trường.",
+        "sourceIds": []
+      }
+    ],
+    "scope": [
+      {
+        "id": "enrollment:scope:institution-specific",
+        "text": "Knowledge Unit này là khung thao tác chung. Danh mục hồ sơ, cách dịch/công nhận và bước nội bộ cuối cùng phải theo trường, chương trình và diện nhập học cụ thể.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission",
+          "source:ru:studyinrussia-education"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "enrollment:action:verify-docs",
+        "text": "Đối chiếu giấy tờ nhận dạng và học vấn với yêu cầu hiện hành của chính trường/chương trình; đánh dấu phần cần dịch, công nhận hoặc bổ sung.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission",
+          "source:ru:studyinrussia-education"
+        ],
+        "statusLabel": "Trước khi đến trường"
+      },
+      {
+        "id": "enrollment:action:save-proof",
+        "text": "Lưu biên nhận, ảnh chụp hoặc xác nhận điện tử cho từng nhóm hồ sơ đã nộp/đối chiếu.",
+        "sourceIds": [],
+        "statusLabel": "Khi nộp hồ sơ"
+      },
+      {
+        "id": "enrollment:action:confirm-status",
+        "text": "Xác nhận trạng thái nhập học/chương trình, đầu mối quản lý, ngày bắt đầu và quyền truy cập lịch/hệ thống học tập khi trường đã cấp.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission"
+        ],
+        "statusLabel": "Trước khi coi là hoàn tất"
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "enrollment:outcome:tracked",
+        "text": "Bạn có trạng thái rõ ràng cho từng bước, biết đầu mối chịu trách nhiệm và giữ bằng chứng của các hồ sơ đã xử lý.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": [
+      {
+        "id": "enrollment:exception:quota",
+        "text": "Học theo quota hoặc diện đặc biệt có thể có tài liệu/đầu mối bổ sung; giấy xác nhận quota không tự thay thế thủ tục nhập học nội bộ của trường.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission"
+        ],
+        "scope": "Đối chiếu với cơ quan cử đi/quota và trường khi áp dụng."
+      }
+    ]
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "enrollment:remember:school-specific",
+        "text": "Danh mục cuối cùng phải theo đúng trường/chương trình của bạn.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission",
+          "source:ru:studyinrussia-education"
+        ]
+      },
+      {
+        "id": "enrollment:remember:proof",
+        "text": "Nộp xong phải có bằng chứng hoặc trạng thái xác nhận, không chỉ nhớ rằng đã đưa hồ sơ.",
+        "sourceIds": []
+      },
+      {
+        "id": "enrollment:remember:status",
+        "text": "Có giấy tiếp nhận/quota chưa đồng nghĩa mọi bước nhập học nội bộ đã hoàn tất.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission"
+        ]
+      }
+    ],
+    "memoryAnchor": {
+      "id": "enrollment:anchor:three-states",
+      "text": "Tiếp nhận → hồ sơ tại trường → xác nhận trạng thái học tập. Ba mốc này cần được kiểm tra riêng.",
+      "sourceIds": [
+        "source:ru:studyinrussia-admission"
+      ]
+    },
+    "keyTerms": [
+      {
+        "id": "enrollment:term:enrollment-order",
+        "text": "приказ о зачислении — lệnh/quyết định nhập học của cơ sở đào tạo.",
+        "sourceIds": []
+      },
+      {
+        "id": "enrollment:term:admissions",
+        "text": "приёмная комиссия — bộ phận/hội đồng tuyển sinh.",
+        "sourceIds": []
+      }
+    ],
+    "contrasts": [
+      {
+        "id": "enrollment:contrast:quota-order",
+        "text": "Được phân bổ quota/được tiếp nhận và được trường hoàn tất nhập học là các trạng thái liên quan nhưng không nên gộp thành một.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission"
+        ]
+      }
+    ],
+    "myths": [
+      {
+        "id": "enrollment:myth:one-list",
+        "text": "Một danh sách giấy tờ trên Internet không phải danh mục bắt buộc mặc định cho mọi trường; cần kiểm tra với cơ sở cụ thể.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission",
+          "source:ru:studyinrussia-education"
+        ]
+      }
+    ],
+    "commonMistakes": [
+      {
+        "id": "enrollment:mistake:no-receipt",
+        "text": "Nộp bản giấy nhưng không lưu biên nhận/xác nhận nên khó đối chiếu khi hồ sơ thiếu hoặc sai thông tin.",
+        "sourceIds": []
+      }
+    ],
+    "examples": [
+      {
+        "id": "enrollment:example:master",
+        "text": "Một học viên thạc sĩ có thể dùng khung này để tách: giấy tờ tiếp nhận, hồ sơ bản gốc/bản dịch, trạng thái lệnh nhập học, rồi tài khoản/lịch học.",
+        "sourceIds": []
+      }
+    ],
+    "recallPrompts": [
+      "Trường của tôi yêu cầu chính xác giấy tờ nào?",
+      "Tôi có bằng chứng nào cho phần đã nộp?",
+      "Trạng thái nhập học hiện tại đã được xác nhận ở đâu?"
+    ]
+  },
+  "journey": {
+    "stages": [
+      "Chuẩn bị hồ sơ",
+      "Đối chiếu/nộp tại trường",
+      "Xác nhận trạng thái",
+      "Nhận quyền truy cập và đầu mối"
+    ],
+    "triggers": [
+      {
+        "id": "enrollment:trigger:arrival",
+        "text": "Bạn chuẩn bị đến trường hoặc được yêu cầu hoàn tất nhập học trực tiếp.",
+        "sourceIds": []
+      },
+      {
+        "id": "enrollment:trigger:document-request",
+        "text": "Trường yêu cầu bổ sung/đối chiếu một giấy tờ hoặc cập nhật trạng thái hồ sơ.",
+        "sourceIds": []
+      }
+    ],
+    "nextAction": {
+      "id": "enrollment:next:official-check",
+      "text": "Mở kênh chính thức của trường/chương trình và lập danh sách giấy tờ/bước còn thiếu cho đúng diện nhập học của bạn.",
+      "sourceIds": [
+        "source:ru:studyinrussia-admission",
+        "source:ru:studyinrussia-education"
+      ]
+    },
+    "checklist": [
+      {
+        "id": "enrollment:check:contact",
+        "text": "Xác định đầu mối phụ trách nhập học/sinh viên quốc tế.",
+        "sourceIds": []
+      },
+      {
+        "id": "enrollment:check:milestones",
+        "text": "Ghi lại các mốc còn phải hoàn thành và người xác nhận.",
+        "sourceIds": []
+      },
+      {
+        "id": "enrollment:check:proof",
+        "text": "Lưu bản xác nhận/biên nhận của hồ sơ đã nộp.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [
+      {
+        "id": "enrollment:timeline:school",
+        "text": "Mốc thời gian phải lấy từ lịch/quy định hiện hành của chính trường và diện nhập học, không dùng một hạn chung cho mọi cơ sở.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission"
+        ]
+      }
+    ],
+    "dependencies": [
+      "Thông tin trường/chương trình",
+      "Giấy tờ nhận dạng/học vấn",
+      "Kênh liên hệ chính thức"
+    ],
+    "decisions": [
+      {
+        "id": "enrollment:decision:requirements",
+        "question": "Bạn đã có danh mục yêu cầu từ chính trường/chương trình chưa?",
+        "options": [
+          {
+            "id": "enrollment:decision:yes",
+            "label": "Đã có",
+            "summary": "Đối chiếu từng mục với hồ sơ đang giữ và đánh dấu phần cần bổ sung.",
+            "nextUnitIds": [],
+            "actionIds": [
+              "enrollment:action:verify-docs"
+            ],
+            "warningIds": []
+          },
+          {
+            "id": "enrollment:decision:no",
+            "label": "Chưa có",
+            "summary": "Không lấy danh sách của trường khác làm mặc định; liên hệ cơ sở đào tạo để xác nhận trước.",
+            "nextUnitIds": [],
+            "actionIds": [
+              "enrollment:next:official-check"
+            ],
+            "warningIds": [
+              "enrollment:caution:no-copy"
+            ]
+          }
+        ]
+      }
+    ],
+    "requiredMaterials": [
+      {
+        "id": "enrollment:material:identity",
+        "text": "Hộ chiếu/giấy tờ nhận dạng đang dùng.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission",
+          "source:ru:studyinrussia-education"
+        ]
+      },
+      {
+        "id": "enrollment:material:education",
+        "text": "Giấy tờ học vấn và bản dịch/công nhận nếu trường yêu cầu.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission",
+          "source:ru:studyinrussia-education"
+        ]
+      }
+    ],
+    "completionEvidence": [
+      {
+        "id": "enrollment:evidence:status",
+        "text": "Xác nhận/trạng thái cho thấy trường đã ghi nhận việc nhập học hoặc bước tương đương của chương trình.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission"
+        ]
+      },
+      {
+        "id": "enrollment:evidence:receipt",
+        "text": "Biên nhận/xác nhận của các hồ sơ quan trọng đã nộp.",
+        "sourceIds": []
+      }
+    ],
+    "followUps": [
+      {
+        "id": "enrollment:follow:accounts",
+        "text": "Sau khi nhập học, xác nhận thẻ sinh viên/tài khoản trường/lịch học và đầu mối thủ tục người nước ngoài.",
+        "sourceIds": []
+      }
+    ],
+    "map": {
+      "nodes": [
+        {
+          "id": "enrollment:node:start",
+          "label": "Kiểm tra yêu cầu trường",
+          "kind": "stage",
+          "evidenceId": "enrollment:next:official-check"
+        },
+        {
+          "id": "enrollment:node:docs",
+          "label": "Đối chiếu hồ sơ",
+          "kind": "action",
+          "evidenceId": "enrollment:action:verify-docs"
+        },
+        {
+          "id": "enrollment:node:submit",
+          "label": "Nộp & giữ bằng chứng",
+          "kind": "action",
+          "evidenceId": "enrollment:action:save-proof"
+        },
+        {
+          "id": "enrollment:node:status",
+          "label": "Xác nhận trạng thái",
+          "kind": "action",
+          "evidenceId": "enrollment:action:confirm-status"
+        },
+        {
+          "id": "enrollment:node:done",
+          "label": "Tài khoản · lịch · đầu mối",
+          "kind": "stage",
+          "evidenceId": "enrollment:follow:accounts"
+        }
+      ],
+      "edges": [
+        {
+          "from": "enrollment:node:start",
+          "to": "enrollment:node:docs"
+        },
+        {
+          "from": "enrollment:node:docs",
+          "to": "enrollment:node:submit"
+        },
+        {
+          "from": "enrollment:node:submit",
+          "to": "enrollment:node:status"
+        },
+        {
+          "from": "enrollment:node:status",
+          "to": "enrollment:node:done"
+        }
+      ]
+    }
+  },
+  "risk": {
+    "categories": [
+      "academic",
+      "document-loss"
+    ],
+    "severity": "moderate",
+    "doNot": [],
+    "critical": [],
+    "cautions": [
+      {
+        "id": "enrollment:caution:no-copy",
+        "text": "Không áp mặc định danh mục giấy tờ/thủ tục của một trường khác cho trường của bạn; hãy xác nhận theo trường, chương trình và diện nhập học.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission",
+          "source:ru:studyinrussia-education"
+        ]
+      },
+      {
+        "id": "enrollment:caution:identity",
+        "text": "Nếu họ tên, ngày sinh, số hộ chiếu hoặc phiên âm không khớp giữa hồ sơ và giấy tờ đang dùng, hỏi trường trước khi ký/nộp bản chính thức.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [
+      {
+        "id": "enrollment:recommend:copies",
+        "text": "Giữ bản số và bằng chứng của hồ sơ đã nộp ở một nơi tách khỏi bản gốc.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [
+      {
+        "id": "enrollment:info:additional",
+        "text": "Nguồn Study in Russia nêu yêu cầu bổ sung có thể khác theo hình thức nhập học; cơ sở đào tạo là nơi cần xác nhận danh mục cuối cùng.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission",
+          "source:ru:studyinrussia-education"
+        ]
+      }
+    ],
+    "consequences": [
+      {
+        "id": "enrollment:consequence:delay",
+        "text": "Thiếu hoặc sai hồ sơ có thể làm chậm bước nhập học nội bộ hoặc quyền truy cập các dịch vụ học tập.",
+        "sourceIds": []
+      }
+    ],
+    "escalations": [
+      {
+        "id": "enrollment:escalate:conflict",
+        "text": "Nếu hai đầu mối đưa hướng dẫn khác nhau về hồ sơ hoặc trạng thái, yêu cầu xác nhận từ đơn vị chịu trách nhiệm cuối cùng của trường.",
+        "sourceIds": []
+      }
+    ],
+    "uncertaintyNotes": [
+      {
+        "id": "enrollment:uncertainty:institution",
+        "text": "RU_LIFE không thay thế quy định tuyển sinh/nội bộ của cơ sở đào tạo; các yêu cầu cụ thể có thể thay đổi theo trường và chương trình.",
+        "sourceIds": [
+          "source:ru:studyinrussia-admission",
+          "source:ru:studyinrussia-education"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [
+      {
+        "term": "приказ о зачислении",
+        "meaningVi": "lệnh/quyết định nhập học",
+        "sourceIds": []
+      },
+      {
+        "term": "приёмная комиссия",
+        "meaningVi": "bộ phận/hội đồng tuyển sinh",
+        "sourceIds": []
+      }
+    ],
+    "enTerms": [
+      {
+        "term": "enrollment",
+        "meaningVi": "nhập học/ghi danh"
+      },
+      {
+        "term": "admissions office",
+        "meaningVi": "bộ phận tuyển sinh"
+      }
+    ],
+    "usefulPhrases": [
+      {
+        "ru": "Какие документы мне нужно принести для зачисления?",
+        "vi": "Tôi cần mang những giấy tờ nào để làm thủ tục nhập học?",
+        "context": "Hỏi phòng tuyển sinh/sinh viên quốc tế."
+      },
+      {
+        "ru": "Как я могу подтвердить, что документы приняты?",
+        "vi": "Tôi có thể xác nhận hồ sơ đã được tiếp nhận bằng cách nào?",
+        "context": "Hỏi về biên nhận/trạng thái."
+      }
+    ],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:migration-registration",
+      "label": "Thủ tục người nước ngoài sau nhập cảnh"
+    },
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:important-contacts",
+      "label": "Đầu mối của trường"
+    },
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:study-plan",
+      "label": "Bắt đầu kế hoạch học tập"
+    }
+  ],
+  "searchTerms": [
+    "nhập học",
+    "hồ sơ nhập học",
+    "trúng tuyển",
+    "quota",
+    "приказ о зачислении",
+    "приёмная комиссия",
+    "bản dịch",
+    "công nhận văn bằng",
+    "admission",
+    "enrollment"
+  ]
+}
