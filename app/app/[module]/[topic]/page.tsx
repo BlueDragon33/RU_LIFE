@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 import TopicProgress from "@/components/topic-progress";
 import TopicTools from "@/components/topic-tools";
 import TopicDeadlines from "@/components/topic-deadlines";
+import KnowledgeExperience from "@/components/knowledge/knowledge-experience";
 import { getRuLifeTopic } from "@/lib/content-catalog";
-import { getResolvedTopicContent } from "@/lib/content-resolver";
+import { getResolvedKnowledgeSources, getResolvedKnowledgeUnit, getResolvedTopicContent } from "@/lib/content-resolver";
 import { getSourceReviewMeta } from "@/lib/source-review";
 
 const priorityLabel = {
@@ -32,6 +33,8 @@ export default async function TopicPage({ params }: { params: Promise<{ module: 
   const found = getRuLifeTopic(moduleSlug, topicSlug);
   if (!found) notFound();
   const { moduleData, topic } = found;
+  const intelligence = getResolvedKnowledgeUnit(moduleData.slug, topic.slug);
+  const intelligenceSources = intelligence ? getResolvedKnowledgeSources(intelligence) : [];
   const content = getResolvedTopicContent(moduleData.slug, topic.slug);
   const sourceReview = content ? getSourceReviewMeta(content.updatedAt, content.freshness) : null;
 
@@ -49,7 +52,7 @@ export default async function TopicPage({ params }: { params: Promise<{ module: 
 
     <div className="topic-layout premium-topic-layout">
       <section className="topic-content">
-        {content ? <>
+        {intelligence ? <KnowledgeExperience unit={intelligence} sources={intelligenceSources} /> : content ? <>
           <article className="topic-block topic-intro-block premium-topic-block">
             <div className="content-state-line"><span className={`freshness-badge ${content.freshness}`}>{freshnessLabel[content.freshness]}</span><time dateTime={content.updatedAt}>Kiểm tra: {content.updatedAt}</time></div>
             {sourceReview ? <div className={`source-review-inline ${sourceReview.state}`}><span>RÀ SOÁT NỘI BỘ</span><strong>{sourceReview.state === "overdue" ? "Nguồn đã quá mốc cần kiểm tra lại" : sourceReview.state === "due-soon" ? "Nguồn sắp tới mốc cần kiểm tra lại" : sourceReview.state === "unknown" ? "Chưa xác định được mốc rà soát" : `Rà soát lại trước ${sourceReview.reviewBy}`}</strong><p>{sourceReview.reviewBy ? `Mốc kiểm soát chất lượng: ${sourceReview.reviewBy}. ` : ""}Đây không phải ngày hết hiệu lực pháp lý; thông tin nhạy cảm theo thời gian vẫn phải kiểm tra nguồn chính thức tại thời điểm sử dụng.</p></div> : null}
