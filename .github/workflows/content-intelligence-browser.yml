@@ -1,0 +1,78 @@
+name: RU_LIFE Content Intelligence Browser E2E
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "content/**"
+      - "lib/content-intelligence/**"
+      - "components/knowledge/**"
+      - "app/knowledge.css"
+      - "app/app/[module]/[topic]/page.tsx"
+      - "app/app/page.tsx"
+      - "scripts/verify-content-intelligence-browser.mjs"
+      - ".github/workflows/content-intelligence-browser.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ru-life-content-intelligence-browser-main
+  cancel-in-progress: true
+
+jobs:
+  browser-e2e:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.13.0"
+
+      - name: Install project dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Run repository-owned gates
+        run: |
+          npm run lint
+          npm test
+          npm run validate:content-intelligence
+          npm run build
+
+      - name: Install ephemeral browser runner
+        run: |
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start built RU_LIFE
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run start -- --host 0.0.0.0 --port 3000 >/tmp/ru-life-browser.log 2>&1 &
+          echo $! >/tmp/ru-life-browser.pid
+          for i in {1..30}; do
+            if curl --fail --silent --show-error --max-time 3 http://127.0.0.1:3000/app >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/ru-life-browser.log
+          exit 1
+
+      - name: Verify Content Intelligence in Chromium
+        run: node scripts/verify-content-intelligence-browser.mjs
+
+      - name: Show server log on failure
+        if: failure()
+        run: cat /tmp/ru-life-browser.log || true
+
+      - name: Stop local server
+        if: always()
+        shell: bash
+        run: |
+          if test -f /tmp/ru-life-browser.pid; then
+            kill "$(cat /tmp/ru-life-browser.pid)" 2>/dev/null || true
+          fi
