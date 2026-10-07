@@ -12,7 +12,7 @@ function EvidenceList({ items }: { items: Array<{ id: string; text: string; scop
   </li>)}</ul>;
 }
 
-export default function KnowledgeActionView({ unit }: { unit: KnowledgeUnitV1 }) {
+export default function KnowledgeActionView({ unit, decisionSelections = {} }: { unit: KnowledgeUnitV1; decisionSelections?: Readonly<Record<string, string>> }) {
   return <div className="knowledge-view knowledge-action-view">
     {unit.journey.nextAction ? <section className="knowledge-panel primary">
       <span>BƯỚC TIẾP THEO</span>
@@ -27,7 +27,7 @@ export default function KnowledgeActionView({ unit }: { unit: KnowledgeUnitV1 })
       <h2>Xem mạch xử lý theo tình huống</h2>
       <KnowledgeMap unit={unit} />
       <KnowledgeOutline unit={unit} />
-      <KnowledgeDecisionTree decisions={unit.journey.decisions} unit={unit} />
+      <KnowledgeDecisionTree key={Object.entries(decisionSelections).map(([key, value]) => `${key}:${value}`).join("|")} decisions={unit.journey.decisions} unit={unit} initialSelections={decisionSelections} />
     </section>
 
     <section className="knowledge-panel">
