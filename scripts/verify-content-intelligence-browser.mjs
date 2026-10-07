@@ -1,8 +1,30 @@
 import { chromium } from "playwright";
 
 const baseURL = process.env.RU_LIFE_E2E_BASE_URL || "http://127.0.0.1:3000";
-const route = "/app/study-procedures/migration-registration";
-const url = baseURL + route;
+const routes = [
+  "/app/prepare/documents",
+  "/app/prepare/luggage",
+  "/app/prepare/money-connectivity",
+  "/app/prepare/arrival-plan",
+  "/app/daily-life/housing",
+  "/app/daily-life/transport",
+  "/app/daily-life/shopping-services",
+  "/app/daily-life/safety",
+  "/app/study-procedures/enrollment",
+  "/app/study-procedures/migration-registration",
+  "/app/study-procedures/study-plan",
+  "/app/study-procedures/important-contacts",
+  "/app/health/insurance",
+  "/app/health/care-navigation",
+  "/app/health/medicine-reference",
+  "/app/health/emergency",
+  "/app/integration/daily-russian",
+  "/app/integration/school-russian",
+  "/app/integration/culture-etiquette",
+  "/app/integration/personal-notes",
+];
+const representativeRoute = "/app/study-procedures/migration-registration";
+const url = baseURL + representativeRoute;
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -23,6 +45,28 @@ try {
     if (msg.type() === "error") consoleErrors.push(msg.text());
   });
   page.on("pageerror", (error) => pageErrors.push(String(error)));
+
+  for (const route of routes) {
+    const routeResponse = await page.goto(baseURL + route, { waitUntil: "networkidle", timeout: 30000 });
+    assert(routeResponse && routeResponse.ok(), `${route} must load successfully: ${routeResponse?.status()}`);
+    await visible(page.locator(".knowledge-experience"), `${route} knowledge experience`);
+    await visible(page.locator(".topic-progress-panel"), `${route} personal progress sidebar`);
+
+    const actionMode = page.getByRole("button", { name: "Tôi cần làm gì?" });
+    const learnMode = page.getByRole("button", { name: "Tôi muốn hiểu" });
+    const fullMode = page.getByRole("button", { name: "Cho tôi xem toàn bộ" });
+    await visible(actionMode, `${route} action mode`);
+    await visible(learnMode, `${route} learn mode`);
+    await visible(fullMode, `${route} full mode`);
+    assert(await actionMode.getAttribute("aria-pressed") === "true", `${route} action mode must be default`);
+
+    await learnMode.click();
+    await visible(page.locator(".knowledge-learning-view"), `${route} learning view`);
+    await fullMode.click();
+    await visible(page.locator(".knowledge-full-view"), `${route} full view`);
+    await actionMode.click();
+    await visible(page.locator(".knowledge-action-view"), `${route} action view`);
+  }
 
   const response = await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });
   assert(response && response.ok(), `route must load successfully: ${response?.status()}`);
@@ -133,7 +177,8 @@ try {
 
   console.log(JSON.stringify({
     status: "PASS",
-    route,
+    routesVerified: routes.length,
+    representativeRoute,
     emergencyRoute,
     modes: 3,
     mapNodes: await mapButtons.count(),
