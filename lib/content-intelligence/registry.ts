@@ -1,3 +1,11 @@
+import arrivalPlanJson from "../../content/knowledge/prepare/arrival-plan.json";
+import documentsJson from "../../content/knowledge/prepare/documents.json";
+import luggageJson from "../../content/knowledge/prepare/luggage.json";
+import moneyConnectivityJson from "../../content/knowledge/prepare/money-connectivity.json";
+import arrivalPlanSourcesJson from "../../content/sources/prepare/arrival-plan.sources.json";
+import documentsSourcesJson from "../../content/sources/prepare/documents.sources.json";
+import luggageSourcesJson from "../../content/sources/prepare/luggage.sources.json";
+import moneyConnectivitySourcesJson from "../../content/sources/prepare/money-connectivity.sources.json";
 import safetyJson from "../../content/knowledge/daily-life/safety.json";
 import careNavigationJson from "../../content/knowledge/health/care-navigation.json";
 import emergencyJson from "../../content/knowledge/health/emergency.json";
@@ -18,6 +26,14 @@ import migrationRegistrationSourcesJson from "../../content/sources/study-proced
 import studyPlanSourcesJson from "../../content/sources/study-procedures/study-plan.sources.json";
 import type { KnowledgeSourceV1, KnowledgeUnitV1 } from "./types";
 
+const arrivalPlan = arrivalPlanJson as KnowledgeUnitV1;
+const arrivalPlanSources = arrivalPlanSourcesJson as KnowledgeSourceV1[];
+const documents = documentsJson as KnowledgeUnitV1;
+const documentsSources = documentsSourcesJson as KnowledgeSourceV1[];
+const luggage = luggageJson as KnowledgeUnitV1;
+const luggageSources = luggageSourcesJson as KnowledgeSourceV1[];
+const moneyConnectivity = moneyConnectivityJson as KnowledgeUnitV1;
+const moneyConnectivitySources = moneyConnectivitySourcesJson as KnowledgeSourceV1[];
 const safety = safetyJson as KnowledgeUnitV1;
 const safetySources = safetySourcesJson as KnowledgeSourceV1[];
 const careNavigation = careNavigationJson as KnowledgeUnitV1;
@@ -77,6 +93,26 @@ function createKnowledgeRegistry(entries: KnowledgeRegistryEntry[]) {
 }
 
 const registryEntries: KnowledgeRegistryEntry[] = [
+  {
+    topicKey: "prepare:arrival-plan",
+    unit: arrivalPlan,
+    sources: arrivalPlanSources,
+  },
+  {
+    topicKey: "prepare:documents",
+    unit: documents,
+    sources: documentsSources,
+  },
+  {
+    topicKey: "prepare:luggage",
+    unit: luggage,
+    sources: luggageSources,
+  },
+  {
+    topicKey: "prepare:money-connectivity",
+    unit: moneyConnectivity,
+    sources: moneyConnectivitySources,
+  },
   {
     topicKey: "daily-life:safety",
     unit: safety,
