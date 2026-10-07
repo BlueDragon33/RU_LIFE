@@ -5,13 +5,54 @@ import type { KnowledgeSourceV1, KnowledgeUnitV1 } from "./types";
 const migrationRegistration = migrationRegistrationJson as KnowledgeUnitV1;
 const migrationRegistrationSources = migrationRegistrationSourcesJson as KnowledgeSourceV1[];
 
-const knowledgeByTopic = new Map<string, KnowledgeUnitV1>([
-  ["study-procedures:migration-registration", migrationRegistration],
-]);
+type KnowledgeRegistryEntry = {
+  topicKey: string;
+  unit: KnowledgeUnitV1;
+  sources: KnowledgeSourceV1[];
+};
 
-const sourceById = new Map<string, KnowledgeSourceV1>(
-  migrationRegistrationSources.map((source) => [source.id, source]),
-);
+function sameSource(left: KnowledgeSourceV1, right: KnowledgeSourceV1) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function createKnowledgeRegistry(entries: KnowledgeRegistryEntry[]) {
+  const knowledgeByTopic = new Map<string, KnowledgeUnitV1>();
+  const unitIdToTopic = new Map<string, string>();
+  const sourceById = new Map<string, KnowledgeSourceV1>();
+
+  for (const entry of entries) {
+    if (knowledgeByTopic.has(entry.topicKey)) {
+      throw new Error(`Duplicate KnowledgeUnitV1 topic key: ${entry.topicKey}`);
+    }
+    const priorTopic = unitIdToTopic.get(entry.unit.id);
+    if (priorTopic) {
+      throw new Error(`Duplicate KnowledgeUnitV1 id: ${entry.unit.id} (${priorTopic}, ${entry.topicKey})`);
+    }
+
+    knowledgeByTopic.set(entry.topicKey, entry.unit);
+    unitIdToTopic.set(entry.unit.id, entry.topicKey);
+
+    for (const source of entry.sources) {
+      const existing = sourceById.get(source.id);
+      if (existing && !sameSource(existing, source)) {
+        throw new Error(`Conflicting KnowledgeSourceV1 id: ${source.id}`);
+      }
+      if (!existing) sourceById.set(source.id, source);
+    }
+  }
+
+  return { knowledgeByTopic, sourceById };
+}
+
+const registryEntries: KnowledgeRegistryEntry[] = [
+  {
+    topicKey: "study-procedures:migration-registration",
+    unit: migrationRegistration,
+    sources: migrationRegistrationSources,
+  },
+];
+
+const { knowledgeByTopic, sourceById } = createKnowledgeRegistry(registryEntries);
 
 export function getKnowledgeUnit(moduleSlug: string, topicSlug: string): KnowledgeUnitV1 | null {
   return knowledgeByTopic.get(`${moduleSlug}:${topicSlug}`) || null;
