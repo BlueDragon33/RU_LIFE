@@ -1,0 +1,225 @@
+{
+  "id": "ru-life:daily-life:transport",
+  "schemaVersion": 1,
+  "moduleSlug": "daily-life",
+  "topicSlug": "transport",
+  "title": "Đi lại · giao thông",
+  "summary": "Tổ chức tuyến thường dùng và phương án dự phòng; không phụ thuộc một app bản đồ, tên provider, biểu giá hoặc lịch cố định.",
+  "provenance": {
+    "sourceIds": [],
+    "verifiedAt": "2026-10-07",
+    "freshness": "review-soon"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "transport:idea:routes",
+      "text": "Lưu các tuyến thiết yếu theo điểm đến và chuẩn bị phương án offline/dự phòng, thay vì phụ thuộc một app hoặc GPS duy nhất.",
+      "sourceIds": []
+    },
+    "purpose": {
+      "id": "transport:purpose:resilience",
+      "text": "Giảm rủi ro lạc đường hoặc mất khả năng di chuyển khi mất mạng, đổi lịch hoặc điện thoại hết pin.",
+      "sourceIds": []
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "transport:logic:three",
+        "text": "Ưu tiên ba tuyến: nơi ở ↔ trường; nơi ở ↔ ga/sân bay; nơi ở ↔ cơ sở y tế/điểm hỗ trợ quan trọng.",
+        "sourceIds": []
+      },
+      {
+        "id": "transport:logic:offline",
+        "text": "Lưu tên ga/bến và địa chỉ bằng tiếng Nga, ảnh tuyến hoặc thông tin có thể mở offline.",
+        "sourceIds": []
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "transport:scope:no-provider",
+        "text": "RU_LIFE không khóa tên app, provider, giá vé, lịch chạy hay biểu giá vì phụ thuộc thành phố và thời điểm.",
+        "sourceIds": []
+      }
+    ],
+    "actions": [
+      {
+        "id": "transport:action:routes",
+        "text": "Lưu ba tuyến thường dùng cùng điểm lên/xuống hoặc mốc dễ nhận biết.",
+        "sourceIds": []
+      },
+      {
+        "id": "transport:action:offline",
+        "text": "Chuẩn bị thông tin offline: tên ga/bến, địa chỉ, ảnh tuyến và một tuyến thay thế.",
+        "sourceIds": []
+      },
+      {
+        "id": "transport:action:night",
+        "text": "Khi di chuyển khuya/địa điểm lạ, ưu tiên dịch vụ có thông tin chuyến đi rõ và chia sẻ hành trình khi cần.",
+        "sourceIds": []
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "transport:outcome:routes",
+        "text": "Bạn có thể đi các tuyến chính ngay cả khi mất mạng hoặc app chính không dùng được.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "transport:remember:three",
+        "text": "Lưu tuyến nơi ở–trường, nơi ở–ga/sân bay và nơi ở–điểm hỗ trợ.",
+        "sourceIds": []
+      },
+      {
+        "id": "transport:remember:offline",
+        "text": "Luôn có thông tin offline/mất mạng.",
+        "sourceIds": []
+      },
+      {
+        "id": "transport:remember:fallback",
+        "text": "Có ít nhất một tuyến hoặc cách di chuyển dự phòng.",
+        "sourceIds": []
+      }
+    ],
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [],
+    "memoryAnchor": {
+      "id": "transport:anchor:route",
+      "text": "TUYẾN CHÍNH + THÔNG TIN OFFLINE + PHƯƠNG ÁN DỰ PHÒNG.",
+      "sourceIds": []
+    }
+  },
+  "journey": {
+    "stages": [
+      "Chọn tuyến thiết yếu",
+      "Lưu offline",
+      "Xác định phương án dự phòng",
+      "Rà lại trước chuyến lạ"
+    ],
+    "triggers": [
+      {
+        "id": "transport:trigger:new",
+        "text": "Bạn mới đến hoặc sắp đi một tuyến chưa quen.",
+        "sourceIds": []
+      }
+    ],
+    "checklist": [
+      {
+        "id": "transport:check:routes",
+        "text": "Lưu các tuyến đi thường dùng.",
+        "sourceIds": []
+      },
+      {
+        "id": "transport:check:offline",
+        "text": "Chuẩn bị phương án khi mất mạng.",
+        "sourceIds": []
+      },
+      {
+        "id": "transport:check:places",
+        "text": "Đánh dấu các điểm đến quan trọng.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [],
+    "decisions": [],
+    "requiredMaterials": [],
+    "completionEvidence": [],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "transport:node:start",
+          "label": "Tuyến chính",
+          "kind": "stage",
+          "evidenceId": "transport:next:home-school"
+        },
+        {
+          "id": "transport:node:offline",
+          "label": "Lưu offline",
+          "kind": "action",
+          "evidenceId": "transport:action:offline"
+        },
+        {
+          "id": "transport:node:fallback",
+          "label": "Phương án dự phòng",
+          "kind": "action",
+          "evidenceId": "transport:remember:fallback"
+        }
+      ],
+      "edges": [
+        {
+          "from": "transport:node:start",
+          "to": "transport:node:offline"
+        },
+        {
+          "from": "transport:node:offline",
+          "to": "transport:node:fallback"
+        }
+      ]
+    },
+    "nextAction": {
+      "id": "transport:next:home-school",
+      "text": "Lưu tuyến nơi ở ↔ trường bằng thông tin có thể mở offline.",
+      "sourceIds": []
+    }
+  },
+  "risk": {
+    "categories": [
+      "safety"
+    ],
+    "severity": "moderate",
+    "doNot": [],
+    "critical": [],
+    "cautions": [
+      {
+        "id": "transport:caution:provider",
+        "text": "Không coi app, lịch chạy, giá vé hoặc biểu giá đã lưu là cố định; kiểm tra lại theo thành phố và thời điểm.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [
+      {
+        "id": "transport:recommend:separate",
+        "text": "Không để hộ chiếu, ví và điện thoại cùng một túi dễ quên trên xe.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "transport:uncertainty:dynamic",
+        "text": "Giá, tuyến, lịch và provider thay đổi; Knowledge Unit này chỉ giữ cấu trúc chuẩn bị.",
+        "sourceIds": []
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [],
+    "enTerms": [],
+    "usefulPhrases": [],
+    "cultureNotes": []
+  },
+  "relations": [],
+  "searchTerms": [
+    "giao thông",
+    "tuyến",
+    "offline",
+    "mất mạng",
+    "ga",
+    "sân bay",
+    "taxi",
+    "transport"
+  ]
+}
