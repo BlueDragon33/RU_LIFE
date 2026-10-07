@@ -40,6 +40,7 @@ test("all RU_LIFE stylesheet entry points are loaded from the root layout", asyn
     "backup.css",
     "premium-theme.css",
     "premium-deep.css",
+    "knowledge.css",
   ]) {
     assert.match(root, new RegExp(`import "\\.\\/${stylesheet.replace(".", "\\.")}"`));
     assert.doesNotMatch(protectedLayout, new RegExp(stylesheet.replace(".", "\\.")));
