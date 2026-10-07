@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "1.0.0",
+  "policyId": "blueprint-os:universal-century-grade",
+  "policyVersion": "1.2.0",
+  "projectId": "project:ru-life",
+  "blueprintLevel": "B3",
+  "posture": "LOCAL_PERSONAL_LIFE_CORE_WITH_OPTIONAL_SYNC",
+  "complianceState": "MIGRATION_REQUIRED",
+  "canonicalAuthority": {
+    "personalLifeState": "ru-life-application-owned-state",
+    "deviceIdentityAndSessions": "ru-life-owned-local-and-app-runtime",
+    "documents": "user-controlled-local-files-or-explicitly-approved-storage",
+    "applicationManagement": "optional-control-plane-only",
+    "ai": "optional-intelligence-only"
+  },
+  "dependencies": [
+    {
+      "id": "local-webapp-runtime",
+      "class": "LOCAL_CORE",
+      "costClass": "local-free",
+      "purpose": "Core reference, planning, document preparation, checklist and personal Russia-life workflows",
+      "dataBoundary": "user device/local app state",
+      "offlineBehavior": "Core reference/planning content remains usable from local/cached assets where available",
+      "exitPath": "portable JSON/files and source-controlled content/runtime"
+    },
+    {
+      "id": "application-management",
+      "class": "OPTIONAL_SYNC",
+      "costClass": "local-or-user-hosted",
+      "purpose": "Device/access coordination and remote administration metadata only",
+      "dataBoundary": "device/control metadata only; no passport/visa document payload or private notes",
+      "offlineBehavior": "Standalone/local-first mode remains usable where configured",
+      "exitPath": "disable or replace control-plane adapter without transferring RU_LIFE domain ownership"
+    },
+    {
+      "id": "cloudflare-workers-d1",
+      "class": "OPTIONAL_PUBLISH",
+      "costClass": "free-tier-or-optional-paid",
+      "purpose": "Optional hosted runtime, remote device/session ledger and app-owned published state",
+      "dataBoundary": "RU_LIFE application state only; no automatic copy of user-controlled private documents",
+      "offlineBehavior": "Local/reference workflows continue; hosted/session-only features may be unavailable",
+      "exitPath": "D1/SQL and portable domain export with provider-replaceable runtime adapter"
+    },
+    {
+      "id": "google-drive",
+      "class": "OPTIONAL_SYNC",
+      "costClass": "free-tier-or-user-plan",
+      "purpose": "Optional user-initiated document backup, portable export storage and cross-device transfer",
+      "dataBoundary": "explicitly selected files/exports only; sensitive identity documents should be encrypted before remote storage when consequence warrants it",
+      "offlineBehavior": "Local files/state remain usable; sync/backup pauses",
+      "exitPath": "ordinary files/JSON/ZIP can move to local storage, USB or another provider",
+      "status": "planned-optional"
+    },
+    {
+      "id": "google-sheets",
+      "class": "OPTIONAL_SYNC",
+      "costClass": "free-tier-or-user-plan",
+      "purpose": "Optional low-risk checklist/reference/table projection only",
+      "dataBoundary": "no raw passport, visa, invitation, migration-card, address-registration, bank, insurance or credential data by default",
+      "offlineBehavior": "No effect on core app",
+      "exitPath": "CSV/XLSX/JSON export or local table",
+      "status": "discouraged-for-sensitive-personal-data"
+    },
+    {
+      "id": "google-apps-script",
+      "class": "OPTIONAL_SYNC",
+      "costClass": "free-tier-or-user-plan",
+      "purpose": "Optional lightweight reminder/sync/backup coordination",
+      "dataBoundary": "least-privilege sanitized metadata only; not authentication/session/document authority",
+      "offlineBehavior": "Manual/local workflow remains available",
+      "exitPath": "replaceable webhook/sync adapter",
+      "status": "planned-optional"
+    },
+    {
+      "id": "chatgpt-ai",
+      "class": "OPTIONAL_INTELLIGENCE",
+      "costClass": "user-selected",
+      "purpose": "Explanation, translation, planning and document-preparation assistance",
+      "dataBoundary": "only user-selected context; no automatic sensitive-document upload",
+      "offlineBehavior": "Core stored references/checklists/documents remain usable without AI",
+      "exitPath": "non-AI workflow or another optional provider",
+      "status": "optional"
+    }
+  ],
+  "forbidden": [
+    "application-management-owning-ru-life-domain-database",
+    "drive-or-sheets-as-device-session-authority",
+    "raw-passport-visa-or-credential-data-in-sheets-by-default",
+    "unencrypted-sensitive-document-backup-without-explicit-user-choice",
+    "ai-owned-immigration-or-legal-truth",
+    "mandatory-paid-provider-for-core-personal-reference-workflows"
+  ],
+  "migrationBlockers": [
+    "Prove a useful standalone/local-first path when hosted runtime or control plane is unavailable.",
+    "Define portable export/import for personal planning/checklist state that is not device/session authority.",
+    "Before enabling Drive sync for sensitive identity documents, define encryption, consent, deletion and restore behavior.",
+    "Keep legal/immigration guidance provenance-aware and advisory; AI output must not become canonical legal truth."
+  ],
+  "productionAuthority": "separate-explicit-release-gate"
+}
