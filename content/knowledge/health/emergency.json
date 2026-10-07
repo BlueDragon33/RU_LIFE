@@ -8,7 +8,8 @@
   "provenance": {
     "sourceIds": [
       "source:ru:health:emergency:studyinrussia",
-      "source:ru:health:emergency:gov631"
+      "source:ru:health:emergency:gov631",
+      "source:ru:health:emergency:mchs-ambulance"
     ],
     "verifiedAt": "2026-10-07",
     "freshness": "verified"
@@ -19,7 +20,8 @@
       "text": "Trong tình huống có thể nguy hiểm, gọi trợ giúp trước: 112 là số khẩn cấp thống nhất, 103 là cấp cứu y tế.",
       "sourceIds": [
         "source:ru:health:emergency:studyinrussia",
-        "source:ru:health:emergency:gov631"
+        "source:ru:health:emergency:gov631",
+        "source:ru:health:emergency:mchs-ambulance"
       ]
     },
     "purpose": {
@@ -56,7 +58,8 @@
         "text": "Gọi 112 hoặc 103 khi cần cấp cứu y tế; nếu không chắc đầu mối, ưu tiên 112.",
         "sourceIds": [
           "source:ru:health:emergency:studyinrussia",
-          "source:ru:health:emergency:gov631"
+          "source:ru:health:emergency:gov631",
+          "source:ru:health:emergency:mchs-ambulance"
         ]
       },
       {
@@ -87,14 +90,16 @@
         "id": "emergency:remember:112",
         "text": "112 — số thống nhất gọi dịch vụ khẩn cấp.",
         "sourceIds": [
-          "source:ru:health:emergency:studyinrussia"
+          "source:ru:health:emergency:studyinrussia",
+          "source:ru:health:emergency:mchs-ambulance"
         ]
       },
       {
         "id": "emergency:remember:103",
         "text": "103 — cấp cứu y tế.",
         "sourceIds": [
-          "source:ru:health:emergency:studyinrussia"
+          "source:ru:health:emergency:studyinrussia",
+          "source:ru:health:emergency:mchs-ambulance"
         ]
       },
       {
@@ -146,7 +151,8 @@
       "text": "Gọi 112 hoặc 103 ngay; nếu không chắc cần dịch vụ nào, ưu tiên 112.",
       "sourceIds": [
         "source:ru:health:emergency:studyinrussia",
-        "source:ru:health:emergency:gov631"
+        "source:ru:health:emergency:gov631",
+        "source:ru:health:emergency:mchs-ambulance"
       ]
     },
     "checklist": [
@@ -235,7 +241,8 @@
         "id": "emergency:do-not:delay",
         "text": "Không trì hoãn gọi 112/103 để tự chẩn đoán, tìm policy bảo hiểm hoặc tra thuốc.",
         "sourceIds": [
-          "source:ru:health:emergency:gov631"
+          "source:ru:health:emergency:gov631",
+          "source:ru:health:emergency:mchs-ambulance"
         ]
       }
     ],
