@@ -1,0 +1,236 @@
+{
+  "id": "ru-life:prepare:luggage",
+  "schemaVersion": 1,
+  "moduleSlug": "prepare",
+  "topicSlug": "luggage",
+  "title": "Hành lý · trang bị",
+  "summary": "Chia hành lý thành đồ phải có khi xuống máy bay, đồ cho những ngày đầu và đồ có thể mua sau; mọi hạn mức/vật phẩm phải kiểm tra theo đúng hãng, vé và chuyến.",
+  "provenance": {
+    "sourceIds": [],
+    "verifiedAt": "2026-10-07",
+    "freshness": "stable-guidance"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "luggage:idea:layers",
+      "text": "Thiết kế hành lý theo ba lớp nhu cầu thay vì cố mang mọi thứ; các giới hạn thay đổi phải kiểm tra theo hãng khai thác và vé thực tế.",
+      "sourceIds": []
+    },
+    "purpose": {
+      "id": "luggage:purpose:resilience",
+      "text": "Giảm rủi ro thất lạc, quá hành lý và thiếu đồ thiết yếu khi mới đến.",
+      "sourceIds": []
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "luggage:logic:provider",
+        "text": "Hạn mức cabin/ký gửi, vật phẩm cấm/hạn chế và pin lithium phụ thuộc hãng, hạng vé, chặng/chuyến và thời điểm; không hard-code trong RU_LIFE.",
+        "sourceIds": []
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "luggage:scope:no-fixed-limits",
+        "text": "RU_LIFE không lưu một con số kg/phí cố định làm quy tắc chung; luôn mở vé và hướng dẫn hiện hành của hãng khai thác.",
+        "sourceIds": []
+      }
+    ],
+    "actions": [
+      {
+        "id": "luggage:action:carry",
+        "text": "Để hộ chiếu, giấy tờ, điện thoại/sạc, thuốc cần trong hành trình và đồ thiết yếu tối thiểu trong túi mang theo.",
+        "sourceIds": []
+      },
+      {
+        "id": "luggage:action:checked",
+        "text": "Ưu tiên hành lý ký gửi cho đồ khó mua ngay; chụp ảnh vali và chia đồ quan trọng nếu có nhiều kiện.",
+        "sourceIds": []
+      },
+      {
+        "id": "luggage:action:provider-check",
+        "text": "Trước ngày bay, kiểm tra đúng vé/chuyến/hãng về hành lý, vật phẩm hạn chế và pin lithium.",
+        "sourceIds": []
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "luggage:outcome:ready",
+        "text": "Bạn có bộ đồ tối thiểu ngay cả khi hành lý ký gửi đến chậm và biết phải kiểm tra provider trước khi đóng vali.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "luggage:remember:docs",
+        "text": "Giấy tờ không thể thay thế luôn mang theo người.",
+        "sourceIds": []
+      },
+      {
+        "id": "luggage:remember:provider",
+        "text": "Hạn mức/phí/quy định vật phẩm phải kiểm tra theo hãng và vé thực tế.",
+        "sourceIds": []
+      },
+      {
+        "id": "luggage:remember:first-days",
+        "text": "Giữ đủ đồ tối thiểu cho trường hợp hành lý ký gửi đến chậm.",
+        "sourceIds": []
+      }
+    ],
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [],
+    "memoryAnchor": {
+      "id": "luggage:anchor:three",
+      "text": "MANG THEO → NHỮNG NGÀY ĐẦU → MUA SAU.",
+      "sourceIds": []
+    }
+  },
+  "journey": {
+    "stages": [
+      "Chia ba lớp",
+      "Kiểm tra vé/hãng",
+      "Cân và đóng",
+      "Chụp nhận dạng"
+    ],
+    "triggers": [
+      {
+        "id": "luggage:trigger:packing",
+        "text": "Bạn chuẩn bị đóng hành lý cho chuyến sang Nga.",
+        "sourceIds": []
+      }
+    ],
+    "checklist": [
+      {
+        "id": "luggage:check:groups",
+        "text": "Chia nhóm đồ bắt buộc và mua sau.",
+        "sourceIds": []
+      },
+      {
+        "id": "luggage:check:allowance",
+        "text": "Kiểm tra giới hạn hành lý của chuyến đi.",
+        "sourceIds": []
+      },
+      {
+        "id": "luggage:check:first",
+        "text": "Đánh dấu đồ cần dùng ngay khi đến.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [],
+    "decisions": [],
+    "requiredMaterials": [],
+    "completionEvidence": [],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "luggage:node:start",
+          "label": "Chia nhu cầu",
+          "kind": "stage",
+          "evidenceId": "luggage:idea:layers"
+        },
+        {
+          "id": "luggage:node:carry",
+          "label": "Túi mang theo",
+          "kind": "action",
+          "evidenceId": "luggage:action:carry"
+        },
+        {
+          "id": "luggage:node:provider",
+          "label": "Kiểm tra vé/hãng",
+          "kind": "action",
+          "evidenceId": "luggage:action:provider-check"
+        },
+        {
+          "id": "luggage:node:checked",
+          "label": "Hành lý ký gửi",
+          "kind": "action",
+          "evidenceId": "luggage:action:checked"
+        }
+      ],
+      "edges": [
+        {
+          "from": "luggage:node:start",
+          "to": "luggage:node:carry"
+        },
+        {
+          "from": "luggage:node:carry",
+          "to": "luggage:node:provider"
+        },
+        {
+          "from": "luggage:node:provider",
+          "to": "luggage:node:checked"
+        }
+      ]
+    },
+    "nextAction": {
+      "id": "luggage:next:ticket",
+      "text": "Mở đúng vé và hãng khai thác của chuyến hiện tại trước khi quyết định số kiện, hành lý cabin/ký gửi hoặc mang pin/vật phẩm đặc biệt.",
+      "sourceIds": []
+    }
+  },
+  "risk": {
+    "categories": [
+      "safety"
+    ],
+    "severity": "moderate",
+    "doNot": [],
+    "critical": [],
+    "cautions": [
+      {
+        "id": "luggage:caution:provider",
+        "text": "Không dùng hạn mức, phí hoặc quy định pin/vật phẩm từ vé cũ, người khác hoặc thông tin đã lưu lâu; kiểm tra hãng khai thác và vé hiện tại.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [
+      {
+        "id": "luggage:recommend:margin",
+        "text": "Cân từng kiện trước khi đi và chừa biên an toàn thay vì đóng sát giới hạn provider công bố.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "luggage:uncertainty:provider",
+        "text": "Quy định provider có thể thay đổi; Knowledge Unit này chỉ giữ workflow chuẩn bị.",
+        "sourceIds": []
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [],
+    "enTerms": [],
+    "usefulPhrases": [],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:prepare:documents",
+      "label": "Giấy tờ mang theo"
+    }
+  ],
+  "searchTerms": [
+    "hành lý",
+    "vali",
+    "cabin",
+    "ký gửi",
+    "hãng bay",
+    "vé máy bay",
+    "pin lithium",
+    "luggage"
+  ]
+}
