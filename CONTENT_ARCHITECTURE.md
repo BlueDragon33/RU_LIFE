@@ -127,6 +127,34 @@ Regression hiện khóa breakpoint và cách stack layout cho desktop/tablet/pho
 
 Nếu cần đồng bộ đa thiết bị trong tương lai, phải xây user-data domain riêng. Backup/migration RU_LIFE không bao giờ là cơ chế nhân bản quyền thiết bị.
 
+## Content Intelligence Wave 1 — Knowledge Unit v1
+
+Wave 1 bổ sung lớp Content Intelligence theo hướng **opt-in từng topic**, không thay thế hàng loạt content hiện có.
+
+- Canonical Knowledge Unit v1 nằm trong `content/knowledge/<module>/<topic>.json`.
+- Source registry tương ứng nằm trong `content/sources/<module>/<topic>.sources.json`.
+- Topic đầu tiên được migrate là `study-procedures/migration-registration`, giữ nguyên route và stable topic slug.
+- `lib/content-intelligence/registry.ts` đăng ký Knowledge Unit/source theo stable ID; `lib/content-resolver.ts` cung cấp cả resolver mới và resolver legacy.
+- Topic chưa có Knowledge Unit tiếp tục render qua `TopicContent` legacy, vì vậy 20-topic catalog không bị bắt buộc migrate đồng loạt.
+
+Một Knowledge Unit canonical tạo ra ba chế độ đọc từ cùng dữ liệu:
+
+1. **Tôi cần làm gì?** — action/checklist/timeline/risk/decision.
+2. **Tôi muốn hiểu** — purpose/logic/memory anchor/contrast/mistake/example.
+3. **Cho tôi xem toàn bộ** — full structured content + provenance/source/freshness.
+
+Sơ đồ hành trình dùng cùng `journey.map` với **outline/list fallback**; không có nội dung chỉ tồn tại trong sơ đồ. Decision tree tham chiếu action/warning bằng ID thay vì copy lại canonical truth.
+
+High-risk content giữ `sourceIds`, scope/qualifier và `verifiedAt`; validator repository-owned chặn source reference hỏng, high-risk evidence trống và map/decision reference lỗi trước release.
+
+Content Intelligence vẫn **local-first**: render/search không gọi provider hoặc API bắt buộc, không thêm graph database, CMS hay runtime AI dependency trong Wave 1.
+
+Personal state tiếp tục tách khỏi canonical knowledge. Progress, favorite/reminder, deadline và note vẫn dùng các namespace cục bộ hiện tại và tham chiếu route/module/topic ổn định; Knowledge Unit không chứa device identity, session token, control-plane secret hay dữ liệu Application Management.
+
+CSS của Content Intelligence được root-bundle qua `app/knowledge.css` để giữ nguyên production static-asset contract; không đưa stylesheet trở lại nested `/app` layout.
+
+Wave 1 chỉ chứng minh một vertical slice. Migrate 19 topic còn lại, lenses, content packs, entitlement và billing là các wave độc lập sau khi vertical slice được xác minh.
+
 ## Hướng phát triển sau V1.4
 
 1. kiểm thử trực tiếp trên browser desktop/tablet/phone thực;
