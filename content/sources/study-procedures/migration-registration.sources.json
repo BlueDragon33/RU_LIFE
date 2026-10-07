@@ -1,0 +1,53 @@
+[
+  {
+    "id": "source:ru:109-fz-art20",
+    "schemaVersion": 1,
+    "title": "109-ФЗ — Статья 20. Обязательность учета иностранных граждан по месту пребывания",
+    "publisher": "КонсультантПлюс / Федеральный закон № 109-ФЗ",
+    "authority": "professional-reference",
+    "url": "https://www.consultant.ru/document/cons_doc_LAW_61569/259e33be7736b57036467f128672f0ce6ca81f9d/",
+    "checkedAt": "2026-10-07",
+    "note": "Dùng để kiểm chứng nghĩa vụ đăng ký theo nơi lưu trú, nguyên tắc thông báo đến cơ quan di trú và mốc 7 ngày làm việc trong trường hợp chung, cùng các ngoại lệ được luật quy định."
+  },
+  {
+    "id": "source:ru:109-fz-art22",
+    "schemaVersion": 1,
+    "title": "109-ФЗ — Статья 22. Порядок постановки иностранных граждан на учет по месту пребывания",
+    "publisher": "КонсультантПлюс / Федеральный закон № 109-ФЗ",
+    "authority": "professional-reference",
+    "url": "https://www.consultant.ru/document/cons_doc_LAW_61569/5870db6b61f003dfeffe784df6b3ee9c026925ba/",
+    "checkedAt": "2026-10-07",
+    "note": "Dùng để kiểm chứng vai trò của bên tiếp nhận, các kênh nộp thông báo, trường hợp người nước ngoài có hợp đồng thuê có thể tự nộp theo luật, và việc không được giữ giấy tờ của người nước ngoài."
+  },
+  {
+    "id": "source:ru:115-fz-art5",
+    "schemaVersion": 1,
+    "title": "115-ФЗ — Статья 5. Временное пребывание иностранных граждан в Российской Федерации",
+    "publisher": "КонсультантПлюс / Федеральный закон № 115-ФЗ",
+    "authority": "professional-reference",
+    "url": "https://www.consultant.ru/document/cons_doc_LAW_37868/e9d581e7e11d7901295efd89c869ae044dd3d20f/",
+    "checkedAt": "2026-10-07",
+    "note": "Dùng để kiểm chứng khoản 13 về đăng ký vân tay/chụp ảnh trong 90 ngày đối với người vào Nga không nhằm lao động và dự kiến ở trên 90 ngày; khoản 18 về khám y tế trong 30 ngày từ ngày nhập cảnh theo bản sửa đổi 2026 và các ngoại lệ được luật nêu."
+  },
+  {
+    "id": "source:ru:162-fz-2026",
+    "schemaVersion": 1,
+    "title": "Федеральный закон от 10.06.2026 № 162-ФЗ",
+    "publisher": "КонсультантПлюс / Федеральный закон № 162-ФЗ",
+    "authority": "professional-reference",
+    "url": "https://www.consultant.ru/document/cons_doc_LAW_536480/",
+    "checkedAt": "2026-10-07",
+    "effectiveAt": "2026-09-01",
+    "note": "Luật sửa 115-ФЗ về khám y tế người nước ngoài; có hiệu lực từ 01/09/2026. Dùng để khóa mốc áp dụng của quy định khám y tế mới."
+  },
+  {
+    "id": "source:ru:mvd-fingerprint-guidance",
+    "schemaVersion": 1,
+    "title": "Разъяснения МВД России о дактилоскопической регистрации и медицинском освидетельствовании",
+    "publisher": "МВД России (được КонсультантПлюс đăng lại)",
+    "authority": "official-government",
+    "url": "https://www.consultant.ru/document/cons_doc_LAW_404378/",
+    "checkedAt": "2026-10-07",
+    "note": "Giải thích của МВД về nhóm người nước ngoài phải đăng ký vân tay/chụp ảnh và mốc 90 ngày đối với người ở dài hạn trên 90 ngày với mục đích không phải lao động."
+  }
+]
