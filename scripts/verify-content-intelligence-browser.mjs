@@ -92,6 +92,26 @@ try {
   assert((await page.locator(".knowledge-provenance").innerText()).includes("2026-10-07"), "full view must show verified date");
 
   await page.getByRole("button", { name: "Tôi cần làm gì?" }).click();
+
+  const contextLens = page.locator(".knowledge-context-lens select");
+  await visible(contextLens, "accommodation context lens");
+  const dormDecision = page.getByRole("button", { name: "Ký túc xá / cơ sở do trường bố trí" });
+  const rentalDecision = page.getByRole("button", { name: "Thuê nhà/căn hộ" });
+  const temporaryDecision = page.getByRole("button", { name: "Khách sạn / cơ sở lưu trú" });
+
+  await contextLens.selectOption("dormitory");
+  assert(await dormDecision.getAttribute("aria-pressed") === "true", "dormitory lens must preselect canonical dorm decision");
+
+  await contextLens.selectOption("rental");
+  assert(await rentalDecision.getAttribute("aria-pressed") === "true", "rental lens must preselect canonical rental decision");
+
+  await contextLens.selectOption("temporary");
+  assert(await temporaryDecision.getAttribute("aria-pressed") === "true", "temporary lens must preselect canonical temporary decision");
+
+  await rentalDecision.click();
+  assert(await rentalDecision.getAttribute("aria-pressed") === "true", "manual override must remain available after lens preselection");
+  await visible(page.locator(".knowledge-risk-panel"), "risk panel after lens selection");
+
   const mapButtons = page.locator(".knowledge-map-nodes button");
   assert(await mapButtons.count() >= 3, "map must expose at least three interactive nodes");
   const secondMapButton = mapButtons.nth(1);
@@ -123,6 +143,12 @@ try {
     assert(dimensions.scrollWidth <= dimensions.innerWidth + 1, `${viewport.label} must not horizontally overflow: ${dimensions.scrollWidth} > ${dimensions.innerWidth}`);
     await visible(page.locator(".knowledge-mode-selector"), `${viewport.label} mode selector`);
     await visible(page.locator(".knowledge-outline"), `${viewport.label} outline fallback`);
+    if (viewport.label === "phone") {
+      const phoneLens = page.locator(".knowledge-context-lens select");
+      await visible(phoneLens, "phone accommodation context lens");
+      await phoneLens.selectOption("dormitory");
+      assert(await page.getByRole("button", { name: "Ký túc xá / cơ sở do trường bố trí" }).getAttribute("aria-pressed") === "true", "phone lens must preselect dorm decision");
+    }
   }
 
   const emergencyRoute = "/app/health/emergency";
