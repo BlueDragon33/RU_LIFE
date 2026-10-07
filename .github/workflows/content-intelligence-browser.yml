@@ -11,6 +11,7 @@ on:
       - "app/app/[module]/[topic]/page.tsx"
       - "app/app/page.tsx"
       - "scripts/verify-content-intelligence-browser.mjs"
+      - "scripts/validate-content-intelligence.mjs"
       - ".github/workflows/content-intelligence-browser.yml"
   workflow_dispatch:
 
