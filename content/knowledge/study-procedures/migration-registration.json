@@ -1,0 +1,769 @@
+{
+  "id": "ru-life:study-procedures:migration-registration",
+  "schemaVersion": 1,
+  "moduleSlug": "study-procedures",
+  "topicSlug": "migration-registration",
+  "title": "Cư trú · giấy tờ người nước ngoài",
+  "summary": "Tách rõ đăng ký nơi lưu trú, vân tay/chụp ảnh và khám y tế; theo dõi từng nghĩa vụ theo chỗ ở, thời điểm nhập cảnh và hướng dẫn hiện hành.",
+  "provenance": {
+    "sourceIds": [
+      "source:ru:109-fz-art20",
+      "source:ru:109-fz-art22",
+      "source:ru:115-fz-art5",
+      "source:ru:162-fz-2026",
+      "source:ru:mvd-fingerprint-guidance"
+    ],
+    "verifiedAt": "2026-10-07",
+    "freshness": "volatile"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "idea:separate-obligations",
+      "text": "Đăng ký nơi lưu trú, đăng ký vân tay/chụp ảnh và khám y tế là các nghĩa vụ khác nhau; hoàn thành một việc không tự động chứng minh hai việc còn lại đã hoàn tất.",
+      "sourceIds": [
+        "source:ru:109-fz-art20",
+        "source:ru:115-fz-art5"
+      ]
+    },
+    "purpose": {
+      "id": "purpose:avoid-missed-obligations",
+      "text": "Giúp người học tránh bỏ sót thủ tục vì nhầm giấy xác nhận chỗ ở hoặc một thủ tục đã hoàn thành là đủ cho toàn bộ nghĩa vụ di trú.",
+      "sourceIds": [
+        "source:ru:109-fz-art20",
+        "source:ru:115-fz-art5"
+      ]
+    },
+    "rationale": [
+      {
+        "id": "logic:three-tracks",
+        "text": "Các thủ tục có căn cứ pháp lý, chủ thể thực hiện và mốc thời gian khác nhau, nên phải theo dõi như ba luồng song song.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:109-fz-art22",
+          "source:ru:115-fz-art5"
+        ]
+      }
+    ],
+    "logic": [
+      {
+        "id": "logic:arrival-to-registration",
+        "text": "Khi đến nơi ở, cần xác định ai là bên tiếp nhận và cách nộp thông báo cư trú phù hợp với loại chỗ ở; sau đó lưu bằng chứng đã đăng ký và kiểm tra khi thay đổi nơi ở hoặc giấy tờ.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:109-fz-art22"
+        ]
+      },
+      {
+        "id": "logic:long-stay-obligations",
+        "text": "Nếu vào Nga không vì lao động và dự kiến ở trên 90 ngày, luật đặt nghĩa vụ vân tay/chụp ảnh trong 90 ngày; từ 01/09/2026, nhóm thuộc khoản 18 Điều 5 của 115-ФЗ phải khám y tế trong 30 ngày từ ngày nhập cảnh, trừ ngoại lệ hợp lệ.",
+        "sourceIds": [
+          "source:ru:115-fz-art5",
+          "source:ru:162-fz-2026",
+          "source:ru:mvd-fingerprint-guidance"
+        ],
+        "scope": "Áp dụng theo phạm vi Điều 5 Luật 115-ФЗ và các ngoại lệ được luật quy định."
+      }
+    ],
+    "preconditions": [
+      {
+        "id": "precondition:arrival",
+        "text": "Bạn đã nhập cảnh và biết ngày nhập cảnh thực tế ghi trên giấy tờ.",
+        "sourceIds": [
+          "source:ru:115-fz-art5"
+        ]
+      },
+      {
+        "id": "precondition:stay-address",
+        "text": "Bạn biết nơi mình thực tế lưu trú hoặc ít nhất đầu mối đang bố trí chỗ ở.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:109-fz-art22"
+        ]
+      }
+    ],
+    "scope": [
+      {
+        "id": "scope:foreign-student",
+        "text": "Vertical slice này ưu tiên người nước ngoài đến Nga để học, không nhằm lao động, và có kế hoạch ở dài ngày; trường hợp lao động, cư trú thường trú hoặc diện đặc biệt phải đối chiếu nhánh pháp lý riêng.",
+        "sourceIds": [
+          "source:ru:115-fz-art5"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "action:notify-host",
+        "text": "Ngay khi đến chỗ ở, báo cho ký túc xá/chủ nhà/đơn vị tiếp nhận và hỏi ai thực hiện thông báo đăng ký nơi lưu trú cho đúng địa chỉ thực tế.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:109-fz-art22"
+        ],
+        "statusLabel": "Làm ngay khi đến chỗ ở"
+      },
+      {
+        "id": "action:save-registration-proof",
+        "text": "Sau khi đăng ký, lưu bản thông báo/xác nhận và kiểm tra họ tên, số hộ chiếu, địa chỉ và thời hạn.",
+        "sourceIds": [
+          "source:ru:109-fz-art22"
+        ],
+        "statusLabel": "Sau khi đăng ký"
+      },
+      {
+        "id": "action:fingerprint",
+        "text": "Nếu thuộc nhóm vào Nga không vì lao động và ở trên 90 ngày, hoàn thành đăng ký vân tay và chụp ảnh trong 90 ngày từ ngày nhập cảnh.",
+        "sourceIds": [
+          "source:ru:115-fz-art5",
+          "source:ru:mvd-fingerprint-guidance"
+        ],
+        "scope": "Trừ trường hợp luật quy định ngoại lệ."
+      },
+      {
+        "id": "action:medical",
+        "text": "Nếu thuộc phạm vi khoản 18 Điều 5 Luật 115-ФЗ, hoàn thành khám y tế trong 30 ngày từ ngày nhập cảnh theo quy định có hiệu lực từ 01/09/2026.",
+        "sourceIds": [
+          "source:ru:115-fz-art5",
+          "source:ru:162-fz-2026"
+        ],
+        "scope": "Trừ trường hợp có ngoại lệ hợp lệ theo luật, ví dụ một số trường hợp đã khám trong khoảng thời gian được luật công nhận."
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "outcome:proofs",
+        "text": "Bạn có bằng chứng riêng cho từng thủ tục thuộc trường hợp của mình và biết việc nào đã xong, việc nào còn hạn xử lý.",
+        "sourceIds": [
+          "source:ru:109-fz-art22",
+          "source:ru:115-fz-art5"
+        ]
+      }
+    ],
+    "exceptions": [
+      {
+        "id": "exception:law-specific",
+        "text": "Thời hạn, chủ thể nộp và nghĩa vụ cụ thể có ngoại lệ theo loại chỗ ở, tình trạng cư trú, mục đích nhập cảnh và lịch sử khám; không áp một mốc duy nhất cho mọi người.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:109-fz-art22",
+          "source:ru:115-fz-art5"
+        ]
+      }
+    ]
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "remember:three-tracks",
+        "text": "Ba việc tách biệt: nơi lưu trú — vân tay/chụp ảnh — khám y tế.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:115-fz-art5"
+        ]
+      },
+      {
+        "id": "remember:90-days",
+        "text": "Ở trên 90 ngày với mục đích không phải lao động: vân tay/chụp ảnh trong 90 ngày từ ngày nhập cảnh nếu thuộc phạm vi luật.",
+        "sourceIds": [
+          "source:ru:115-fz-art5",
+          "source:ru:mvd-fingerprint-guidance"
+        ]
+      },
+      {
+        "id": "remember:30-days-medical",
+        "text": "Từ 01/09/2026, khám y tế theo khoản 18 Điều 5 Luật 115-ФЗ có mốc 30 ngày từ ngày nhập cảnh đối với nhóm thuộc phạm vi áp dụng.",
+        "sourceIds": [
+          "source:ru:115-fz-art5",
+          "source:ru:162-fz-2026"
+        ]
+      }
+    ],
+    "memoryAnchor": {
+      "id": "anchor:registration-vs-fingerprint-vs-medical",
+      "text": "Registration = nơi bạn đang ở; fingerprint/photo = nhận dạng sinh trắc học; medical = khám theo yêu cầu pháp luật. Một giấy không thay cho ba việc.",
+      "sourceIds": [
+        "source:ru:109-fz-art20",
+        "source:ru:115-fz-art5"
+      ]
+    },
+    "keyTerms": [
+      {
+        "id": "term:migration-registration",
+        "text": "миграционный учет по месту пребывания — đăng ký/ghi nhận theo nơi lưu trú.",
+        "sourceIds": [
+          "source:ru:109-fz-art20"
+        ]
+      },
+      {
+        "id": "term:fingerprint",
+        "text": "обязательная государственная дактилоскопическая регистрация — đăng ký vân tay bắt buộc của nhà nước.",
+        "sourceIds": [
+          "source:ru:115-fz-art5"
+        ]
+      },
+      {
+        "id": "term:medical",
+        "text": "медицинское освидетельствование — khám y tế theo phạm vi Luật 115-ФЗ.",
+        "sourceIds": [
+          "source:ru:115-fz-art5"
+        ]
+      }
+    ],
+    "contrasts": [
+      {
+        "id": "contrast:dorm-vs-registration",
+        "text": "Được nhận phòng hoặc có hợp đồng chỗ ở không đồng nghĩa thủ tục đăng ký nơi lưu trú đã được hoàn tất.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:109-fz-art22"
+        ]
+      }
+    ],
+    "myths": [
+      {
+        "id": "myth:one-paper",
+        "text": "Hiểu sai thường gặp: có một giấy từ ký túc xá là mọi thủ tục di trú đã xong. Thực tế cần kiểm tra từng nghĩa vụ riêng theo trường hợp.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:115-fz-art5"
+        ]
+      }
+    ],
+    "commonMistakes": [
+      {
+        "id": "mistake:wait-until-class",
+        "text": "Chờ đến khi bắt đầu học mới hỏi thủ tục, trong khi một số mốc được tính từ ngày nhập cảnh hoặc ngày đến nơi lưu trú.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:115-fz-art5"
+        ]
+      },
+      {
+        "id": "mistake:no-proof",
+        "text": "Không lưu bằng chứng sau khi hoàn thành từng thủ tục nên khó chứng minh hoặc đối chiếu khi có sai thông tin.",
+        "sourceIds": [
+          "source:ru:109-fz-art22",
+          "source:ru:115-fz-art5"
+        ]
+      }
+    ],
+    "examples": [
+      {
+        "id": "example:dorm-student",
+        "text": "Ví dụ: sinh viên vào Nga để học dài hạn, ở ký túc xá. Sinh viên cần hỏi ký túc xá về đăng ký nơi lưu trú ngay khi đến, đồng thời theo dõi riêng mốc vân tay/chụp ảnh và khám y tế nếu thuộc phạm vi áp dụng.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:115-fz-art5"
+        ]
+      }
+    ],
+    "recallPrompts": [
+      "Ba nghĩa vụ nào không được coi là một?",
+      "Mốc 90 ngày gắn với thủ tục nào trong trường hợp học dài hạn không nhằm lao động?",
+      "Quy định khám y tế mới từ 01/09/2026 dùng mốc bao nhiêu ngày từ nhập cảnh?"
+    ]
+  },
+  "journey": {
+    "stages": [
+      "arrival",
+      "first-days",
+      "first-month",
+      "long-stay",
+      "change-of-address"
+    ],
+    "triggers": [
+      {
+        "id": "trigger:arrived",
+        "text": "Bạn vừa tới nơi ở sau khi nhập cảnh.",
+        "sourceIds": [
+          "source:ru:109-fz-art20"
+        ]
+      },
+      {
+        "id": "trigger:long-stay",
+        "text": "Bạn dự kiến ở Nga trên 90 ngày với mục đích không phải lao động.",
+        "sourceIds": [
+          "source:ru:115-fz-art5"
+        ]
+      }
+    ],
+    "nextAction": {
+      "id": "action:notify-host",
+      "text": "Xác định ngay bên tiếp nhận của nơi đang ở và hỏi quy trình thông báo đăng ký nơi lưu trú cho địa chỉ thực tế.",
+      "sourceIds": [
+        "source:ru:109-fz-art20",
+        "source:ru:109-fz-art22"
+      ],
+      "statusLabel": "Làm ngay"
+    },
+    "checklist": [
+      {
+        "id": "check:arrival-date",
+        "text": "Ghi lại ngày nhập cảnh và lưu ảnh giấy tờ có dấu/thông tin nhập cảnh.",
+        "sourceIds": [
+          "source:ru:115-fz-art5"
+        ]
+      },
+      {
+        "id": "check:registration",
+        "text": "Xác nhận ai nộp thông báo nơi lưu trú và lưu bằng chứng sau khi đăng ký.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:109-fz-art22"
+        ]
+      },
+      {
+        "id": "check:fingerprint",
+        "text": "Nếu thuộc diện, lên lịch vân tay/chụp ảnh trước mốc 90 ngày.",
+        "sourceIds": [
+          "source:ru:115-fz-art5",
+          "source:ru:mvd-fingerprint-guidance"
+        ]
+      },
+      {
+        "id": "check:medical",
+        "text": "Nếu thuộc diện, hoàn thành khám y tế trước mốc 30 ngày từ nhập cảnh theo quy định hiện hành.",
+        "sourceIds": [
+          "source:ru:115-fz-art5",
+          "source:ru:162-fz-2026"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "id": "timeline:arrival",
+        "text": "Ngay khi đến nơi ở: thông báo cho bên tiếp nhận và xác định quy trình đăng ký nơi lưu trú.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:109-fz-art22"
+        ]
+      },
+      {
+        "id": "timeline:general-registration",
+        "text": "Trường hợp chung, thông báo đến nơi lưu trú có mốc 7 ngày làm việc kể từ ngày đến nơi lưu trú; một số loại cơ sở/trường hợp có quy tắc khác.",
+        "sourceIds": [
+          "source:ru:109-fz-art20"
+        ],
+        "scope": "Không áp mốc này máy móc cho khách sạn/cơ sở thuộc ngoại lệ hoặc trường hợp đặc thù."
+      },
+      {
+        "id": "timeline:medical",
+        "text": "Nếu thuộc khoản 18 Điều 5 Luật 115-ФЗ: 30 ngày từ ngày nhập cảnh để khám y tế theo quy định hiện hành.",
+        "sourceIds": [
+          "source:ru:115-fz-art5",
+          "source:ru:162-fz-2026"
+        ]
+      },
+      {
+        "id": "timeline:fingerprint",
+        "text": "Nếu vào Nga không vì lao động và ở trên 90 ngày: 90 ngày từ ngày nhập cảnh để vân tay/chụp ảnh, trừ ngoại lệ.",
+        "sourceIds": [
+          "source:ru:115-fz-art5",
+          "source:ru:mvd-fingerprint-guidance"
+        ]
+      }
+    ],
+    "dependencies": [
+      "action:notify-host",
+      "action:save-registration-proof"
+    ],
+    "decisions": [
+      {
+        "id": "decision:accommodation",
+        "question": "Bạn đang ở loại chỗ nào?",
+        "options": [
+          {
+            "id": "option:dorm",
+            "label": "Ký túc xá / cơ sở do trường bố trí",
+            "summary": "Liên hệ ngay bộ phận ký túc xá/sinh viên quốc tế để xác định bên tiếp nhận và quy trình nộp thông báo cho đúng địa chỉ.",
+            "nextUnitIds": [
+              "ru-life:study-procedures:important-contacts"
+            ],
+            "actionIds": [
+              "action:notify-host",
+              "action:save-registration-proof"
+            ],
+            "warningIds": [
+              "warning:not-one-paper"
+            ]
+          },
+          {
+            "id": "option:rental",
+            "label": "Thuê nhà/căn hộ",
+            "summary": "Xác định bên tiếp nhận và kiểm tra hợp đồng thuê; Luật 109-ФЗ có trường hợp người nước ngoài có hợp đồng thuê tự nộp thông báo theo quy định.",
+            "nextUnitIds": [
+              "ru-life:daily-life:housing"
+            ],
+            "actionIds": [
+              "action:notify-host",
+              "action:save-registration-proof"
+            ],
+            "warningIds": [
+              "warning:actual-address"
+            ]
+          },
+          {
+            "id": "option:hotel",
+            "label": "Khách sạn / cơ sở lưu trú",
+            "summary": "Cơ sở lưu trú thuộc nhóm có quy tắc riêng; hỏi ngay lễ tân/đơn vị lưu trú về việc thông báo, không tự áp mốc chung 7 ngày làm việc.",
+            "nextUnitIds": [
+              "ru-life:daily-life:housing"
+            ],
+            "actionIds": [
+              "action:notify-host",
+              "action:save-registration-proof"
+            ],
+            "warningIds": [
+              "warning:general-deadline-exception"
+            ]
+          }
+        ]
+      }
+    ],
+    "requiredMaterials": [
+      {
+        "id": "material:passport",
+        "text": "Hộ chiếu/giấy tờ nhận dạng hợp lệ và các giấy tờ nhập cảnh liên quan.",
+        "sourceIds": [
+          "source:ru:109-fz-art22",
+          "source:ru:115-fz-art5"
+        ]
+      },
+      {
+        "id": "material:address",
+        "text": "Thông tin địa chỉ nơi lưu trú thực tế và giấy tờ chỗ ở theo trường hợp.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:109-fz-art22"
+        ]
+      }
+    ],
+    "completionEvidence": [
+      {
+        "id": "evidence:registration-proof",
+        "text": "Bạn có bằng chứng đã được đăng ký theo nơi lưu trú cho đúng địa chỉ và đã kiểm tra thông tin.",
+        "sourceIds": [
+          "source:ru:109-fz-art22"
+        ]
+      },
+      {
+        "id": "evidence:fingerprint-proof",
+        "text": "Nếu thuộc diện, bạn có tài liệu xác nhận đã hoàn thành vân tay/chụp ảnh.",
+        "sourceIds": [
+          "source:ru:115-fz-art5"
+        ]
+      },
+      {
+        "id": "evidence:medical-proof",
+        "text": "Nếu thuộc diện, bạn có tài liệu/kết quả hợp lệ chứng minh đã hoàn thành khám y tế theo quy định.",
+        "sourceIds": [
+          "source:ru:115-fz-art5",
+          "source:ru:162-fz-2026"
+        ]
+      }
+    ],
+    "followUps": [
+      {
+        "id": "followup:move",
+        "text": "Khi đổi nơi lưu trú, thay đổi giấy tờ hoặc kéo dài thời gian ở, kiểm tra lại nghĩa vụ cập nhật đăng ký và các thủ tục liên quan.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:109-fz-art22"
+        ]
+      }
+    ],
+    "map": {
+      "nodes": [
+        {
+          "id": "node:arrival",
+          "label": "Đến nơi ở",
+          "kind": "stage",
+          "evidenceId": "trigger:arrived"
+        },
+        {
+          "id": "node:host",
+          "label": "Xác định bên tiếp nhận",
+          "kind": "action",
+          "evidenceId": "action:notify-host"
+        },
+        {
+          "id": "node:decision-home",
+          "label": "Loại chỗ ở?",
+          "kind": "decision"
+        },
+        {
+          "id": "node:registration",
+          "label": "Đăng ký nơi lưu trú",
+          "kind": "action",
+          "evidenceId": "action:save-registration-proof"
+        },
+        {
+          "id": "node:medical",
+          "label": "Khám y tế nếu thuộc diện",
+          "kind": "action",
+          "evidenceId": "action:medical"
+        },
+        {
+          "id": "node:fingerprint",
+          "label": "Vân tay/chụp ảnh nếu thuộc diện",
+          "kind": "action",
+          "evidenceId": "action:fingerprint"
+        },
+        {
+          "id": "node:proof",
+          "label": "Lưu bằng chứng",
+          "kind": "document",
+          "evidenceId": "outcome:proofs"
+        },
+        {
+          "id": "node:sources",
+          "label": "Kiểm tra nguồn",
+          "kind": "source"
+        }
+      ],
+      "edges": [
+        {
+          "from": "node:arrival",
+          "to": "node:host",
+          "label": "ngay khi đến"
+        },
+        {
+          "from": "node:host",
+          "to": "node:decision-home"
+        },
+        {
+          "from": "node:decision-home",
+          "to": "node:registration"
+        },
+        {
+          "from": "node:arrival",
+          "to": "node:medical",
+          "label": "theo phạm vi áp dụng"
+        },
+        {
+          "from": "node:arrival",
+          "to": "node:fingerprint",
+          "label": "theo phạm vi áp dụng"
+        },
+        {
+          "from": "node:registration",
+          "to": "node:proof"
+        },
+        {
+          "from": "node:medical",
+          "to": "node:proof"
+        },
+        {
+          "from": "node:fingerprint",
+          "to": "node:proof"
+        },
+        {
+          "from": "node:proof",
+          "to": "node:sources"
+        }
+      ]
+    }
+  },
+  "risk": {
+    "categories": [
+      "immigration",
+      "legal",
+      "document-loss"
+    ],
+    "severity": "high",
+    "doNot": [
+      {
+        "id": "warning:passport-retention",
+        "text": "Không chấp nhận việc bên tiếp nhận giữ hộ chiếu/giấy tờ của bạn trái với quy định; Điều 22 Luật 109-ФЗ nêu việc bên tiếp nhận thu giữ các giấy tờ liên quan là không được phép.",
+        "sourceIds": [
+          "source:ru:109-fz-art22"
+        ]
+      }
+    ],
+    "critical": [
+      {
+        "id": "warning:not-one-paper",
+        "text": "Không coi một giấy ký túc xá hoặc một thủ tục đã hoàn thành là bằng chứng rằng toàn bộ nghĩa vụ di trú đã xong.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:115-fz-art5"
+        ]
+      },
+      {
+        "id": "warning:medical-30",
+        "text": "Nếu thuộc phạm vi khoản 18 Điều 5 Luật 115-ФЗ, mốc khám y tế hiện hành là 30 ngày từ ngày nhập cảnh.",
+        "sourceIds": [
+          "source:ru:115-fz-art5",
+          "source:ru:162-fz-2026"
+        ],
+        "scope": "Quy định này có hiệu lực từ 01/09/2026 và có ngoại lệ được luật quy định."
+      }
+    ],
+    "cautions": [
+      {
+        "id": "warning:actual-address",
+        "text": "Đăng ký phải phản ánh nơi lưu trú thực tế theo phạm vi luật; khi đổi chỗ ở cần kiểm tra nghĩa vụ đăng ký lại/cập nhật.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:109-fz-art22"
+        ]
+      },
+      {
+        "id": "warning:general-deadline-exception",
+        "text": "Mốc 7 ngày làm việc là quy tắc chung của thông báo nơi lưu trú, nhưng luật có ngoại lệ cho một số loại cơ sở/trường hợp; không áp máy móc.",
+        "sourceIds": [
+          "source:ru:109-fz-art20"
+        ]
+      }
+    ],
+    "recommended": [
+      {
+        "id": "recommend:scan",
+        "text": "Lưu bản số của từng giấy xác nhận và tách khỏi điện thoại chính để có bản dự phòng.",
+        "sourceIds": []
+      },
+      {
+        "id": "recommend:school-contact",
+        "text": "Với sinh viên, phối hợp sớm với bộ phận phụ trách người nước ngoài của trường để đối chiếu cách thực hiện thực tế tại địa chỉ của mình.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [
+      {
+        "id": "info:registration-actor",
+        "text": "Trong quy tắc chung, bên tiếp nhận nộp thông báo; luật cũng có các trường hợp người nước ngoài tự nộp, gồm trường hợp có hợp đồng thuê theo điều kiện tại Điều 22.",
+        "sourceIds": [
+          "source:ru:109-fz-art22"
+        ]
+      }
+    ],
+    "consequences": [
+      {
+        "id": "consequence:stay-shortened",
+        "text": "Luật 115-ФЗ quy định thời hạn tạm trú có thể bị rút ngắn khi người thuộc diện không thực hiện nghĩa vụ vân tay/chụp ảnh và/hoặc khám y tế.",
+        "sourceIds": [
+          "source:ru:115-fz-art5"
+        ]
+      }
+    ],
+    "escalations": [
+      {
+        "id": "escalate:school-migration",
+        "text": "Nếu giấy tờ có sai thông tin, bạn sắp chạm hạn, đã đổi nơi ở hoặc không rõ mình thuộc ngoại lệ nào, liên hệ ngay bộ phận migration/international của trường và cơ quan có thẩm quyền thay vì chờ.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:115-fz-art5"
+        ]
+      }
+    ],
+    "uncertaintyNotes": [
+      {
+        "id": "uncertainty:case-specific",
+        "text": "Quy trình thao tác thực tế phụ thuộc loại chỗ ở, tư cách cư trú, mục đích nhập cảnh, giấy tờ và ngoại lệ cá nhân; RU_LIFE không thay thế xác nhận của cơ quan có thẩm quyền.",
+        "sourceIds": [
+          "source:ru:109-fz-art20",
+          "source:ru:109-fz-art22",
+          "source:ru:115-fz-art5"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [
+      {
+        "term": "миграционный учет",
+        "meaningVi": "đăng ký/ghi nhận di trú",
+        "sourceIds": [
+          "source:ru:109-fz-art20"
+        ]
+      },
+      {
+        "term": "место пребывания",
+        "meaningVi": "nơi lưu trú",
+        "sourceIds": [
+          "source:ru:109-fz-art20"
+        ]
+      },
+      {
+        "term": "принимающая сторона",
+        "meaningVi": "bên tiếp nhận",
+        "sourceIds": [
+          "source:ru:109-fz-art22"
+        ]
+      },
+      {
+        "term": "дактилоскопическая регистрация",
+        "meaningVi": "đăng ký vân tay",
+        "sourceIds": [
+          "source:ru:115-fz-art5"
+        ]
+      },
+      {
+        "term": "медицинское освидетельствование",
+        "meaningVi": "khám y tế theo quy định",
+        "sourceIds": [
+          "source:ru:115-fz-art5"
+        ]
+      }
+    ],
+    "enTerms": [
+      {
+        "term": "migration registration",
+        "meaningVi": "đăng ký theo nơi lưu trú"
+      },
+      {
+        "term": "fingerprinting",
+        "meaningVi": "lấy/đăng ký vân tay"
+      },
+      {
+        "term": "medical examination",
+        "meaningVi": "khám y tế"
+      }
+    ],
+    "usefulPhrases": [
+      {
+        "ru": "Кто оформляет миграционный учет по этому адресу?",
+        "vi": "Ai làm đăng ký di trú cho địa chỉ này?",
+        "context": "Hỏi ký túc xá/chủ nhà/bên tiếp nhận."
+      },
+      {
+        "ru": "Какой документ я получу после оформления?",
+        "vi": "Sau khi làm xong tôi sẽ nhận giấy xác nhận nào?",
+        "context": "Dùng để hỏi về bằng chứng hoàn thành thủ tục."
+      }
+    ],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:enrollment",
+      "label": "Nhập học và đầu mối trường"
+    },
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:important-contacts",
+      "label": "Đầu mối migration/international"
+    },
+    {
+      "type": "related-to",
+      "targetId": "ru-life:daily-life:housing",
+      "label": "Nhà ở và thay đổi nơi lưu trú"
+    }
+  ],
+  "searchTerms": [
+    "đăng ký cư trú",
+    "migration registration",
+    "миграционный учет",
+    "đăng ký nơi lưu trú",
+    "место пребывания",
+    "vân tay",
+    "дактилоскопическая регистрация",
+    "khám y tế",
+    "медицинское освидетельствование",
+    "30 ngày",
+    "90 ngày",
+    "ký túc xá",
+    "thuê nhà",
+    "khách sạn",
+    "đổi chỗ ở"
+  ]
+}
