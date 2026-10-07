@@ -21,6 +21,7 @@ export type DashboardTopic = {
   summary: string;
   priority: "essential" | "recommended" | "reference";
   checklist: string[];
+  searchTerms: string[];
   freshness: "verified" | "review-soon" | "stable-guidance";
   updatedAt: string;
 };
@@ -139,6 +140,7 @@ export default function WorkspaceDashboard({ topics }: { topics: DashboardTopic[
       topic.title,
       topic.summary,
       ...topic.checklist,
+      ...topic.searchTerms,
     ].join(" ")).includes(needle));
   }, [query, topics]);
 
