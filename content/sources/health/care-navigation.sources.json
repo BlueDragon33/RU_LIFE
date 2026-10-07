@@ -1,0 +1,23 @@
+[
+  {
+    "id": "source:ru:health:care:studyinrussia",
+    "schemaVersion": 1,
+    "title": "Why Russia – Medicine",
+    "publisher": "Study in Russia",
+    "authority": "official-government",
+    "url": "https://studyinrussia.ru/en/why-russia",
+    "checkedAt": "2026-10-07",
+    "note": "Nguồn chính thức nêu số 112 và nguyên tắc bảo hiểm đối với chăm sóc theo kế hoạch cho sinh viên quốc tế."
+  },
+  {
+    "id": "source:ru:health:care:gov631",
+    "schemaVersion": 1,
+    "title": "Government Resolution No. 631 of 8 May 2025",
+    "publisher": "Government of the Russian Federation",
+    "authority": "official-legal",
+    "url": "https://government.ru/docs/all/158874/",
+    "checkedAt": "2026-10-07",
+    "effectiveAt": "2025-09-01",
+    "note": "Dùng để phân biệt chăm sóc cấp cứu với chăm sóc không khẩn cấp/theo kế hoạch cho người nước ngoài."
+  }
+]
