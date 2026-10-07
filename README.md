@@ -31,3 +31,23 @@ Nhánh migration đã bổ sung đường deploy **preview manual-only** với W
 Production auto-deploy vẫn tắt cho tới khi preview được kiểm chứng E2E. Không đặt secret hoặc D1 ID thật trong repo.
 
 Xem [`CONTROL_INTEGRATION.md`](CONTROL_INTEGRATION.md) để biết contract chi tiết.
+
+
+## Operational sovereignty
+
+RU_LIFE adopts **Universal Constitution 1.2.0** at Blueprint Level **B3**.
+
+Default dependency order:
+
+`LOCAL/ON-DEVICE → OPEN/SELF-CONTROLLED → FREE EXTERNAL → PAID EXTERNAL ONLY WHEN JUSTIFIED`
+
+Core rules:
+- RU_LIFE owns its own personal-life, device, session and audit state;
+- Application Management remains optional control-plane coordination only;
+- Google Drive may be used only as optional user-initiated backup/export/cross-device storage;
+- Google Sheets is limited to low-risk projections and must not hold raw passport, visa, invitation, migration-card, bank, insurance, credential or private-note data by default;
+- Google Apps Script may coordinate optional reminders/sync, but never becomes authentication/session/document authority;
+- ChatGPT/AI is optional advisory intelligence and must not become canonical immigration/legal truth;
+- hosted Workers/D1 is an optional publish/remote-state track, not a prerequisite for basic local/reference workflows.
+
+Canonical dependency posture: `.blueprint/dependency-budget.json`.
