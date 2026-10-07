@@ -1,0 +1,407 @@
+{
+  "id": "ru-life:study-procedures:important-contacts",
+  "schemaVersion": 1,
+  "moduleSlug": "study-procedures",
+  "topicSlug": "important-contacts",
+  "title": "Đầu mối quan trọng",
+  "summary": "Tổ chức danh bạ theo chức năng, kênh liên hệ và ngày xác minh để biết gọi ai cho việc gì mà không biến thông tin cá nhân thành dữ liệu dư thừa.",
+  "provenance": {
+    "sourceIds": [],
+    "verifiedAt": "2026-10-07",
+    "freshness": "stable-guidance"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "contacts:idea:function",
+      "text": "Một contact hữu ích phải gắn với chức năng, kênh liên hệ và thời điểm đã xác minh, không chỉ là một số điện thoại trong danh sách.",
+      "sourceIds": []
+    },
+    "purpose": {
+      "id": "contacts:purpose:fast-routing",
+      "text": "Giúp định tuyến câu hỏi học tập/hành chính tới đúng đầu mối và giữ dấu vết khi hướng dẫn thay đổi.",
+      "sourceIds": []
+    },
+    "rationale": [
+      {
+        "id": "contacts:rationale:roles",
+        "text": "Cùng một trường có thể có nhiều đơn vị xử lý các nhóm việc khác nhau; phân loại theo vai trò giảm việc hỏi sai chỗ.",
+        "sourceIds": []
+      }
+    ],
+    "logic": [
+      {
+        "id": "contacts:logic:minimum",
+        "text": "Lưu nhóm tối thiểu gồm sinh viên quốc tế, visa-migration, ký túc xá, khoa/bộ môn và đầu mối quản lý diện học nếu có.",
+        "sourceIds": []
+      },
+      {
+        "id": "contacts:logic:fields",
+        "text": "Mỗi contact nên có tên, phạm vi việc, kênh chính/dự phòng và ngày xác minh gần nhất.",
+        "sourceIds": []
+      }
+    ],
+    "preconditions": [
+      {
+        "id": "contacts:precondition:institution",
+        "text": "Bạn biết trường/ký túc xá hoặc tổ chức đang quản lý trực tiếp mình.",
+        "sourceIds": []
+      }
+    ],
+    "scope": [
+      {
+        "id": "contacts:scope:personal-directory",
+        "text": "Đây là cấu trúc quản lý danh bạ cá nhân; tên đơn vị, số điện thoại, email và giờ làm việc phải lấy từ cơ sở của bạn và kiểm tra lại khi cần.",
+        "sourceIds": []
+      }
+    ],
+    "actions": [
+      {
+        "id": "contacts:action:group",
+        "text": "Chia contact theo chức năng: học vụ, sinh viên quốc tế, migration, ký túc xá, khoa/chương trình và khẩn cấp.",
+        "sourceIds": [],
+        "statusLabel": "Thiết lập ban đầu"
+      },
+      {
+        "id": "contacts:action:fields",
+        "text": "Ghi cho mỗi contact: tên, việc phụ trách, kênh chính/dự phòng và ngày xác minh gần nhất.",
+        "sourceIds": [],
+        "statusLabel": "Khi lưu contact"
+      },
+      {
+        "id": "contacts:action:log",
+        "text": "Sau trao đổi hành chính quan trọng, ghi ngày, người trao đổi và hướng xử lý đã nhận.",
+        "sourceIds": [],
+        "statusLabel": "Sau trao đổi"
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "contacts:outcome:routing",
+        "text": "Bạn có thể xác định nhanh đầu mối phù hợp và biết thông tin liên hệ đã được kiểm tra gần đây hay chưa.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": [
+      {
+        "id": "contacts:exception:roles-change",
+        "text": "Tên đơn vị, người phụ trách, kênh và giờ làm việc có thể thay đổi; không coi contact cũ là mặc định còn hiệu lực.",
+        "sourceIds": []
+      }
+    ]
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "contacts:remember:function",
+        "text": "Lưu contact theo “ai xử lý việc gì”, không theo tên rời rạc.",
+        "sourceIds": []
+      },
+      {
+        "id": "contacts:remember:verified",
+        "text": "Ghi ngày gần nhất đã xác minh kênh liên hệ.",
+        "sourceIds": []
+      },
+      {
+        "id": "contacts:remember:record",
+        "text": "Trao đổi quan trọng cần có ghi chú ngày/người/hướng xử lý.",
+        "sourceIds": []
+      }
+    ],
+    "memoryAnchor": {
+      "id": "contacts:anchor:four-fields",
+      "text": "Tên — việc phụ trách — kênh chính/dự phòng — ngày xác minh.",
+      "sourceIds": []
+    },
+    "keyTerms": [
+      {
+        "id": "contacts:term:international",
+        "text": "международный отдел — phòng/bộ phận quốc tế.",
+        "sourceIds": []
+      },
+      {
+        "id": "contacts:term:dean",
+        "text": "деканат — văn phòng khoa/dean’s office.",
+        "sourceIds": []
+      }
+    ],
+    "contrasts": [
+      {
+        "id": "contacts:contrast:person-role",
+        "text": "Tên một người có thể thay đổi; vai trò/chức năng mới là thứ cần dùng để định tuyến công việc lâu dài.",
+        "sourceIds": []
+      }
+    ],
+    "myths": [],
+    "commonMistakes": [
+      {
+        "id": "contacts:mistake:raw-list",
+        "text": "Gom số/email vào một danh sách không ghi chức năng khiến lúc khẩn cấp vẫn phải tìm lại từ đầu.",
+        "sourceIds": []
+      }
+    ],
+    "examples": [
+      {
+        "id": "contacts:example:migration",
+        "text": "Contact migration nên ghi rõ việc họ xử lý, email/điện thoại, giờ/kênh dự phòng và ngày gần nhất bạn xác nhận thông tin.",
+        "sourceIds": []
+      }
+    ],
+    "recallPrompts": [
+      "Đầu mối này chịu trách nhiệm việc gì?",
+      "Kênh dự phòng là gì?",
+      "Tôi xác minh thông tin này lần cuối khi nào?"
+    ]
+  },
+  "journey": {
+    "stages": [
+      "Liệt kê nhóm việc",
+      "Gán đầu mối",
+      "Ghi kênh và phạm vi",
+      "Xác minh",
+      "Lưu dấu vết trao đổi"
+    ],
+    "triggers": [
+      {
+        "id": "contacts:trigger:new-institution",
+        "text": "Bắt đầu tại trường/ký túc xá mới hoặc được chuyển sang đơn vị phụ trách mới.",
+        "sourceIds": []
+      },
+      {
+        "id": "contacts:trigger:problem",
+        "text": "Phát sinh vấn đề hành chính/học tập cần xác định đúng người xử lý.",
+        "sourceIds": []
+      }
+    ],
+    "nextAction": {
+      "id": "contacts:next:groups",
+      "text": "Tạo năm nhóm đầu mối tối thiểu và điền ít nhất một kênh chính thức cho từng nhóm đang áp dụng.",
+      "sourceIds": []
+    },
+    "checklist": [
+      {
+        "id": "contacts:check:groups",
+        "text": "Phân nhóm contact theo chức năng.",
+        "sourceIds": []
+      },
+      {
+        "id": "contacts:check:channel",
+        "text": "Lưu kênh liên hệ chính và dự phòng nếu có.",
+        "sourceIds": []
+      },
+      {
+        "id": "contacts:check:verified",
+        "text": "Ghi ngày xác minh gần nhất.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [
+      {
+        "id": "contacts:timeline:review",
+        "text": "Rà lại contact khi bắt đầu học kỳ, đổi chỗ ở/đơn vị hoặc khi một kênh không còn hoạt động.",
+        "sourceIds": []
+      }
+    ],
+    "dependencies": [
+      "Thông tin cơ sở đào tạo",
+      "Thông tin ký túc xá/chỗ ở",
+      "Vai trò các đơn vị đang quản lý"
+    ],
+    "decisions": [
+      {
+        "id": "contacts:decision:conflict",
+        "question": "Hai đầu mối đang hướng dẫn khác nhau?",
+        "options": [
+          {
+            "id": "contacts:decision:no",
+            "label": "Không",
+            "summary": "Ghi lại hướng xử lý và tiếp tục theo đầu mối chịu trách nhiệm.",
+            "nextUnitIds": [],
+            "actionIds": [
+              "contacts:action:log"
+            ],
+            "warningIds": []
+          },
+          {
+            "id": "contacts:decision:yes",
+            "label": "Có",
+            "summary": "Không tự chọn hướng thuận tiện hơn; yêu cầu xác nhận từ đơn vị chịu trách nhiệm cuối cùng.",
+            "nextUnitIds": [],
+            "actionIds": [
+              "contacts:action:log"
+            ],
+            "warningIds": [
+              "contacts:caution:conflict"
+            ]
+          }
+        ]
+      }
+    ],
+    "requiredMaterials": [
+      {
+        "id": "contacts:material:identity",
+        "text": "Thông tin nhận dạng tối thiểu cần để trình bày vụ việc khi liên hệ; tránh lưu thêm dữ liệu nhạy cảm không cần thiết.",
+        "sourceIds": []
+      }
+    ],
+    "completionEvidence": [
+      {
+        "id": "contacts:evidence:directory",
+        "text": "Danh bạ có nhóm chức năng, kênh liên hệ và ngày xác minh cho các đầu mối chính.",
+        "sourceIds": []
+      }
+    ],
+    "followUps": [
+      {
+        "id": "contacts:follow:update",
+        "text": "Cập nhật contact sau mỗi lần phát hiện kênh cũ sai, người phụ trách đổi hoặc phạm vi xử lý thay đổi.",
+        "sourceIds": []
+      }
+    ],
+    "map": {
+      "nodes": [
+        {
+          "id": "contacts:node:groups",
+          "label": "Nhóm việc",
+          "kind": "stage",
+          "evidenceId": "contacts:action:group"
+        },
+        {
+          "id": "contacts:node:contact",
+          "label": "Đầu mối",
+          "kind": "action",
+          "evidenceId": "contacts:action:fields"
+        },
+        {
+          "id": "contacts:node:verify",
+          "label": "Xác minh",
+          "kind": "stage",
+          "evidenceId": "contacts:timeline:review"
+        },
+        {
+          "id": "contacts:node:record",
+          "label": "Ghi dấu vết",
+          "kind": "action",
+          "evidenceId": "contacts:action:log"
+        }
+      ],
+      "edges": [
+        {
+          "from": "contacts:node:groups",
+          "to": "contacts:node:contact"
+        },
+        {
+          "from": "contacts:node:contact",
+          "to": "contacts:node:verify"
+        },
+        {
+          "from": "contacts:node:verify",
+          "to": "contacts:node:record"
+        }
+      ]
+    }
+  },
+  "risk": {
+    "categories": [
+      "academic",
+      "digital"
+    ],
+    "severity": "low",
+    "doNot": [],
+    "critical": [],
+    "cautions": [
+      {
+        "id": "contacts:caution:conflict",
+        "text": "Nếu hai đầu mối hướng dẫn khác nhau về cùng một việc, yêu cầu xác nhận từ đơn vị chịu trách nhiệm cuối cùng thay vì tự chọn hướng thuận tiện hơn.",
+        "sourceIds": []
+      },
+      {
+        "id": "contacts:caution:stale",
+        "text": "Không coi số/email cũ là còn đúng nếu chưa kiểm tra trong bối cảnh hiện tại.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [
+      {
+        "id": "contacts:recommend:minimal",
+        "text": "Chỉ lưu dữ liệu cá nhân cần thiết để liên hệ; tránh biến danh bạ thành nơi chứa bản sao giấy tờ hoặc dữ liệu nhạy cảm không phục vụ mục đích.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [
+      {
+        "id": "contacts:consequence:misroute",
+        "text": "Hỏi sai đầu mối có thể làm chậm xử lý hoặc khiến thông tin mâu thuẫn khó truy vết.",
+        "sourceIds": []
+      }
+    ],
+    "escalations": [
+      {
+        "id": "contacts:escalate:owner",
+        "text": "Khi không rõ ai chịu trách nhiệm cuối cùng, hỏi đơn vị quản lý sinh viên/quốc tế để xác định đúng owner trước khi tiếp tục.",
+        "sourceIds": []
+      }
+    ],
+    "uncertaintyNotes": []
+  },
+  "language": {
+    "ruTerms": [
+      {
+        "term": "международный отдел",
+        "meaningVi": "bộ phận/phòng quốc tế",
+        "sourceIds": []
+      },
+      {
+        "term": "деканат",
+        "meaningVi": "văn phòng khoa/dean’s office",
+        "sourceIds": []
+      }
+    ],
+    "enTerms": [
+      {
+        "term": "point of contact",
+        "meaningVi": "đầu mối liên hệ"
+      }
+    ],
+    "usefulPhrases": [
+      {
+        "ru": "Кто отвечает за этот вопрос?",
+        "vi": "Ai phụ trách vấn đề này?",
+        "context": "Dùng khi cần được chuyển đúng đầu mối."
+      },
+      {
+        "ru": "Подтвердите, пожалуйста, этот порядок письменно.",
+        "vi": "Vui lòng xác nhận hướng xử lý này bằng văn bản.",
+        "context": "Khi hướng dẫn quan trọng hoặc mâu thuẫn."
+      }
+    ],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:enrollment",
+      "label": "Đầu mối nhập học"
+    },
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:migration-registration",
+      "label": "Đầu mối migration"
+    },
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:study-plan",
+      "label": "Đầu mối học tập"
+    }
+  ],
+  "searchTerms": [
+    "đầu mối",
+    "liên hệ trường",
+    "international office",
+    "migration office",
+    "деканат",
+    "международный отдел",
+    "contact",
+    "phòng sinh viên quốc tế"
+  ]
+}
