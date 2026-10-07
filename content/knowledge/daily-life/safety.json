@@ -1,0 +1,293 @@
+{
+  "id": "ru-life:daily-life:safety",
+  "schemaVersion": 1,
+  "moduleSlug": "daily-life",
+  "topicSlug": "safety",
+  "title": "An toàn · tình huống khẩn",
+  "summary": "Phản ứng nhanh khi có nguy hiểm: biết số 112 và các số chuyên biệt, truyền đạt vị trí, lưu bộ thông tin khẩn và xử lý mất giấy tờ/điện thoại theo đúng đầu mối.",
+  "provenance": {
+    "sourceIds": [
+      "source:ru:safety:mchs-112",
+      "source:ru:safety:mchs-numbers"
+    ],
+    "verifiedAt": "2026-10-07",
+    "freshness": "verified"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "safety:idea:call",
+      "text": "112 là số thống nhất gọi dịch vụ khẩn cấp tại Nga; các số 101/102/103/104 dùng cho cứu hỏa/cảnh sát/cấp cứu y tế/sự cố gas.",
+      "sourceIds": [
+        "source:ru:safety:mchs-112",
+        "source:ru:safety:mchs-numbers"
+      ]
+    },
+    "purpose": {
+      "id": "safety:purpose:fast",
+      "text": "Giúp người dùng hành động theo thứ tự rõ ràng khi nguy hiểm, thay vì mất thời gian tìm số hoặc thông tin cá nhân.",
+      "sourceIds": [
+        "source:ru:safety:mchs-112",
+        "source:ru:safety:mchs-numbers"
+      ]
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "safety:logic:call",
+        "text": "Khi cần dịch vụ khẩn cấp hoặc không chắc lực lượng nào, gọi 112; nếu biết rõ có thể dùng số chuyên biệt phù hợp.",
+        "sourceIds": [
+          "source:ru:safety:mchs-112",
+          "source:ru:safety:mchs-numbers"
+        ]
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "safety:scope:emergency",
+        "text": "Phần số điện thoại dựa trên hệ thống khẩn cấp hiện hành; các bước mất giấy tờ/điện thoại là khung vận hành và cần liên hệ cơ quan có thẩm quyền theo tình huống.",
+        "sourceIds": [
+          "source:ru:safety:mchs-112",
+          "source:ru:safety:mchs-numbers"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "safety:action:112",
+        "text": "Gọi 112 khi cần dịch vụ khẩn cấp hoặc không chắc phải gọi lực lượng nào; nói địa điểm, chuyện gì xảy ra và số người bị ảnh hưởng.",
+        "sourceIds": [
+          "source:ru:safety:mchs-112"
+        ]
+      },
+      {
+        "id": "safety:action:specialized",
+        "text": "Nếu cần dịch vụ chuyên biệt: 101 cứu hỏa/cứu nạn, 102 cảnh sát, 103 cấp cứu y tế, 104 sự cố khí gas.",
+        "sourceIds": [
+          "source:ru:safety:mchs-numbers"
+        ]
+      },
+      {
+        "id": "safety:action:loss",
+        "text": "Nếu mất giấy tờ/điện thoại, khóa các tài khoản/thiết bị có nguy cơ và liên hệ đầu mối trường/cơ quan có thẩm quyền phù hợp.",
+        "sourceIds": []
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "safety:outcome:response",
+        "text": "Bạn có thể gọi đúng luồng và cung cấp thông tin cơ bản nhanh hơn khi có sự cố.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "safety:remember:112",
+        "text": "112 — số thống nhất gọi dịch vụ khẩn cấp.",
+        "sourceIds": [
+          "source:ru:safety:mchs-112"
+        ]
+      },
+      {
+        "id": "safety:remember:numbers",
+        "text": "101 cứu hỏa, 102 cảnh sát, 103 cấp cứu, 104 sự cố gas.",
+        "sourceIds": [
+          "source:ru:safety:mchs-numbers"
+        ]
+      },
+      {
+        "id": "safety:remember:address",
+        "text": "Lưu địa chỉ nơi ở bằng tiếng Nga để đọc nhanh khi gọi.",
+        "sourceIds": []
+      }
+    ],
+    "memoryAnchor": {
+      "id": "safety:anchor:112",
+      "text": "Không chắc gọi ai → 112. Biết rõ dịch vụ → 101/102/103/104.",
+      "sourceIds": [
+        "source:ru:safety:mchs-112",
+        "source:ru:safety:mchs-numbers"
+      ]
+    },
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [
+      "Nếu không chắc phải gọi ai, số nào?",
+      "Địa chỉ nơi ở bằng tiếng Nga là gì?",
+      "Nếu mất điện thoại/giấy tờ, tài khoản nào phải khóa trước?"
+    ]
+  },
+  "journey": {
+    "stages": [
+      "Nhận biết nguy hiểm",
+      "Gọi trợ giúp",
+      "Nói vị trí",
+      "Bàn giao thông tin",
+      "Theo dõi sự cố"
+    ],
+    "triggers": [
+      {
+        "id": "safety:trigger:danger",
+        "text": "Có nguy hiểm ngay lập tức hoặc cần một dịch vụ khẩn cấp.",
+        "sourceIds": [
+          "source:ru:safety:mchs-112"
+        ]
+      }
+    ],
+    "nextAction": {
+      "id": "safety:next:112",
+      "text": "Nếu đang có nguy hiểm hoặc không chắc phải gọi lực lượng nào, gọi 112 và nói rõ vị trí trước.",
+      "sourceIds": [
+        "source:ru:safety:mchs-112"
+      ]
+    },
+    "checklist": [
+      {
+        "id": "safety:check:contact",
+        "text": "Lưu liên hệ khẩn cấp cá nhân.",
+        "sourceIds": []
+      },
+      {
+        "id": "safety:check:address",
+        "text": "Ghi địa chỉ chỗ ở bằng tiếng Nga.",
+        "sourceIds": []
+      },
+      {
+        "id": "safety:check:id",
+        "text": "Chuẩn bị thông tin nhận dạng cần thiết.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [
+      "Địa chỉ hiện tại",
+      "Điện thoại/kênh gọi"
+    ],
+    "decisions": [],
+    "requiredMaterials": [],
+    "completionEvidence": [],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "safety:node:start",
+          "label": "Có sự cố",
+          "kind": "warning",
+          "evidenceId": "safety:trigger:danger"
+        },
+        {
+          "id": "safety:node:112",
+          "label": "Gọi 112",
+          "kind": "action",
+          "evidenceId": "safety:action:112"
+        },
+        {
+          "id": "safety:node:specialized",
+          "label": "101/102/103/104",
+          "kind": "action",
+          "evidenceId": "safety:action:specialized"
+        },
+        {
+          "id": "safety:node:loss",
+          "label": "Mất giấy tờ/điện thoại",
+          "kind": "action",
+          "evidenceId": "safety:action:loss"
+        }
+      ],
+      "edges": [
+        {
+          "from": "safety:node:start",
+          "to": "safety:node:112"
+        },
+        {
+          "from": "safety:node:start",
+          "to": "safety:node:specialized",
+          "label": "biết rõ dịch vụ"
+        },
+        {
+          "from": "safety:node:start",
+          "to": "safety:node:loss",
+          "label": "mất giấy tờ/thiết bị"
+        }
+      ]
+    }
+  },
+  "risk": {
+    "categories": [
+      "safety",
+      "document-loss"
+    ],
+    "severity": "high",
+    "doNot": [],
+    "critical": [
+      {
+        "id": "safety:critical:call",
+        "text": "Khi có nguy hiểm ngay lập tức, ưu tiên gọi dịch vụ khẩn cấp thay vì tiếp tục tra cứu.",
+        "sourceIds": [
+          "source:ru:safety:mchs-112"
+        ]
+      }
+    ],
+    "cautions": [
+      {
+        "id": "safety:caution:copies",
+        "text": "Bản sao số giúp tra thông tin khi mất giấy tờ nhưng không phải giấy tờ thay thế hợp pháp.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [
+      {
+        "id": "safety:recommend:share",
+        "text": "Khi di chuyển/tình huống rủi ro, lưu hoặc chia sẻ thông tin cần thiết với người tin cậy theo nhu cầu.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "safety:uncertainty:case",
+        "text": "Xử lý sau sự cố phụ thuộc loại sự cố, giấy tờ và cơ quan có thẩm quyền; RU_LIFE chỉ cung cấp khung phản ứng ban đầu.",
+        "sourceIds": []
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [],
+    "enTerms": [],
+    "usefulPhrases": [],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:health:emergency",
+      "label": "Cấp cứu y tế"
+    },
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:migration-registration",
+      "label": "Giấy tờ người nước ngoài"
+    }
+  ],
+  "searchTerms": [
+    "an toàn",
+    "112",
+    "101",
+    "102",
+    "103",
+    "104",
+    "cảnh sát",
+    "cứu hỏa",
+    "cấp cứu",
+    "mất hộ chiếu",
+    "khẩn cấp"
+  ]
+}
