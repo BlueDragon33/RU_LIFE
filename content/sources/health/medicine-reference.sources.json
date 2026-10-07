@@ -1,0 +1,12 @@
+[
+  {
+    "id": "source:ru:health:medicine:minzdrav-grls",
+    "schemaVersion": 1,
+    "title": "State Register of Medicines",
+    "publisher": "Ministry of Health of the Russian Federation",
+    "authority": "official-government",
+    "url": "https://minzdrav.gov.ru/opendata/7707778246-grls",
+    "checkedAt": "2026-10-07",
+    "note": "Nguồn chính thức về cơ sở dữ liệu đăng ký thuốc; dùng để xác minh tên/đăng ký, không dùng để tự kê đơn hoặc quyết định điều trị."
+  }
+]
