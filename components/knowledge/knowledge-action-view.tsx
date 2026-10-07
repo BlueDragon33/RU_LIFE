@@ -1,5 +1,8 @@
 import type { KnowledgeUnitV1 } from "@/lib/content-intelligence/types";
 import KnowledgeRiskPanel from "./knowledge-risk-panel";
+import KnowledgeMap from "./knowledge-map";
+import KnowledgeOutline from "./knowledge-outline";
+import KnowledgeDecisionTree from "./knowledge-decision-tree";
 
 function EvidenceList({ items }: { items: Array<{ id: string; text: string; scope?: string }> }) {
   if (!items.length) return null;
@@ -18,6 +21,14 @@ export default function KnowledgeActionView({ unit }: { unit: KnowledgeUnitV1 })
     </section> : null}
 
     <KnowledgeRiskPanel unit={unit} />
+
+    <section className="knowledge-panel knowledge-journey-panel">
+      <span>SƠ ĐỒ & QUYẾT ĐỊNH</span>
+      <h2>Xem mạch xử lý theo tình huống</h2>
+      <KnowledgeMap unit={unit} />
+      <KnowledgeOutline unit={unit} />
+      <KnowledgeDecisionTree decisions={unit.journey.decisions} unit={unit} />
+    </section>
 
     <section className="knowledge-panel">
       <span>CHECKLIST</span>
