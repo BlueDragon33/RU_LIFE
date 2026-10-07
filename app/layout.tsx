@@ -8,6 +8,7 @@ import "./deadlines.css";
 import "./backup.css";
 import "./premium-theme.css";
 import "./premium-deep.css";
+import "./knowledge.css";
 
 export const metadata: Metadata = {
   title: { default: "Hòa nhập Nga", template: "%s · Hòa nhập Nga" },
