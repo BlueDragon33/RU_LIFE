@@ -162,6 +162,10 @@
   gap: 14px;
 }
 
+.knowledge-action-view {
+  min-width: 0;
+}
+
 .knowledge-panel {
   padding: 23px;
 }
