@@ -1,3 +1,13 @@
+import safetyJson from "../../content/knowledge/daily-life/safety.json";
+import careNavigationJson from "../../content/knowledge/health/care-navigation.json";
+import emergencyJson from "../../content/knowledge/health/emergency.json";
+import insuranceJson from "../../content/knowledge/health/insurance.json";
+import medicineReferenceJson from "../../content/knowledge/health/medicine-reference.json";
+import safetySourcesJson from "../../content/sources/daily-life/safety.sources.json";
+import careNavigationSourcesJson from "../../content/sources/health/care-navigation.sources.json";
+import emergencySourcesJson from "../../content/sources/health/emergency.sources.json";
+import insuranceSourcesJson from "../../content/sources/health/insurance.sources.json";
+import medicineReferenceSourcesJson from "../../content/sources/health/medicine-reference.sources.json";
 import enrollmentJson from "../../content/knowledge/study-procedures/enrollment.json";
 import importantContactsJson from "../../content/knowledge/study-procedures/important-contacts.json";
 import migrationRegistrationJson from "../../content/knowledge/study-procedures/migration-registration.json";
@@ -8,6 +18,16 @@ import migrationRegistrationSourcesJson from "../../content/sources/study-proced
 import studyPlanSourcesJson from "../../content/sources/study-procedures/study-plan.sources.json";
 import type { KnowledgeSourceV1, KnowledgeUnitV1 } from "./types";
 
+const safety = safetyJson as KnowledgeUnitV1;
+const safetySources = safetySourcesJson as KnowledgeSourceV1[];
+const careNavigation = careNavigationJson as KnowledgeUnitV1;
+const careNavigationSources = careNavigationSourcesJson as KnowledgeSourceV1[];
+const emergency = emergencyJson as KnowledgeUnitV1;
+const emergencySources = emergencySourcesJson as KnowledgeSourceV1[];
+const insurance = insuranceJson as KnowledgeUnitV1;
+const insuranceSources = insuranceSourcesJson as KnowledgeSourceV1[];
+const medicineReference = medicineReferenceJson as KnowledgeUnitV1;
+const medicineReferenceSources = medicineReferenceSourcesJson as KnowledgeSourceV1[];
 const enrollment = enrollmentJson as KnowledgeUnitV1;
 const enrollmentSources = enrollmentSourcesJson as KnowledgeSourceV1[];
 const importantContacts = importantContactsJson as KnowledgeUnitV1;
@@ -57,6 +77,31 @@ function createKnowledgeRegistry(entries: KnowledgeRegistryEntry[]) {
 }
 
 const registryEntries: KnowledgeRegistryEntry[] = [
+  {
+    topicKey: "daily-life:safety",
+    unit: safety,
+    sources: safetySources,
+  },
+  {
+    topicKey: "health:care-navigation",
+    unit: careNavigation,
+    sources: careNavigationSources,
+  },
+  {
+    topicKey: "health:emergency",
+    unit: emergency,
+    sources: emergencySources,
+  },
+  {
+    topicKey: "health:insurance",
+    unit: insurance,
+    sources: insuranceSources,
+  },
+  {
+    topicKey: "health:medicine-reference",
+    unit: medicineReference,
+    sources: medicineReferenceSources,
+  },
   {
     topicKey: "study-procedures:enrollment",
     unit: enrollment,
