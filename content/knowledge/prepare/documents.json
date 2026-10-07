@@ -1,0 +1,307 @@
+{
+  "id": "ru-life:prepare:documents",
+  "schemaVersion": 1,
+  "moduleSlug": "prepare",
+  "topicSlug": "documents",
+  "title": "Hồ sơ · giấy tờ",
+  "summary": "Tạo bộ hồ sơ dùng được cho nhập cảnh, nhập học và xử lý thất lạc; danh mục cuối cùng phải theo trường, loại visa và diện nhập học cụ thể.",
+  "provenance": {
+    "sourceIds": [
+      "source:ru:prepare:documents:education",
+      "source:ru:prepare:documents:admission",
+      "source:ru:prepare:documents:evisa"
+    ],
+    "verifiedAt": "2026-10-07",
+    "freshness": "verified"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "documents:idea:two-kits",
+      "text": "Giữ một bộ giấy tờ mang theo người và một bộ sao lưu độc lập; luôn đối chiếu yêu cầu cuối cùng với trường/diện nhập học.",
+      "sourceIds": [
+        "source:ru:prepare:documents:education",
+        "source:ru:prepare:documents:admission"
+      ]
+    },
+    "purpose": {
+      "id": "documents:purpose:ready",
+      "text": "Giúp có đúng giấy tờ khi nhập cảnh/nhập học và giảm rủi ro khi thất lạc.",
+      "sourceIds": [
+        "source:ru:prepare:documents:education",
+        "source:ru:prepare:documents:admission"
+      ]
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "documents:logic:originals",
+        "text": "Mang hộ chiếu, visa học tập khi áp dụng và giấy tờ nhập học/quota mà đầu mối chính thức yêu cầu.",
+        "sourceIds": [
+          "source:ru:prepare:documents:education",
+          "source:ru:prepare:documents:admission"
+        ]
+      },
+      {
+        "id": "documents:logic:backup",
+        "text": "Scan rõ giấy tờ quan trọng, lưu ở ít nhất hai nơi độc lập và giữ bản gốc trong kiểm soát của mình.",
+        "sourceIds": []
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "documents:scope:school-specific",
+        "text": "Không dùng danh sách giấy tờ của trường khác làm danh mục mặc định; yêu cầu có thể khác theo cơ sở và diện nhập học.",
+        "sourceIds": [
+          "source:ru:prepare:documents:education",
+          "source:ru:prepare:documents:admission"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "documents:action:carry",
+        "text": "Chuẩn bị bộ giấy tờ mang theo người gồm hộ chiếu/visa khi áp dụng, giấy tờ nhập học và địa chỉ/đầu mối.",
+        "sourceIds": [
+          "source:ru:prepare:documents:education",
+          "source:ru:prepare:documents:admission"
+        ]
+      },
+      {
+        "id": "documents:action:backup",
+        "text": "Tạo bản scan rõ và lưu ít nhất hai bản số ở hai nơi độc lập.",
+        "sourceIds": []
+      },
+      {
+        "id": "documents:action:arrival",
+        "text": "Sau nhập cảnh, giữ và sao lưu giấy tờ được cấp; hỏi trường/ký túc xá về bước hành chính tiếp theo.",
+        "sourceIds": [
+          "source:ru:prepare:documents:education"
+        ]
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "documents:outcome:usable",
+        "text": "Bạn có bộ gốc, bộ sao lưu và biết đầu mối cần hỏi khi phát sinh giấy tờ mới.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "documents:remember:passport",
+        "text": "Bản gốc quan trọng luôn ở trong kiểm soát của bạn.",
+        "sourceIds": []
+      },
+      {
+        "id": "documents:remember:school",
+        "text": "Danh mục cuối cùng theo đúng trường/diện nhập học.",
+        "sourceIds": [
+          "source:ru:prepare:documents:education",
+          "source:ru:prepare:documents:admission"
+        ]
+      },
+      {
+        "id": "documents:remember:evisa",
+        "text": "Không coi e-visa là phương án thay thế mặc định cho visa học tập.",
+        "sourceIds": [
+          "source:ru:prepare:documents:evisa"
+        ]
+      }
+    ],
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [],
+    "memoryAnchor": {
+      "id": "documents:anchor:three",
+      "text": "GỐC → SAO LƯU → XÁC NHẬN THEO TRƯỜNG.",
+      "sourceIds": [
+        "source:ru:prepare:documents:education",
+        "source:ru:prepare:documents:admission"
+      ]
+    }
+  },
+  "journey": {
+    "stages": [
+      "Đối chiếu yêu cầu",
+      "Chuẩn bị bản gốc",
+      "Tạo sao lưu",
+      "Kiểm tra sau nhập cảnh"
+    ],
+    "triggers": [
+      {
+        "id": "documents:trigger:travel",
+        "text": "Bạn chuẩn bị sang Nga hoặc sắp làm thủ tục nhập học/nhập cảnh.",
+        "sourceIds": [
+          "source:ru:prepare:documents:education",
+          "source:ru:prepare:documents:admission"
+        ]
+      }
+    ],
+    "checklist": [
+      {
+        "id": "documents:check:originals",
+        "text": "Lập danh sách giấy tờ bản gốc.",
+        "sourceIds": [
+          "source:ru:prepare:documents:education",
+          "source:ru:prepare:documents:admission"
+        ]
+      },
+      {
+        "id": "documents:check:copies",
+        "text": "Chuẩn bị bản sao cần thiết.",
+        "sourceIds": []
+      },
+      {
+        "id": "documents:check:digital",
+        "text": "Tạo bản lưu số hóa an toàn.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [],
+    "decisions": [],
+    "requiredMaterials": [],
+    "completionEvidence": [],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "documents:node:start",
+          "label": "Yêu cầu chính thức",
+          "kind": "stage",
+          "evidenceId": "documents:next:list"
+        },
+        {
+          "id": "documents:node:carry",
+          "label": "Bộ mang theo",
+          "kind": "action",
+          "evidenceId": "documents:action:carry"
+        },
+        {
+          "id": "documents:node:backup",
+          "label": "Bộ sao lưu",
+          "kind": "action",
+          "evidenceId": "documents:action:backup"
+        },
+        {
+          "id": "documents:node:arrival",
+          "label": "Sau nhập cảnh",
+          "kind": "action",
+          "evidenceId": "documents:action:arrival"
+        }
+      ],
+      "edges": [
+        {
+          "from": "documents:node:start",
+          "to": "documents:node:carry"
+        },
+        {
+          "from": "documents:node:carry",
+          "to": "documents:node:backup"
+        },
+        {
+          "from": "documents:node:backup",
+          "to": "documents:node:arrival"
+        }
+      ]
+    },
+    "nextAction": {
+      "id": "documents:next:list",
+      "text": "Mở yêu cầu chính thức của trường/diện nhập học và lập danh sách bản gốc + bản sao cần mang.",
+      "sourceIds": [
+        "source:ru:prepare:documents:education",
+        "source:ru:prepare:documents:admission"
+      ]
+    }
+  },
+  "risk": {
+    "categories": [
+      "immigration",
+      "document-loss"
+    ],
+    "severity": "high",
+    "doNot": [
+      {
+        "id": "documents:do-not:evisa",
+        "text": "Không dùng e-visa như phương án thay thế mặc định cho visa học tập; phạm vi mục đích e-visa phải theo hướng dẫn chính thức.",
+        "sourceIds": [
+          "source:ru:prepare:documents:evisa"
+        ]
+      }
+    ],
+    "critical": [
+      {
+        "id": "documents:critical:school",
+        "text": "Không kết luận hồ sơ đã đủ chỉ từ danh sách của trường/cá nhân khác; xác nhận với đúng cơ sở đào tạo và diện nhập học.",
+        "sourceIds": [
+          "source:ru:prepare:documents:education",
+          "source:ru:prepare:documents:admission"
+        ]
+      }
+    ],
+    "cautions": [
+      {
+        "id": "documents:caution:loss",
+        "text": "Nếu mất hộ chiếu, visa hoặc giấy tờ nhập cảnh, liên hệ sớm cơ quan có thẩm quyền và đầu mối trường; không chờ sát hạn.",
+        "sourceIds": [
+          "source:ru:prepare:documents:education"
+        ]
+      }
+    ],
+    "recommended": [
+      {
+        "id": "documents:recommend:separate",
+        "text": "Không để toàn bộ bản gốc và bản sao số ở cùng một nơi.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "documents:uncertainty:requirements",
+        "text": "Yêu cầu hồ sơ có thể thay đổi theo trường, visa và diện nhập học; RU_LIFE chỉ giữ khung chuẩn bị.",
+        "sourceIds": [
+          "source:ru:prepare:documents:education",
+          "source:ru:prepare:documents:admission"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [],
+    "enTerms": [],
+    "usefulPhrases": [],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:enrollment",
+      "label": "Nhập học"
+    },
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:migration-registration",
+      "label": "Giấy tờ sau nhập cảnh"
+    }
+  ],
+  "searchTerms": [
+    "hộ chiếu",
+    "visa học tập",
+    "e-visa",
+    "giấy tờ",
+    "hồ sơ",
+    "scan",
+    "bản sao",
+    "documents"
+  ]
+}
