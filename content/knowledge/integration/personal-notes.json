@@ -1,0 +1,253 @@
+{
+  "id": "ru-life:integration:personal-notes",
+  "schemaVersion": 1,
+  "moduleSlug": "integration",
+  "topicSlug": "personal-notes",
+  "title": "Sổ tay hòa nhập",
+  "summary": "Biến trải nghiệm thật thành checklist dùng lại; ghi chú cục bộ không phải nơi lưu bí mật tài khoản, OTP, dữ liệu thẻ hoặc toàn bộ định danh nhạy cảm.",
+  "provenance": {
+    "sourceIds": [],
+    "verifiedAt": "2026-10-07",
+    "freshness": "stable-guidance"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "notes:idea:reusable",
+      "text": "Ghi ngắn tình huống → điều hiệu quả → điều hiểu sai → việc chuẩn bị lần sau; việc lặp lại thì chuyển thành checklist.",
+      "sourceIds": []
+    },
+    "purpose": {
+      "id": "notes:purpose:learn",
+      "text": "Biến kinh nghiệm thực tế thành tri thức cá nhân dùng lại mà không thu thập dữ liệu nhạy cảm không cần thiết.",
+      "sourceIds": []
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "notes:logic:review",
+        "text": "Hằng tuần rút gọn ghi chú hữu ích thành câu/mẫu/checklist; định kỳ xóa nội dung lỗi thời/trùng lặp.",
+        "sourceIds": []
+      },
+      {
+        "id": "notes:logic:official",
+        "text": "Thông tin pháp lý, giá, giờ làm việc hoặc quy trình biến động phải quay lại nguồn hiện hành; ghi chú cá nhân không phải nguồn chính thức.",
+        "sourceIds": []
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "notes:scope:local-safe",
+        "text": "Sổ tay chỉ dành cho kinh nghiệm vận hành cục bộ; không lưu bí mật tài khoản, mã OTP/khôi phục, thông tin thẻ thanh toán hoặc sao chép toàn bộ định danh nhạy cảm không cần thiết.",
+        "sourceIds": []
+      }
+    ],
+    "actions": [
+      {
+        "id": "notes:action:quick",
+        "text": "Ghi tình huống, cách làm/câu nói hiệu quả, điểm gây mất thời gian và việc cần chuẩn bị lần sau.",
+        "sourceIds": []
+      },
+      {
+        "id": "notes:action:checklist",
+        "text": "Khi một việc lặp lại, chuyển thành checklist ngắn theo bối cảnh.",
+        "sourceIds": []
+      },
+      {
+        "id": "notes:action:review",
+        "text": "Rà soát định kỳ để rút gọn, sửa hoặc xóa mẹo đã lỗi thời.",
+        "sourceIds": []
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "notes:outcome:system",
+        "text": "Bạn có bộ kinh nghiệm cá nhân gọn, cập nhật và không chứa bí mật không cần thiết.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "notes:remember:no-secrets",
+        "text": "Không lưu mật khẩu, OTP, mã khôi phục hoặc thông tin thẻ.",
+        "sourceIds": []
+      },
+      {
+        "id": "notes:remember:checklist",
+        "text": "Việc lặp lại → chuyển thành checklist.",
+        "sourceIds": []
+      },
+      {
+        "id": "notes:remember:not-source",
+        "text": "Ghi chú cá nhân không thay thế nguồn chính thức.",
+        "sourceIds": []
+      }
+    ],
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [],
+    "memoryAnchor": {
+      "id": "notes:anchor:four",
+      "text": "TÌNH HUỐNG → HIỆU QUẢ → VƯỚNG → LẦN SAU.",
+      "sourceIds": []
+    }
+  },
+  "journey": {
+    "stages": [
+      "Ghi nhanh",
+      "Rút kinh nghiệm",
+      "Chuyển checklist",
+      "Rà soát"
+    ],
+    "triggers": [
+      {
+        "id": "notes:trigger:after",
+        "text": "Bạn vừa trải qua một tình huống có bài học có thể dùng lại.",
+        "sourceIds": []
+      }
+    ],
+    "checklist": [
+      {
+        "id": "notes:check:new",
+        "text": "Ghi điều mới học được.",
+        "sourceIds": []
+      },
+      {
+        "id": "notes:check:repeat",
+        "text": "Chuyển kinh nghiệm lặp lại thành checklist.",
+        "sourceIds": []
+      },
+      {
+        "id": "notes:check:review",
+        "text": "Rà soát ghi chú định kỳ.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [],
+    "decisions": [],
+    "requiredMaterials": [],
+    "completionEvidence": [],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "notes:node:start",
+          "label": "Tình huống",
+          "kind": "stage",
+          "evidenceId": "notes:trigger:after"
+        },
+        {
+          "id": "notes:node:quick",
+          "label": "Ghi 4 dòng",
+          "kind": "action",
+          "evidenceId": "notes:action:quick"
+        },
+        {
+          "id": "notes:node:checklist",
+          "label": "Chuyển checklist",
+          "kind": "action",
+          "evidenceId": "notes:action:checklist"
+        },
+        {
+          "id": "notes:node:review",
+          "label": "Rà soát",
+          "kind": "action",
+          "evidenceId": "notes:action:review"
+        }
+      ],
+      "edges": [
+        {
+          "from": "notes:node:start",
+          "to": "notes:node:quick"
+        },
+        {
+          "from": "notes:node:quick",
+          "to": "notes:node:checklist"
+        },
+        {
+          "from": "notes:node:checklist",
+          "to": "notes:node:review"
+        }
+      ]
+    },
+    "nextAction": {
+      "id": "notes:next:four",
+      "text": "Ghi 4 dòng: tình huống, điều hiệu quả, điều vướng, việc chuẩn bị lần sau.",
+      "sourceIds": []
+    }
+  },
+  "risk": {
+    "categories": [
+      "digital",
+      "document-loss"
+    ],
+    "severity": "moderate",
+    "doNot": [
+      {
+        "id": "notes:do-not:credentials",
+        "text": "Không lưu mật khẩu, mã OTP, mã khôi phục tài khoản hoặc thông tin thẻ thanh toán trong sổ tay.",
+        "sourceIds": []
+      },
+      {
+        "id": "notes:do-not:identity",
+        "text": "Không chép toàn bộ số hộ chiếu/visa nếu mục đích chỉ là ghi kinh nghiệm; lưu định danh ở kho an toàn riêng.",
+        "sourceIds": []
+      }
+    ],
+    "critical": [],
+    "cautions": [
+      {
+        "id": "notes:caution:local",
+        "text": "Ghi chú hiện lưu cục bộ trên thiết bị và có thể mất khi xóa dữ liệu trình duyệt; nội dung quan trọng cần phương án backup phù hợp.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [
+      {
+        "id": "notes:recommend:prune",
+        "text": "Xóa/sửa mẹo cũ không còn đúng và tránh giữ dữ liệu cá nhân không còn cần thiết.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "notes:uncertainty:personal",
+        "text": "Kinh nghiệm cá nhân có thể chỉ đúng trong một bối cảnh; không nâng thành quy tắc chung hoặc nguồn chính thức.",
+        "sourceIds": []
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [],
+    "enTerms": [],
+    "usefulPhrases": [],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:integration:daily-russian",
+      "label": "Câu nói dùng được"
+    }
+  ],
+  "searchTerms": [
+    "sổ tay",
+    "ghi chú",
+    "checklist",
+    "kinh nghiệm",
+    "backup",
+    "mật khẩu",
+    "OTP",
+    "personal notes"
+  ]
+}
