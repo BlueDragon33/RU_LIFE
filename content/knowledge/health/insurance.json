@@ -1,0 +1,357 @@
+{
+  "id": "ru-life:health:insurance",
+  "schemaVersion": 1,
+  "moduleSlug": "health",
+  "topicSlug": "insurance",
+  "title": "Bảo hiểm · hồ sơ y tế",
+  "summary": "Biết mình có loại bảo hiểm nào, cơ sở nào thuộc phạm vi sử dụng và đầu mối cần gọi; không suy đoán quyền lợi chỉ từ tên gói bảo hiểm.",
+  "provenance": {
+    "sourceIds": [
+      "source:ru:health:insurance:studyinrussia",
+      "source:ru:health:insurance:gov631"
+    ],
+    "verifiedAt": "2026-10-07",
+    "freshness": "verified"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "insurance:idea:navigate",
+      "text": "Bảo hiểm là công cụ điều hướng chăm sóc theo kế hoạch; quyền lợi và mạng lưới phải được xác minh theo đúng policy của bạn.",
+      "sourceIds": [
+        "source:ru:health:insurance:studyinrussia"
+      ]
+    },
+    "purpose": {
+      "id": "insurance:purpose:avoid-delay",
+      "text": "Giúp chuẩn bị hồ sơ và đầu mối trước khi cần khám, đồng thời không để việc tìm policy làm chậm cấp cứu.",
+      "sourceIds": [
+        "source:ru:health:insurance:studyinrussia",
+        "source:ru:health:insurance:gov631"
+      ]
+    },
+    "rationale": [
+      {
+        "id": "insurance:rationale:network",
+        "text": "Cơ sở và quyền lợi có thể khác theo chương trình bảo hiểm; không mặc định mọi bệnh viện đều áp dụng cùng điều kiện.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      }
+    ],
+    "logic": [
+      {
+        "id": "insurance:logic:planned",
+        "text": "Khi khám theo kế hoạch, kiểm tra mạng lưới, hotline/đặt lịch và phần được bảo hiểm thanh toán trước khi đi.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      },
+      {
+        "id": "insurance:logic:emergency",
+        "text": "Chăm sóc cấp cứu khi có tình trạng đe dọa tính mạng là luồng riêng; quy định hiện hành nêu cấp cứu cho người nước ngoài được cung cấp miễn phí.",
+        "sourceIds": [
+          "source:ru:health:insurance:gov631"
+        ],
+        "scope": "Quyền lợi điều trị tiếp theo sau giai đoạn cấp cứu có thể phụ thuộc bảo hiểm, hợp đồng dịch vụ và tình trạng pháp lý."
+      }
+    ],
+    "preconditions": [
+      {
+        "id": "insurance:precondition:policy",
+        "text": "Bạn có hoặc đang xác định policy/bảo hiểm đang sử dụng.",
+        "sourceIds": []
+      }
+    ],
+    "scope": [
+      {
+        "id": "insurance:scope:no-benefit-inference",
+        "text": "RU_LIFE không kết luận một dịch vụ cụ thể được chi trả nếu chưa đối chiếu policy/hotline/cơ sở.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "insurance:action:save-policy",
+        "text": "Lưu policy/hợp đồng, số hợp đồng, thời hạn hiệu lực và hotline.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      },
+      {
+        "id": "insurance:action:save-network",
+        "text": "Lưu hoặc biết cách tra danh sách cơ sở trong chương trình bảo hiểm.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      },
+      {
+        "id": "insurance:action:verify-planned",
+        "text": "Trước khám theo kế hoạch, xác minh cơ sở, yêu cầu đặt lịch và phần tự chi trả.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "insurance:outcome:ready",
+        "text": "Bạn có thể tìm đúng đầu mối và hồ sơ nhanh hơn khi cần chăm sóc y tế.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "insurance:remember:policy",
+        "text": "Biết policy + hotline + thời hạn hiệu lực.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      },
+      {
+        "id": "insurance:remember:network",
+        "text": "Không mặc định mọi cơ sở đều nằm trong mạng lưới.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      },
+      {
+        "id": "insurance:remember:emergency",
+        "text": "Không trì hoãn cấp cứu để tìm bảo hiểm.",
+        "sourceIds": [
+          "source:ru:health:insurance:gov631"
+        ]
+      }
+    ],
+    "memoryAnchor": {
+      "id": "insurance:anchor:two-flows",
+      "text": "Khám theo kế hoạch: kiểm tra policy trước. Cấp cứu: gọi trợ giúp trước.",
+      "sourceIds": [
+        "source:ru:health:insurance:studyinrussia",
+        "source:ru:health:insurance:gov631"
+      ]
+    },
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [
+      {
+        "id": "insurance:mistake:name",
+        "text": "Suy đoán quyền lợi chỉ từ tên gói bảo hiểm hoặc kinh nghiệm của người khác.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      }
+    ],
+    "examples": [],
+    "recallPrompts": [
+      "Policy của tôi có hotline nào?",
+      "Cơ sở nào nằm trong mạng lưới?",
+      "Nếu cấp cứu, việc đầu tiên là gì?"
+    ]
+  },
+  "journey": {
+    "stages": [
+      "Lưu policy",
+      "Xác minh mạng lưới",
+      "Liên hệ trước khi khám",
+      "Giữ hồ sơ sau khám"
+    ],
+    "triggers": [
+      {
+        "id": "insurance:trigger:planned",
+        "text": "Bạn cần khám không cấp cứu hoặc theo kế hoạch.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      }
+    ],
+    "nextAction": {
+      "id": "insurance:next:save",
+      "text": "Mở policy hiện tại và lưu số hợp đồng, hotline, thời hạn cùng cách tra cơ sở trong mạng lưới.",
+      "sourceIds": [
+        "source:ru:health:insurance:studyinrussia"
+      ]
+    },
+    "checklist": [
+      {
+        "id": "insurance:check:policy",
+        "text": "Lưu thông tin bảo hiểm.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      },
+      {
+        "id": "insurance:check:medical-files",
+        "text": "Lưu tài liệu y tế cá nhân cần thiết.",
+        "sourceIds": []
+      },
+      {
+        "id": "insurance:check:contact",
+        "text": "Ghi đầu mối hỗ trợ khi cần.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "id": "insurance:timeline:expiry",
+        "text": "Theo dõi thời hạn policy và kiểm tra lại trước khi hết hiệu lực.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      }
+    ],
+    "dependencies": [
+      "Policy/hợp đồng bảo hiểm",
+      "Hotline/cơ sở trong mạng lưới"
+    ],
+    "decisions": [],
+    "requiredMaterials": [
+      {
+        "id": "insurance:material:id",
+        "text": "Giấy tờ nhận dạng và thông tin bảo hiểm khi đi khám.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      }
+    ],
+    "completionEvidence": [
+      {
+        "id": "insurance:evidence:policy",
+        "text": "Bạn có bản policy/hợp đồng và hotline có thể mở nhanh.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      }
+    ],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "insurance:node:start",
+          "label": "Lưu policy",
+          "kind": "stage",
+          "evidenceId": "insurance:next:save"
+        },
+        {
+          "id": "insurance:node:network",
+          "label": "Kiểm tra mạng lưới",
+          "kind": "action",
+          "evidenceId": "insurance:action:save-network"
+        },
+        {
+          "id": "insurance:node:planned",
+          "label": "Khám theo kế hoạch",
+          "kind": "action",
+          "evidenceId": "insurance:action:verify-planned"
+        },
+        {
+          "id": "insurance:node:emergency",
+          "label": "Nếu cấp cứu",
+          "kind": "warning",
+          "evidenceId": "insurance:critical:no-delay"
+        }
+      ],
+      "edges": [
+        {
+          "from": "insurance:node:start",
+          "to": "insurance:node:network"
+        },
+        {
+          "from": "insurance:node:network",
+          "to": "insurance:node:planned"
+        },
+        {
+          "from": "insurance:node:start",
+          "to": "insurance:node:emergency",
+          "label": "tình trạng khẩn"
+        }
+      ]
+    }
+  },
+  "risk": {
+    "categories": [
+      "health",
+      "financial"
+    ],
+    "severity": "high",
+    "doNot": [],
+    "critical": [
+      {
+        "id": "insurance:critical:no-delay",
+        "text": "Không trì hoãn gọi cấp cứu vì chưa tìm được policy hoặc chưa xác minh quyền lợi bảo hiểm.",
+        "sourceIds": [
+          "source:ru:health:insurance:gov631"
+        ]
+      }
+    ],
+    "cautions": [
+      {
+        "id": "insurance:caution:coverage",
+        "text": "Không giả định một cơ sở/dịch vụ được chi trả chỉ vì bạn có bảo hiểm.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia"
+        ]
+      }
+    ],
+    "recommended": [
+      {
+        "id": "insurance:recommend:backup",
+        "text": "Giữ bản số policy và hotline ở nơi có thể truy cập nhanh.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "insurance:uncertainty:benefits",
+        "text": "Quyền lợi chăm sóc không khẩn cấp phụ thuộc policy, cơ sở, hợp đồng dịch vụ và tình trạng pháp lý cụ thể.",
+        "sourceIds": [
+          "source:ru:health:insurance:studyinrussia",
+          "source:ru:health:insurance:gov631"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [],
+    "enTerms": [
+      {
+        "term": "VHI / DMS",
+        "meaningVi": "bảo hiểm y tế tự nguyện"
+      }
+    ],
+    "usefulPhrases": [],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:health:care-navigation",
+      "label": "Chọn luồng chăm sóc"
+    },
+    {
+      "type": "related-to",
+      "targetId": "ru-life:health:emergency",
+      "label": "Cấp cứu"
+    }
+  ],
+  "searchTerms": [
+    "bảo hiểm",
+    "policy",
+    "DMS",
+    "VHI",
+    "OMS",
+    "hotline",
+    "cấp cứu",
+    "medical insurance"
+  ]
+}
