@@ -1,0 +1,23 @@
+[
+  {
+    "id": "source:ru:health:insurance:studyinrussia",
+    "schemaVersion": 1,
+    "title": "Why Russia – Medicine and voluntary health insurance",
+    "publisher": "Study in Russia",
+    "authority": "official-government",
+    "url": "https://studyinrussia.ru/en/why-russia",
+    "checkedAt": "2026-10-07",
+    "note": "Nguồn chính thức dành cho sinh viên quốc tế: DMS/VHI, cơ sở trong chương trình và việc cần kiểm tra điều kiện theo từng trường/policy."
+  },
+  {
+    "id": "source:ru:health:insurance:gov631",
+    "schemaVersion": 1,
+    "title": "Government Resolution No. 631 of 8 May 2025 – medical care for foreign citizens",
+    "publisher": "Government of the Russian Federation",
+    "authority": "official-legal",
+    "url": "https://government.ru/docs/all/158874/",
+    "checkedAt": "2026-10-07",
+    "effectiveAt": "2025-09-01",
+    "note": "Quy tắc chăm sóc y tế cho người nước ngoài, gồm cấp cứu miễn phí và luồng chăm sóc không khẩn cấp/theo kế hoạch."
+  }
+]
