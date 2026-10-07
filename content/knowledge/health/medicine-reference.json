@@ -1,0 +1,305 @@
+{
+  "id": "ru-life:health:medicine-reference",
+  "schemaVersion": 1,
+  "moduleSlug": "health",
+  "topicSlug": "medicine-reference",
+  "title": "Thuốc · tên hoạt chất",
+  "summary": "Tra cứu thuốc theo hoạt chất/INN, dạng bào chế và hàm lượng để giảm nhầm lẫn; không dùng RU_LIFE để kê đơn, đổi thuốc hoặc điều chỉnh liều.",
+  "provenance": {
+    "sourceIds": [
+      "source:ru:health:medicine:minzdrav-grls"
+    ],
+    "verifiedAt": "2026-10-07",
+    "freshness": "stable-guidance"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "medicine:idea:inn",
+      "text": "Khi đối chiếu thuốc giữa Việt Nam và Nga, trục an toàn là hoạt chất/INN (МНН), dạng bào chế và hàm lượng, không chỉ tên thương mại.",
+      "sourceIds": [
+        "source:ru:health:medicine:minzdrav-grls"
+      ]
+    },
+    "purpose": {
+      "id": "medicine:purpose:avoid-confusion",
+      "text": "Giảm nhầm thuốc khi khác tên thương mại mà không biến công cụ tra cứu thành chỉ dẫn điều trị.",
+      "sourceIds": [
+        "source:ru:health:medicine:minzdrav-grls"
+      ]
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "medicine:logic:verify",
+        "text": "Xác nhận hoạt chất/INN từ nhãn, tờ hướng dẫn hoặc nguồn đăng ký thuốc chính thức; khi cần thuốc tương ứng, đưa thông tin đó cho dược sĩ/bác sĩ.",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "medicine:scope:no-prescribing",
+        "text": "RU_LIFE không đề xuất liều, không tự thay thuốc, không quyết định tăng/giảm/chia/ngừng thuốc.",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "medicine:action:record",
+        "text": "Ghi tên thương mại, hoạt chất/INN, dạng bào chế, hàm lượng và lý do bác sĩ đã kê nếu biết.",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      },
+      {
+        "id": "medicine:action:verify",
+        "text": "Khi cần xác minh, đối chiếu nguồn đăng ký chính thức hoặc hỏi dược sĩ/bác sĩ.",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "medicine:outcome:clear",
+        "text": "Bạn có thông tin thuốc đủ rõ để trao đổi với dược sĩ/bác sĩ mà không tự suy ra tương đương điều trị.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "medicine:remember:inn",
+        "text": "Tên hoạt chất/INN quan trọng hơn tên thương mại khi đối chiếu.",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      },
+      {
+        "id": "medicine:remember:form",
+        "text": "Phải nhìn cả dạng bào chế và hàm lượng.",
+        "sourceIds": []
+      },
+      {
+        "id": "medicine:remember:no-dose",
+        "text": "Không tự thay, tăng giảm hoặc ngừng liều bằng RU_LIFE.",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      }
+    ],
+    "memoryAnchor": {
+      "id": "medicine:anchor:three-fields",
+      "text": "INN + dạng bào chế + hàm lượng = bộ ba để nhận diện; điều trị và liều dùng = hỏi chuyên môn.",
+      "sourceIds": [
+        "source:ru:health:medicine:minzdrav-grls"
+      ]
+    },
+    "keyTerms": [
+      {
+        "id": "medicine:term:mnn",
+        "text": "МНН — tên chung quốc tế/INN của hoạt chất.",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      }
+    ],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [
+      {
+        "id": "medicine:mistake:name",
+        "text": "Coi hai thuốc có tên gần giống là tương đương mà không kiểm tra hoạt chất, dạng và hàm lượng.",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      }
+    ],
+    "examples": [],
+    "recallPrompts": [
+      "Hoạt chất/INN là gì?",
+      "Dạng bào chế và hàm lượng là gì?",
+      "Tôi có đang định tự thay hoặc đổi liều không?"
+    ]
+  },
+  "journey": {
+    "stages": [
+      "Ghi thông tin thuốc",
+      "Đối chiếu INN",
+      "Hỏi dược sĩ/bác sĩ",
+      "Lưu cập nhật"
+    ],
+    "triggers": [
+      {
+        "id": "medicine:trigger:compare",
+        "text": "Bạn cần đối chiếu thuốc đang dùng với sản phẩm/đơn thuốc tại Nga.",
+        "sourceIds": []
+      }
+    ],
+    "nextAction": {
+      "id": "medicine:next:label",
+      "text": "Chụp/đọc nhãn thuốc và ghi hoạt chất/INN, dạng bào chế, hàm lượng trước khi hỏi về sản phẩm tương ứng.",
+      "sourceIds": [
+        "source:ru:health:medicine:minzdrav-grls"
+      ]
+    },
+    "checklist": [
+      {
+        "id": "medicine:check:inn",
+        "text": "Ghi tên hoạt chất thay vì chỉ tên thương mại.",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      },
+      {
+        "id": "medicine:check:current",
+        "text": "Lưu thuốc đang dùng nếu có.",
+        "sourceIds": []
+      },
+      {
+        "id": "medicine:check:allergy",
+        "text": "Đánh dấu dị ứng/không dung nạp đã biết.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [
+      "Nhãn/tờ hướng dẫn/đơn thuốc hiện có"
+    ],
+    "decisions": [],
+    "requiredMaterials": [],
+    "completionEvidence": [
+      {
+        "id": "medicine:evidence:record",
+        "text": "Bạn có bản ghi tên thuốc, INN, dạng bào chế và hàm lượng.",
+        "sourceIds": []
+      }
+    ],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "medicine:node:start",
+          "label": "Thuốc đang dùng",
+          "kind": "stage",
+          "evidenceId": "medicine:trigger:compare"
+        },
+        {
+          "id": "medicine:node:identify",
+          "label": "INN · dạng · hàm lượng",
+          "kind": "action",
+          "evidenceId": "medicine:action:record"
+        },
+        {
+          "id": "medicine:node:verify",
+          "label": "Xác minh/hỏi chuyên môn",
+          "kind": "action",
+          "evidenceId": "medicine:action:verify"
+        }
+      ],
+      "edges": [
+        {
+          "from": "medicine:node:start",
+          "to": "medicine:node:identify"
+        },
+        {
+          "from": "medicine:node:identify",
+          "to": "medicine:node:verify"
+        }
+      ]
+    }
+  },
+  "risk": {
+    "categories": [
+      "health"
+    ],
+    "severity": "high",
+    "doNot": [
+      {
+        "id": "medicine:do-not:dose",
+        "text": "Không dùng RU_LIFE để quyết định liều, tăng/giảm/chia/ngừng thuốc.",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      },
+      {
+        "id": "medicine:do-not:substitute",
+        "text": "Không tự thay thuốc chỉ vì tên gần giống hoặc cùng hoạt chất nhưng khác hàm lượng/dạng/phối hợp.",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      }
+    ],
+    "critical": [],
+    "cautions": [
+      {
+        "id": "medicine:caution:rx",
+        "text": "Tình trạng kê đơn và lựa chọn sản phẩm phù hợp cần được xác nhận theo trường hợp cụ thể.",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      }
+    ],
+    "recommended": [
+      {
+        "id": "medicine:recommend:photos",
+        "text": "Lưu ảnh rõ hộp thuốc hoặc đơn thuốc khi đi xa để giảm nhầm tên.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "medicine:uncertainty:no-treatment",
+        "text": "Thông tin đăng ký thuốc không phải chỉ định điều trị và không thay thế bác sĩ/dược sĩ.",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [
+      {
+        "term": "МНН",
+        "meaningVi": "tên chung quốc tế/INN của hoạt chất",
+        "sourceIds": [
+          "source:ru:health:medicine:minzdrav-grls"
+        ]
+      }
+    ],
+    "enTerms": [
+      {
+        "term": "INN",
+        "meaningVi": "tên chung quốc tế của hoạt chất"
+      }
+    ],
+    "usefulPhrases": [],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:health:care-navigation",
+      "label": "Trao đổi khi đi khám"
+    }
+  ],
+  "searchTerms": [
+    "thuốc",
+    "hoạt chất",
+    "INN",
+    "МНН",
+    "tên thương mại",
+    "hàm lượng",
+    "dạng bào chế",
+    "medicine"
+  ]
+}
