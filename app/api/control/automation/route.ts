@@ -1,5 +1,5 @@
 import { controlPreflight, controlResponse, requireControlService, withControlCors } from "@/lib/control-auth.server";
-import { readRuLifeAutomation, updateRuLifeAutomation } from "@/lib/device-automation.server";
+import { executeRuLifeAutomationCommand, readRuLifeAutomation, updateRuLifeAutomation } from "@/lib/device-automation.server";
 import { ruLifeErrorResponse } from "@/lib/device-registry.server";
 
 export const dynamic = "force-dynamic";
@@ -19,6 +19,9 @@ export async function POST(request: Request) {
     const identity = await requireControlService(request);
     if (identity.role !== "owner") return controlResponse({ error: "Chỉ Chủ hệ thống được đổi quy tắc duyệt tự động.", code: "OWNER_REQUIRED" }, 403, request);
     const payload = await request.json() as Record<string, unknown>;
+    if (payload.operation === "set-device-automation") {
+      return controlResponse({ application: "ru-life", ...(await executeRuLifeAutomationCommand(identity, payload)) }, 200, request);
+    }
     if (typeof payload.autoApproveDevices !== "boolean") return controlResponse({ error: "Quy tắc duyệt tự động không hợp lệ.", code: "INVALID_AUTOMATION" }, 400, request);
     return controlResponse({ application: "ru-life", automation: await updateRuLifeAutomation(identity.actor, identity.role, payload.autoApproveDevices) }, 200, request);
   } catch (error) {

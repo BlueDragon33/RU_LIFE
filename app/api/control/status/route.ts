@@ -50,6 +50,8 @@ export async function GET(request: Request) {
         deviceApproval: true,
         deviceDelete: true,
         deviceAutoApproval: true,
+        automationIdempotentCommands: true,
+        automationOptimisticConcurrency: true,
         deviceIdempotentCommands: true,
         optimisticConcurrency: true,
         accessAndEditSeparated: true,

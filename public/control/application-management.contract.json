@@ -22,15 +22,20 @@
     "audit": true,
     "contentReview": false,
     "payments": false,
-    "reports": false
+    "reports": false,
+    "deviceAutoApproval": true,
+    "deviceAutoBlockPending": false,
+    "automationIdempotentCommands": true,
+    "automationOptimisticConcurrency": true
   },
   "endpoints": {
     "status": "/api/control/status",
     "devices": "/api/control/devices",
-    "deviceCommands": "/api/control/device-commands"
+    "deviceCommands": "/api/control/device-commands",
+    "automation": "/api/control/automation"
   },
   "policy": {
-    "remoteAdminReady": false,
+    "remoteAdminReady": true,
     "credentialRequired": true,
     "credentialEnv": "RU_LIFE_CONTROL_SERVICE_SECRET"
   },
