@@ -1,0 +1,396 @@
+{
+  "id": "ru-life:study-procedures:study-plan",
+  "schemaVersion": 1,
+  "moduleSlug": "study-procedures",
+  "topicSlug": "study-plan",
+  "title": "Kế hoạch học tập",
+  "summary": "Biến lịch học, môn học và mục tiêu thành đầu việc có đầu ra, mốc rà soát và bản sao dữ liệu rõ ràng.",
+  "provenance": {
+    "sourceIds": [],
+    "verifiedAt": "2026-10-07",
+    "freshness": "stable-guidance"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "study-plan:idea:action-dashboard",
+      "text": "Kế hoạch học tập nên là bảng điều khiển hành động: mỗi môn hoặc đầu việc có đầu ra, mốc gần nhất, tài liệu và trạng thái.",
+      "sourceIds": []
+    },
+    "purpose": {
+      "id": "study-plan:purpose:clarity",
+      "text": "Giảm việc học theo mục tiêu mơ hồ và giúp phát hiện sớm đầu việc trễ hoặc chưa rõ yêu cầu.",
+      "sourceIds": []
+    },
+    "rationale": [
+      {
+        "id": "study-plan:rationale:output",
+        "text": "Đầu việc có đầu ra cụ thể dễ theo dõi và rà soát hơn một mục tiêu chung như “học môn X”.",
+        "sourceIds": []
+      }
+    ],
+    "logic": [
+      {
+        "id": "study-plan:logic:term",
+        "text": "Thiết lập học kỳ bằng danh sách môn, hình thức đánh giá và lịch chính thức; sau đó tách từng mục thành đầu việc có đầu ra.",
+        "sourceIds": []
+      },
+      {
+        "id": "study-plan:logic:weekly",
+        "text": "Dùng một mốc rà soát hằng tuần để cập nhật việc đã xong, việc trễ và câu hỏi cần gửi giảng viên.",
+        "sourceIds": []
+      }
+    ],
+    "preconditions": [
+      {
+        "id": "study-plan:precondition:schedule",
+        "text": "Bạn đã có hoặc đang thu thập lịch học, tên môn và yêu cầu đánh giá của học kỳ.",
+        "sourceIds": []
+      }
+    ],
+    "scope": [
+      {
+        "id": "study-plan:scope:personal-workflow",
+        "text": "Đây là phương pháp tổ chức học tập cá nhân, không phải quy chế đào tạo hay yêu cầu chính thức của trường.",
+        "sourceIds": []
+      }
+    ],
+    "actions": [
+      {
+        "id": "study-plan:action:term",
+        "text": "Ghi tên chương trình, học kỳ, lịch học và hình thức đánh giá của từng môn ở một nơi.",
+        "sourceIds": [],
+        "statusLabel": "Thiết lập học kỳ"
+      },
+      {
+        "id": "study-plan:action:outputs",
+        "text": "Đổi mỗi mục tiêu chung thành đầu việc có đầu ra cụ thể, tài liệu liên quan và mốc gần nhất.",
+        "sourceIds": [],
+        "statusLabel": "Mỗi tuần"
+      },
+      {
+        "id": "study-plan:action:review",
+        "text": "Rà soát hằng tuần để đánh dấu xong/trễ/cần hỏi và điều chỉnh ưu tiên.",
+        "sourceIds": [],
+        "statusLabel": "Định kỳ"
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "study-plan:outcome:visible",
+        "text": "Bạn nhìn được trạng thái học kỳ theo đầu việc thay vì phải nhớ rời rạc trong nhiều kênh.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": [
+      {
+        "id": "study-plan:exception:official",
+        "text": "Deadline, hình thức đánh giá và yêu cầu nộp bài chính thức luôn phải lấy từ giảng viên/hệ thống của trường nếu khác kế hoạch cá nhân.",
+        "sourceIds": []
+      }
+    ]
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "study-plan:remember:output",
+        "text": "Mỗi đầu việc phải có đầu ra cụ thể.",
+        "sourceIds": []
+      },
+      {
+        "id": "study-plan:remember:weekly",
+        "text": "Có một mốc rà soát cố định mỗi tuần.",
+        "sourceIds": []
+      },
+      {
+        "id": "study-plan:remember:backup",
+        "text": "Tài liệu quan trọng cần có ít nhất một bản sao ngoài máy chính.",
+        "sourceIds": []
+      }
+    ],
+    "memoryAnchor": {
+      "id": "study-plan:anchor:verb-output",
+      "text": "Đừng ghi “học”; hãy ghi hành động + đầu ra + mốc.",
+      "sourceIds": []
+    },
+    "keyTerms": [
+      {
+        "id": "study-plan:term:zachet",
+        "text": "зачёт — hình thức đánh giá/ghi nhận kết quả học tập thường gặp.",
+        "sourceIds": []
+      },
+      {
+        "id": "study-plan:term:exam",
+        "text": "экзамен — kỳ thi.",
+        "sourceIds": []
+      }
+    ],
+    "contrasts": [
+      {
+        "id": "study-plan:contrast:goal-task",
+        "text": "Mục tiêu mô tả hướng đi; đầu việc mô tả việc cụ thể có thể hoàn thành và kiểm tra.",
+        "sourceIds": []
+      }
+    ],
+    "myths": [],
+    "commonMistakes": [
+      {
+        "id": "study-plan:mistake:one-task",
+        "text": "Để một đồ án kéo dài nhiều tháng thành một task duy nhất khiến khó biết đang kẹt ở bước nào.",
+        "sourceIds": []
+      }
+    ],
+    "examples": [
+      {
+        "id": "study-plan:example:math",
+        "text": "Thay “học Toán” bằng “đọc chương X, giải Y bài, ghi ba câu chưa hiểu”.",
+        "sourceIds": []
+      }
+    ],
+    "recallPrompts": [
+      "Đầu ra cụ thể của việc này là gì?",
+      "Mốc gần nhất là khi nào?",
+      "Tôi cần hỏi ai nếu yêu cầu chưa rõ?"
+    ]
+  },
+  "journey": {
+    "stages": [
+      "Thiết lập học kỳ",
+      "Tách đầu việc",
+      "Thực hiện",
+      "Rà soát tuần",
+      "Lưu bản sao"
+    ],
+    "triggers": [
+      {
+        "id": "study-plan:trigger:new-term",
+        "text": "Bắt đầu học kỳ hoặc nhận lịch/môn học mới.",
+        "sourceIds": []
+      },
+      {
+        "id": "study-plan:trigger:new-assignment",
+        "text": "Nhận bài tập, đồ án hoặc yêu cầu mới.",
+        "sourceIds": []
+      }
+    ],
+    "nextAction": {
+      "id": "study-plan:next:list",
+      "text": "Lập danh sách môn/đầu việc hiện tại và viết đầu ra cụ thể cho từng mục.",
+      "sourceIds": []
+    },
+    "checklist": [
+      {
+        "id": "study-plan:check:goal",
+        "text": "Xác định mục tiêu học kỳ.",
+        "sourceIds": []
+      },
+      {
+        "id": "study-plan:check:tasks",
+        "text": "Tạo danh sách môn/đầu việc có đầu ra.",
+        "sourceIds": []
+      },
+      {
+        "id": "study-plan:check:review",
+        "text": "Đặt mốc rà soát tiến độ hằng tuần.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [
+      {
+        "id": "study-plan:timeline:weekly",
+        "text": "Rà soát ít nhất theo chu kỳ tuần hoặc sớm hơn khi có deadline mới.",
+        "sourceIds": []
+      }
+    ],
+    "dependencies": [
+      "Lịch học",
+      "Yêu cầu môn học",
+      "Tài liệu đang sử dụng"
+    ],
+    "decisions": [
+      {
+        "id": "study-plan:decision:unclear",
+        "question": "Đầu việc đã có đầu ra kiểm tra được chưa?",
+        "options": [
+          {
+            "id": "study-plan:decision:clear",
+            "label": "Đã rõ",
+            "summary": "Gắn mốc và tiếp tục thực hiện.",
+            "nextUnitIds": [],
+            "actionIds": [
+              "study-plan:action:review"
+            ],
+            "warningIds": []
+          },
+          {
+            "id": "study-plan:decision:vague",
+            "label": "Còn mơ hồ",
+            "summary": "Tách lại thành hành động nhỏ hơn và ghi đầu ra mong đợi.",
+            "nextUnitIds": [],
+            "actionIds": [
+              "study-plan:action:outputs"
+            ],
+            "warningIds": []
+          }
+        ]
+      }
+    ],
+    "requiredMaterials": [
+      {
+        "id": "study-plan:material:schedule",
+        "text": "Lịch học/yêu cầu chính thức đang dùng.",
+        "sourceIds": []
+      },
+      {
+        "id": "study-plan:material:task-list",
+        "text": "Danh sách môn và đầu việc cá nhân.",
+        "sourceIds": []
+      }
+    ],
+    "completionEvidence": [
+      {
+        "id": "study-plan:evidence:reviewed",
+        "text": "Danh sách hiện tại cho thấy việc đã xong, việc đang làm, việc trễ và mốc tiếp theo.",
+        "sourceIds": []
+      }
+    ],
+    "followUps": [
+      {
+        "id": "study-plan:follow:backup",
+        "text": "Sao lưu tài liệu quan trọng và tách bản đang làm khỏi yêu cầu gốc.",
+        "sourceIds": []
+      }
+    ],
+    "map": {
+      "nodes": [
+        {
+          "id": "study-plan:node:term",
+          "label": "Thiết lập học kỳ",
+          "kind": "stage",
+          "evidenceId": "study-plan:action:term"
+        },
+        {
+          "id": "study-plan:node:tasks",
+          "label": "Tách đầu việc",
+          "kind": "action",
+          "evidenceId": "study-plan:action:outputs"
+        },
+        {
+          "id": "study-plan:node:review",
+          "label": "Rà soát tuần",
+          "kind": "action",
+          "evidenceId": "study-plan:action:review"
+        },
+        {
+          "id": "study-plan:node:backup",
+          "label": "Bảo toàn dữ liệu",
+          "kind": "action",
+          "evidenceId": "study-plan:follow:backup"
+        }
+      ],
+      "edges": [
+        {
+          "from": "study-plan:node:term",
+          "to": "study-plan:node:tasks"
+        },
+        {
+          "from": "study-plan:node:tasks",
+          "to": "study-plan:node:review"
+        },
+        {
+          "from": "study-plan:node:review",
+          "to": "study-plan:node:backup"
+        }
+      ]
+    }
+  },
+  "risk": {
+    "categories": [
+      "academic",
+      "digital"
+    ],
+    "severity": "low",
+    "doNot": [],
+    "critical": [],
+    "cautions": [
+      {
+        "id": "study-plan:caution:official",
+        "text": "Nếu kế hoạch cá nhân khác deadline/yêu cầu chính thức, ưu tiên thông tin xác nhận từ giảng viên hoặc hệ thống trường.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [
+      {
+        "id": "study-plan:recommend:names",
+        "text": "Đặt tên file theo môn + nội dung + phiên bản/ngày để giảm ghi đè nhầm.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [
+      {
+        "id": "study-plan:consequence:vague",
+        "text": "Đầu việc quá mơ hồ dễ kéo dài mà không biết đã đạt kết quả hay chưa.",
+        "sourceIds": []
+      }
+    ],
+    "escalations": [
+      {
+        "id": "study-plan:escalate:requirements",
+        "text": "Nếu không rõ yêu cầu đánh giá hoặc deadline, hỏi giảng viên/đầu mối môn học thay vì tự suy đoán.",
+        "sourceIds": []
+      }
+    ],
+    "uncertaintyNotes": []
+  },
+  "language": {
+    "ruTerms": [
+      {
+        "term": "зачёт",
+        "meaningVi": "hình thức đánh giá/ghi nhận kết quả",
+        "sourceIds": []
+      },
+      {
+        "term": "экзамен",
+        "meaningVi": "kỳ thi",
+        "sourceIds": []
+      }
+    ],
+    "enTerms": [
+      {
+        "term": "study plan",
+        "meaningVi": "kế hoạch học tập"
+      }
+    ],
+    "usefulPhrases": [
+      {
+        "ru": "Какой ближайший срок сдачи?",
+        "vi": "Hạn nộp gần nhất là khi nào?",
+        "context": "Hỏi giảng viên/bạn học khi cần xác nhận mốc."
+      }
+    ],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "follows",
+      "targetId": "ru-life:study-procedures:enrollment",
+      "label": "Sau khi nhập học"
+    },
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:important-contacts",
+      "label": "Đầu mối học tập"
+    }
+  ],
+  "searchTerms": [
+    "kế hoạch học tập",
+    "lịch học",
+    "deadline",
+    "зачёт",
+    "экзамен",
+    "đồ án",
+    "bài tập",
+    "mục tiêu học kỳ",
+    "study plan"
+  ]
+}
