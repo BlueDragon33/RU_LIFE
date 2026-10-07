@@ -1,0 +1,23 @@
+[
+  {
+    "id": "source:ru:health:emergency:studyinrussia",
+    "schemaVersion": 1,
+    "title": "Why Russia – Medicine",
+    "publisher": "Study in Russia",
+    "authority": "official-government",
+    "url": "https://studyinrussia.ru/en/why-russia",
+    "checkedAt": "2026-10-07",
+    "note": "Nguồn chính thức dành cho sinh viên quốc tế xác nhận 112 và quyền được cấp cứu miễn phí."
+  },
+  {
+    "id": "source:ru:health:emergency:gov631",
+    "schemaVersion": 1,
+    "title": "Government Resolution No. 631 of 8 May 2025",
+    "publisher": "Government of the Russian Federation",
+    "authority": "official-legal",
+    "url": "https://government.ru/docs/all/158874/",
+    "checkedAt": "2026-10-07",
+    "effectiveAt": "2025-09-01",
+    "note": "Nguồn pháp lý hiện hành về chăm sóc cấp cứu cho người nước ngoài tại Nga."
+  }
+]
