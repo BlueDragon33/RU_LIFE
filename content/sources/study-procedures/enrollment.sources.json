@@ -1,0 +1,22 @@
+[
+  {
+    "id": "source:ru:studyinrussia-admission",
+    "schemaVersion": 1,
+    "title": "Study in Russia — admission steps and required documents",
+    "publisher": "Study in Russia",
+    "authority": "institutional",
+    "url": "https://studyinrussia.ru/en",
+    "checkedAt": "2026-10-07",
+    "note": "Dùng để đối chiếu quy trình nhập học chung, nhóm giấy tờ thường cần và nguyên tắc phải kiểm tra danh mục chính xác với trường dự định học."
+  },
+  {
+    "id": "source:ru:studyinrussia-education",
+    "schemaVersion": 1,
+    "title": "Study in Russia — education documents for admission",
+    "publisher": "Study in Russia",
+    "authority": "institutional",
+    "url": "https://studyinrussia.ru/en/education",
+    "checkedAt": "2026-10-07",
+    "note": "Dùng để đối chiếu giấy tờ nhận dạng, giấy tờ học vấn, dịch/công nhận và nhấn mạnh yêu cầu bổ sung có thể khác theo trường và hình thức nhập học."
+  }
+]
