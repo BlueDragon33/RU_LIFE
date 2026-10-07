@@ -31,3 +31,12 @@ Nhánh migration đã bổ sung đường deploy **preview manual-only** với W
 Production auto-deploy vẫn tắt cho tới khi preview được kiểm chứng E2E. Không đặt secret hoặc D1 ID thật trong repo.
 
 Xem [`CONTROL_INTEGRATION.md`](CONTROL_INTEGRATION.md) để biết contract chi tiết.
+
+
+## Operational sovereignty
+
+This repository adopts **Universal Constitution 1.2.0** at Blueprint Level **B3**.
+
+Core Russia-life reference, planning and notes are local/offline-capable by default. Google Drive/Sheets/Apps Script are optional sync/coordination adapters only. Passport, visa, identity, credential and session data require explicit sensitive-data handling and must not be placed raw into Sheets. AI may assist with translation/planning but does not own canonical document/status truth.
+
+Canonical dependency posture: `.blueprint/dependency-budget.json`.
