@@ -189,7 +189,9 @@
       "document-loss"
     ],
     "severity": "moderate",
-    "doNot": [
+    "doNot": [],
+    "critical": [],
+    "cautions": [
       {
         "id": "notes:do-not:credentials",
         "text": "Không lưu mật khẩu, mã OTP, mã khôi phục tài khoản hoặc thông tin thẻ thanh toán trong sổ tay.",
@@ -199,10 +201,7 @@
         "id": "notes:do-not:identity",
         "text": "Không chép toàn bộ số hộ chiếu/visa nếu mục đích chỉ là ghi kinh nghiệm; lưu định danh ở kho an toàn riêng.",
         "sourceIds": []
-      }
-    ],
-    "critical": [],
-    "cautions": [
+      },
       {
         "id": "notes:caution:local",
         "text": "Ghi chú hiện lưu cục bộ trên thiết bị và có thể mất khi xóa dữ liệu trình duyệt; nội dung quan trọng cần phương án backup phù hợp.",
