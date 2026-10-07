@@ -35,7 +35,7 @@
     "automation": "/api/control/automation"
   },
   "policy": {
-    "remoteAdminReady": true,
+    "remoteAdminReady": false,
     "credentialRequired": true,
     "credentialEnv": "RU_LIFE_CONTROL_SERVICE_SECRET"
   },
