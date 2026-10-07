@@ -1,0 +1,250 @@
+{
+  "id": "ru-life:integration:school-russian",
+  "schemaVersion": 1,
+  "moduleSlug": "integration",
+  "topicSlug": "school-russian",
+  "title": "Tiếng Nga học tập",
+  "summary": "Ưu tiên mẫu câu để xác nhận yêu cầu, deadline, phòng học và đầu mối; thuật ngữ chuyên ngành phải đối chiếu giáo trình/slide/cách giảng viên dùng.",
+  "provenance": {
+    "sourceIds": [],
+    "verifiedAt": "2026-10-07",
+    "freshness": "stable-guidance"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "school-russian:idea:operations",
+      "text": "Tiếng Nga học tập trước hết cần giúp bạn xác nhận yêu cầu, deadline, phòng học và người phụ trách.",
+      "sourceIds": []
+    },
+    "purpose": {
+      "id": "school-russian:purpose:clarity",
+      "text": "Giảm hiểu nhầm trong lớp và thủ tục học vụ, đồng thời xây vốn thuật ngữ theo từng môn.",
+      "sourceIds": []
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "school-russian:logic:confirm",
+        "text": "Sau trao đổi miệng về deadline/hồ sơ quan trọng, ghi lại và nếu có thể xin đường dẫn hoặc văn bản chính thức.",
+        "sourceIds": []
+      },
+      {
+        "id": "school-russian:logic:terms",
+        "text": "Thuật ngữ chuyên ngành phải đối chiếu giáo trình, slide hoặc cách giảng viên sử dụng; không coi một bản dịch máy là chuẩn.",
+        "sourceIds": []
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "school-russian:scope:not-specialist",
+        "text": "Đây là mẫu câu vận hành, không thay thế việc học tiếng Nga chuyên ngành của chương trình cụ thể.",
+        "sourceIds": []
+      }
+    ],
+    "actions": [
+      {
+        "id": "school-russian:action:requirements",
+        "text": "Dùng câu ngắn để hỏi lại yêu cầu, deadline và phòng học.",
+        "sourceIds": []
+      },
+      {
+        "id": "school-russian:action:record",
+        "text": "Ghi ngày giờ/nội dung quan trọng và xin nguồn chính thức khi có.",
+        "sourceIds": []
+      },
+      {
+        "id": "school-russian:action:terms",
+        "text": "Tạo bộ thuật ngữ riêng theo từng môn với nghĩa và ví dụ đúng ngữ cảnh.",
+        "sourceIds": []
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "school-russian:outcome:clear",
+        "text": "Bạn có thể hỏi lại điều chưa rõ và duy trì bộ từ chuyên ngành theo ngữ cảnh.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "school-russian:remember:deadline",
+        "text": "Deadline/hồ sơ quan trọng → xác nhận rõ.",
+        "sourceIds": []
+      },
+      {
+        "id": "school-russian:remember:official",
+        "text": "Ưu tiên link/văn bản chính thức hơn lời truyền miệng.",
+        "sourceIds": []
+      },
+      {
+        "id": "school-russian:remember:terms",
+        "text": "Thuật ngữ phải đối chiếu ngữ cảnh môn học.",
+        "sourceIds": []
+      }
+    ],
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [],
+    "memoryAnchor": {
+      "id": "school-russian:anchor:three",
+      "text": "YÊU CẦU → DEADLINE → NGUỒN XÁC NHẬN.",
+      "sourceIds": []
+    }
+  },
+  "journey": {
+    "stages": [
+      "Xác định việc cần hỏi",
+      "Hỏi ngắn gọn",
+      "Ghi xác nhận",
+      "Bổ sung thuật ngữ"
+    ],
+    "triggers": [
+      {
+        "id": "school-russian:trigger:class",
+        "text": "Bạn cần hỏi giảng viên/phòng đào tạo hoặc chưa hiểu yêu cầu học tập.",
+        "sourceIds": []
+      }
+    ],
+    "checklist": [
+      {
+        "id": "school-russian:check:terms",
+        "text": "Tạo nhóm từ theo môn/học vụ.",
+        "sourceIds": []
+      },
+      {
+        "id": "school-russian:check:questions",
+        "text": "Lưu mẫu câu hỏi cần dùng.",
+        "sourceIds": []
+      },
+      {
+        "id": "school-russian:check:new",
+        "text": "Ghi lại cụm từ mới sau mỗi tình huống.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [],
+    "decisions": [],
+    "requiredMaterials": [],
+    "completionEvidence": [],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "school-russian:node:start",
+          "label": "Điều cần xác nhận",
+          "kind": "stage",
+          "evidenceId": "school-russian:next:question"
+        },
+        {
+          "id": "school-russian:node:ask",
+          "label": "Hỏi ngắn gọn",
+          "kind": "action",
+          "evidenceId": "school-russian:action:requirements"
+        },
+        {
+          "id": "school-russian:node:record",
+          "label": "Ghi xác nhận",
+          "kind": "action",
+          "evidenceId": "school-russian:action:record"
+        },
+        {
+          "id": "school-russian:node:terms",
+          "label": "Thuật ngữ môn học",
+          "kind": "action",
+          "evidenceId": "school-russian:action:terms"
+        }
+      ],
+      "edges": [
+        {
+          "from": "school-russian:node:start",
+          "to": "school-russian:node:ask"
+        },
+        {
+          "from": "school-russian:node:ask",
+          "to": "school-russian:node:record"
+        },
+        {
+          "from": "school-russian:node:record",
+          "to": "school-russian:node:terms"
+        }
+      ]
+    },
+    "nextAction": {
+      "id": "school-russian:next:question",
+      "text": "Viết một câu hỏi ngắn nêu bạn là ai, vấn đề gì và điều cần xác nhận.",
+      "sourceIds": []
+    }
+  },
+  "risk": {
+    "categories": [
+      "academic"
+    ],
+    "severity": "low",
+    "doNot": [],
+    "critical": [],
+    "cautions": [
+      {
+        "id": "school-russian:caution:machine",
+        "text": "Không dịch máy một thuật ngữ rồi mặc định là chuẩn nếu chưa đối chiếu ngữ cảnh môn học.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [
+      {
+        "id": "school-russian:recommend:written",
+        "text": "Với deadline/hồ sơ quan trọng, cố gắng có xác nhận bằng văn bản hoặc nguồn chính thức.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "school-russian:uncertainty:program",
+        "text": "Từ chuyên ngành và cách dùng phụ thuộc chương trình, môn và giảng viên; Knowledge Unit chỉ giữ workflow.",
+        "sourceIds": []
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [],
+    "enTerms": [],
+    "usefulPhrases": [
+      {
+        "ru": "Можно уточнить требования к заданию?",
+        "vi": "Tôi có thể hỏi lại yêu cầu của bài tập không?",
+        "context": "Trong lớp/hỏi giảng viên."
+      },
+      {
+        "ru": "Когда нужно сдать работу?",
+        "vi": "Khi nào phải nộp bài?",
+        "context": "Xác nhận deadline."
+      }
+    ],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:study-procedures:study-plan",
+      "label": "Kế hoạch học tập"
+    }
+  ],
+  "searchTerms": [
+    "tiếng Nga học tập",
+    "deadline",
+    "giảng viên",
+    "phòng học",
+    "thuật ngữ",
+    "school russian"
+  ]
+}
