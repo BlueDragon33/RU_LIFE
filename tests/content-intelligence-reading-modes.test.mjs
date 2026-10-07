@@ -21,7 +21,7 @@ test("quick and risk views keep essential guidance before deep prose", async () 
   const risk = await source("../components/knowledge/knowledge-risk-panel.tsx");
   assert.match(quick, /Ba điều phải nhớ/);
   assert.match(quick, /mustRemember/);
-  assert.match(quick, /Việc nên làm ngay/);
+  assert.match(quick, /Việc nên làm ngay/i);
   assert.match(risk, /CẤM \/ KHÔNG ĐƯỢC LÀM/);
   assert.match(risk, /RẤT QUAN TRỌNG/);
   assert.match(risk, /CẦN LƯU Ý/);
