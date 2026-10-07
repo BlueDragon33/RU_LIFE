@@ -1,0 +1,312 @@
+{
+  "id": "ru-life:health:care-navigation",
+  "schemaVersion": 1,
+  "moduleSlug": "health",
+  "topicSlug": "care-navigation",
+  "title": "Tìm nơi khám · xử lý ban đầu",
+  "summary": "Phân biệt cấp cứu và khám không cấp cứu, chuẩn bị thông tin cần thiết, nhưng không dùng RU_LIFE để tự chẩn đoán bệnh.",
+  "provenance": {
+    "sourceIds": [
+      "source:ru:health:care:studyinrussia",
+      "source:ru:health:care:gov631"
+    ],
+    "verifiedAt": "2026-10-07",
+    "freshness": "verified"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "care:idea:triage",
+      "text": "Ưu tiên phân luồng an toàn: tình trạng có vẻ đe dọa tính mạng thì gọi 112/103; trường hợp không cấp cứu thì liên hệ bảo hiểm/phòng y tế/cơ sở phù hợp.",
+      "sourceIds": [
+        "source:ru:health:care:studyinrussia",
+        "source:ru:health:care:gov631"
+      ]
+    },
+    "purpose": {
+      "id": "care:purpose:navigation",
+      "text": "Giúp người dùng chọn đầu mối và chuẩn bị thông tin để nhân viên y tế đánh giá; không thay thế chẩn đoán.",
+      "sourceIds": [
+        "source:ru:health:care:studyinrussia",
+        "source:ru:health:care:gov631"
+      ]
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "care:logic:emergency",
+        "text": "Nếu tình trạng có vẻ đe dọa tính mạng, diễn biến nhanh hoặc người bệnh không thể tự di chuyển an toàn, ưu tiên gọi 112 hoặc 103.",
+        "sourceIds": [
+          "source:ru:health:care:studyinrussia",
+          "source:ru:health:care:gov631"
+        ]
+      },
+      {
+        "id": "care:logic:planned",
+        "text": "Nếu không phải cấp cứu, bắt đầu từ hotline bảo hiểm, phòng y tế trường hoặc cơ sở trong mạng lưới và chuẩn bị mô tả triệu chứng theo thời gian.",
+        "sourceIds": [
+          "source:ru:health:care:studyinrussia"
+        ]
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "care:scope:no-diagnosis",
+        "text": "RU_LIFE chỉ hỗ trợ điều hướng; không dùng checklist triệu chứng để tự chẩn đoán hoặc quyết định điều trị.",
+        "sourceIds": [
+          "source:ru:health:care:studyinrussia"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "care:action:call",
+        "text": "Khi có dấu hiệu nguy hiểm hoặc không thể di chuyển an toàn, gọi 112 hoặc 103 và nói địa chỉ, tình trạng chính, tuổi xấp xỉ, số gọi lại.",
+        "sourceIds": [
+          "source:ru:health:care:studyinrussia",
+          "source:ru:health:care:gov631"
+        ]
+      },
+      {
+        "id": "care:action:planned",
+        "text": "Nếu không cấp cứu, liên hệ hotline bảo hiểm/phòng y tế/cơ sở phù hợp để đặt lịch hoặc hỏi quy trình.",
+        "sourceIds": [
+          "source:ru:health:care:studyinrussia"
+        ]
+      },
+      {
+        "id": "care:action:prepare",
+        "text": "Ghi thời điểm bắt đầu, diễn biến, thuốc đang dùng và dị ứng đã biết để trình bày cho nhân viên y tế.",
+        "sourceIds": []
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "care:outcome:handoff",
+        "text": "Bạn chuyển được thông tin cần thiết tới nhân viên y tế/đầu mối phù hợp mà không tự biến RU_LIFE thành công cụ chẩn đoán.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "care:remember:emergency",
+        "text": "Nguy hiểm/diễn biến nhanh/không di chuyển an toàn → ưu tiên 112 hoặc 103.",
+        "sourceIds": [
+          "source:ru:health:care:studyinrussia",
+          "source:ru:health:care:gov631"
+        ]
+      },
+      {
+        "id": "care:remember:no-diagnosis",
+        "text": "RU_LIFE không chẩn đoán bệnh.",
+        "sourceIds": [
+          "source:ru:health:care:studyinrussia"
+        ]
+      },
+      {
+        "id": "care:remember:meds",
+        "text": "Mang danh sách thuốc và dị ứng đã biết khi có thể.",
+        "sourceIds": []
+      }
+    ],
+    "memoryAnchor": {
+      "id": "care:anchor:route",
+      "text": "Cấp cứu → gọi trước. Không cấp cứu → hotline/cơ sở phù hợp. Chẩn đoán → để nhân viên y tế thực hiện.",
+      "sourceIds": [
+        "source:ru:health:care:studyinrussia",
+        "source:ru:health:care:gov631"
+      ]
+    },
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [
+      "Có vẻ là cấp cứu không?",
+      "Nếu không cấp cứu, đầu mối bảo hiểm/cơ sở nào phù hợp?",
+      "Tôi cần mang thuốc/dị ứng gì để báo bác sĩ?"
+    ]
+  },
+  "journey": {
+    "stages": [
+      "Đánh giá mức khẩn",
+      "Gọi đúng luồng",
+      "Chuẩn bị thông tin",
+      "Lưu hồ sơ sau khám"
+    ],
+    "triggers": [
+      {
+        "id": "care:trigger:symptom",
+        "text": "Bạn có vấn đề sức khỏe và cần quyết định nên gọi cấp cứu hay tìm nơi khám.",
+        "sourceIds": []
+      }
+    ],
+    "nextAction": {
+      "id": "care:next:triage",
+      "text": "Nếu có vẻ đe dọa tính mạng hoặc không thể tự di chuyển an toàn, gọi 112/103 ngay; nếu không, liên hệ hotline bảo hiểm hoặc cơ sở phù hợp.",
+      "sourceIds": [
+        "source:ru:health:care:studyinrussia",
+        "source:ru:health:care:gov631"
+      ]
+    },
+    "checklist": [
+      {
+        "id": "care:check:symptom",
+        "text": "Ghi triệu chứng và thời điểm bắt đầu.",
+        "sourceIds": []
+      },
+      {
+        "id": "care:check:documents",
+        "text": "Chuẩn bị giấy tờ cần mang.",
+        "sourceIds": []
+      },
+      {
+        "id": "care:check:facility",
+        "text": "Lưu địa chỉ cơ sở thường dùng.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [
+      "Tình trạng hiện tại",
+      "Địa chỉ hiện tại",
+      "Thông tin bảo hiểm nếu không cấp cứu"
+    ],
+    "decisions": [],
+    "requiredMaterials": [
+      {
+        "id": "care:material:meds",
+        "text": "Danh sách thuốc đang dùng và dị ứng đã biết nếu có.",
+        "sourceIds": []
+      }
+    ],
+    "completionEvidence": [
+      {
+        "id": "care:evidence:record",
+        "text": "Sau khám, lưu chẩn đoán do bác sĩ ghi, đơn thuốc, kết quả và hướng dẫn tái khám.",
+        "sourceIds": []
+      }
+    ],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "care:node:start",
+          "label": "Có vấn đề sức khỏe",
+          "kind": "stage",
+          "evidenceId": "care:trigger:symptom"
+        },
+        {
+          "id": "care:node:emergency",
+          "label": "Có vẻ cấp cứu",
+          "kind": "decision",
+          "evidenceId": "care:logic:emergency"
+        },
+        {
+          "id": "care:node:call",
+          "label": "Gọi 112/103",
+          "kind": "action",
+          "evidenceId": "care:action:call"
+        },
+        {
+          "id": "care:node:planned",
+          "label": "Khám không cấp cứu",
+          "kind": "action",
+          "evidenceId": "care:action:planned"
+        }
+      ],
+      "edges": [
+        {
+          "from": "care:node:start",
+          "to": "care:node:emergency"
+        },
+        {
+          "from": "care:node:emergency",
+          "to": "care:node:call",
+          "label": "có"
+        },
+        {
+          "from": "care:node:emergency",
+          "to": "care:node:planned",
+          "label": "không"
+        }
+      ]
+    }
+  },
+  "risk": {
+    "categories": [
+      "health",
+      "safety"
+    ],
+    "severity": "high",
+    "doNot": [
+      {
+        "id": "care:do-not:self-diagnose",
+        "text": "Không dùng RU_LIFE hoặc checklist triệu chứng để tự chẩn đoán bệnh hoặc tự quyết định điều trị.",
+        "sourceIds": [
+          "source:ru:health:care:studyinrussia"
+        ]
+      }
+    ],
+    "critical": [
+      {
+        "id": "care:critical:no-delay",
+        "text": "Không trì hoãn gọi trợ giúp khi tình trạng có vẻ đe dọa tính mạng để tra cứu trên mạng, bảo hiểm hoặc thuốc.",
+        "sourceIds": [
+          "source:ru:health:care:gov631"
+        ]
+      }
+    ],
+    "cautions": [
+      {
+        "id": "care:caution:translation",
+        "text": "Nếu không hiểu hướng dẫn y tế, yêu cầu giải thích/phiên dịch thay vì tự suy diễn từ bản dịch máy.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "care:uncertainty:assessment",
+        "text": "Chỉ nhân viên y tế có thể đánh giá chẩn đoán và điều trị phù hợp cho trường hợp cụ thể.",
+        "sourceIds": []
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [],
+    "enTerms": [],
+    "usefulPhrases": [],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:health:emergency",
+      "label": "Cấp cứu"
+    },
+    {
+      "type": "related-to",
+      "targetId": "ru-life:health:insurance",
+      "label": "Bảo hiểm"
+    }
+  ],
+  "searchTerms": [
+    "tìm nơi khám",
+    "112",
+    "103",
+    "cấp cứu",
+    "triệu chứng",
+    "hotline bảo hiểm",
+    "clinic",
+    "doctor",
+    "khám bệnh"
+  ]
+}
