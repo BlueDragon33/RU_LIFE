@@ -1,0 +1,233 @@
+{
+  "id": "ru-life:prepare:money-connectivity",
+  "schemaVersion": 1,
+  "moduleSlug": "prepare",
+  "topicSlug": "money-connectivity",
+  "title": "Tài chính · liên lạc",
+  "summary": "Chuẩn bị nhiều phương án tiền và liên lạc dự phòng; khả năng thanh toán quốc tế, roaming, SIM và phí phải kiểm tra theo provider ở thời điểm thực tế.",
+  "provenance": {
+    "sourceIds": [],
+    "verifiedAt": "2026-10-07",
+    "freshness": "review-soon"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "money:idea:redundancy",
+      "text": "Không phụ thuộc một thẻ, một ứng dụng hoặc một mạng; chuẩn bị đường tiền và liên lạc dự phòng cho những ngày đầu.",
+      "sourceIds": []
+    },
+    "purpose": {
+      "id": "money:purpose:first-days",
+      "text": "Tránh để lỗi thẻ hoặc mất mạng làm gián đoạn di chuyển, liên hệ trường và nhu cầu thiết yếu.",
+      "sourceIds": []
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "money:logic:payment",
+        "text": "Trước khi bay, kiểm tra với ngân hàng/đơn vị phát hành khả năng sử dụng phương tiện thanh toán tại Nga ở thời điểm thực tế.",
+        "sourceIds": []
+      },
+      {
+        "id": "money:logic:connectivity",
+        "text": "Roaming, đăng ký SIM và khả năng dùng dịch vụ nhà mạng có thể thay đổi; dùng hướng dẫn hiện hành của nhà mạng/điểm cung cấp sau khi đến.",
+        "sourceIds": []
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "money:scope:no-frozen-provider",
+        "text": "RU_LIFE không đóng băng phí, tỷ giá, danh sách thẻ/ngân hàng/nhà mạng hoặc yêu cầu SIM như dữ liệu vĩnh viễn.",
+        "sourceIds": []
+      }
+    ],
+    "actions": [
+      {
+        "id": "money:action:payments",
+        "text": "Chuẩn bị hơn một phương án thanh toán hợp pháp và tách tiền dự phòng khỏi ví hằng ngày.",
+        "sourceIds": []
+      },
+      {
+        "id": "money:action:provider-check",
+        "text": "Kiểm tra ngân hàng/đơn vị phát hành về khả năng dùng phương tiện thanh toán tại Nga ngay trước chuyến đi.",
+        "sourceIds": []
+      },
+      {
+        "id": "money:action:offline",
+        "text": "Tải offline địa chỉ trường/chỗ ở, bản đồ khu vực đến và thông tin chuyến đi; lưu đầu mối quan trọng.",
+        "sourceIds": []
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "money:outcome:redundant",
+        "text": "Bạn có ít nhất một đường dự phòng khi thanh toán hoặc kết nối chính không hoạt động.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "money:remember:two",
+        "text": "Không phụ thuộc duy nhất một phương án thanh toán.",
+        "sourceIds": []
+      },
+      {
+        "id": "money:remember:offline",
+        "text": "Lưu thông tin đường đi và liên hệ quan trọng offline.",
+        "sourceIds": []
+      },
+      {
+        "id": "money:remember:provider",
+        "text": "Kiểm tra ngân hàng, đơn vị phát hành và nhà mạng ở thời điểm thực tế.",
+        "sourceIds": []
+      }
+    ],
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [],
+    "memoryAnchor": {
+      "id": "money:anchor:backup",
+      "text": "MỘT ĐƯỜNG CHÍNH + MỘT ĐƯỜNG DỰ PHÒNG cho cả tiền và liên lạc.",
+      "sourceIds": []
+    }
+  },
+  "journey": {
+    "stages": [
+      "Kiểm tra provider",
+      "Tách dự phòng",
+      "Chuẩn bị offline",
+      "Xác nhận sau khi đến"
+    ],
+    "triggers": [
+      {
+        "id": "money:trigger:travel",
+        "text": "Bạn chuẩn bị tài chính và liên lạc cho chuyến sang Nga.",
+        "sourceIds": []
+      }
+    ],
+    "checklist": [
+      {
+        "id": "money:check:payment",
+        "text": "Chuẩn bị phương án thanh toán ban đầu.",
+        "sourceIds": []
+      },
+      {
+        "id": "money:check:contacts",
+        "text": "Lưu số liên hệ quan trọng.",
+        "sourceIds": []
+      },
+      {
+        "id": "money:check:internet",
+        "text": "Chuẩn bị phương án Internet/liên lạc dự phòng.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [],
+    "decisions": [],
+    "requiredMaterials": [],
+    "completionEvidence": [],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "money:node:start",
+          "label": "Kiểm tra provider",
+          "kind": "stage",
+          "evidenceId": "money:next:providers"
+        },
+        {
+          "id": "money:node:pay",
+          "label": "Hai đường thanh toán",
+          "kind": "action",
+          "evidenceId": "money:action:payments"
+        },
+        {
+          "id": "money:node:offline",
+          "label": "Thông tin offline",
+          "kind": "action",
+          "evidenceId": "money:action:offline"
+        }
+      ],
+      "edges": [
+        {
+          "from": "money:node:start",
+          "to": "money:node:pay"
+        },
+        {
+          "from": "money:node:pay",
+          "to": "money:node:offline"
+        }
+      ]
+    },
+    "nextAction": {
+      "id": "money:next:providers",
+      "text": "Liên hệ/kiểm tra ngân hàng, đơn vị phát hành và nhà mạng hiện tại; ghi phương án dự phòng nếu phương án chính không hoạt động.",
+      "sourceIds": []
+    }
+  },
+  "risk": {
+    "categories": [
+      "financial",
+      "digital"
+    ],
+    "severity": "moderate",
+    "doNot": [],
+    "critical": [],
+    "cautions": [
+      {
+        "id": "money:caution:provider",
+        "text": "Không dựa vào thông tin cũ về ngân hàng, đơn vị phát hành, roaming, SIM hoặc nhà mạng; kiểm tra provider và thời điểm thực tế.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [
+      {
+        "id": "money:recommend:separate",
+        "text": "Tách tiền/phương tiện thanh toán dự phòng khỏi ví sử dụng hằng ngày.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "money:uncertainty:volatile",
+        "text": "Khả năng thanh toán, phí, roaming và yêu cầu thuê bao là dữ liệu biến động; RU_LIFE chỉ giữ nguyên tắc dự phòng.",
+        "sourceIds": []
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [],
+    "enTerms": [],
+    "usefulPhrases": [],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:prepare:arrival-plan",
+      "label": "Ngày đầu"
+    }
+  ],
+  "searchTerms": [
+    "tiền",
+    "thanh toán",
+    "ngân hàng",
+    "thẻ",
+    "roaming",
+    "SIM",
+    "Internet",
+    "nhà mạng",
+    "connectivity"
+  ]
+}
