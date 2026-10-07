@@ -1,0 +1,253 @@
+{
+  "id": "ru-life:integration:daily-russian",
+  "schemaVersion": 1,
+  "moduleSlug": "integration",
+  "topicSlug": "daily-russian",
+  "title": "Tiếng Nga sinh hoạt",
+  "summary": "Học và tra các câu ngắn theo tình huống lặp lại hằng ngày; ưu tiên diễn đạt dễ hiểu và xác nhận lại khi nội dung liên quan tiền, giấy tờ hoặc lịch hẹn.",
+  "provenance": {
+    "sourceIds": [],
+    "verifiedAt": "2026-10-07",
+    "freshness": "stable-guidance"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "daily-russian:idea:situations",
+      "text": "Học theo tình huống và giữ một bộ câu chủ động ngắn dùng được ngay, thay vì tích lũy danh sách từ rời.",
+      "sourceIds": []
+    },
+    "purpose": {
+      "id": "daily-russian:purpose:usable",
+      "text": "Tăng khả năng giao tiếp thực tế trong sinh hoạt và giảm hiểu nhầm ở các việc quan trọng.",
+      "sourceIds": []
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "daily-russian:logic:small",
+        "text": "Mỗi tình huống chỉ cần một nhóm câu ngắn có thể tự nói; bổ sung dần từ những câu nghe được và đã đối chiếu nghĩa.",
+        "sourceIds": []
+      },
+      {
+        "id": "daily-russian:logic:confirm",
+        "text": "Khi nội dung liên quan tiền, giấy tờ, ngày giờ hoặc nghĩa vụ, yêu cầu viết/nhắc lại thay vì giả vờ đã hiểu.",
+        "sourceIds": []
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "daily-russian:scope:not-course",
+        "text": "Đây là bộ công cụ giao tiếp thực tế, không thay thế chương trình học tiếng Nga đầy đủ hoặc đánh giá trình độ.",
+        "sourceIds": []
+      }
+    ],
+    "actions": [
+      {
+        "id": "daily-russian:action:choose",
+        "text": "Chọn tình huống cần dùng nhất như ký túc xá, mua sắm, đi đường, hành chính hoặc y tế.",
+        "sourceIds": []
+      },
+      {
+        "id": "daily-russian:action:phrases",
+        "text": "Giữ 3–5 câu chủ động cho mỗi tình huống và luyện nói thành tiếng.",
+        "sourceIds": []
+      },
+      {
+        "id": "daily-russian:action:confirm",
+        "text": "Khi không chắc, yêu cầu nói chậm/nhắc lại hoặc xác nhận lại ý chính.",
+        "sourceIds": []
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "daily-russian:outcome:usable",
+        "text": "Bạn có bộ câu cá nhân có thể dùng lại và biết cách xác nhận thông tin quan trọng.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "daily-russian:remember:situation",
+        "text": "Học theo tình huống, không học từ rời.",
+        "sourceIds": []
+      },
+      {
+        "id": "daily-russian:remember:short",
+        "text": "Câu ngắn, rõ ý tốt hơn câu dài khó kiểm soát.",
+        "sourceIds": []
+      },
+      {
+        "id": "daily-russian:remember:confirm",
+        "text": "Tiền/giấy tờ/lịch hẹn → xác nhận lại nếu chưa chắc.",
+        "sourceIds": []
+      }
+    ],
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [],
+    "memoryAnchor": {
+      "id": "daily-russian:anchor:three",
+      "text": "TÌNH HUỐNG → 3–5 CÂU CHỦ ĐỘNG → XÁC NHẬN LẠI.",
+      "sourceIds": []
+    }
+  },
+  "journey": {
+    "stages": [
+      "Chọn tình huống",
+      "Chọn câu chủ động",
+      "Dùng thật",
+      "Ghi câu mới",
+      "Rà lại"
+    ],
+    "triggers": [
+      {
+        "id": "daily-russian:trigger:new",
+        "text": "Bạn gặp một tình huống giao tiếp lặp lại hoặc sắp phải xử lý một việc bằng tiếng Nga.",
+        "sourceIds": []
+      }
+    ],
+    "checklist": [
+      {
+        "id": "daily-russian:check:situation",
+        "text": "Chọn nhóm tình huống cần dùng nhất.",
+        "sourceIds": []
+      },
+      {
+        "id": "daily-russian:check:active",
+        "text": "Tạo danh sách từ/câu chủ động.",
+        "sourceIds": []
+      },
+      {
+        "id": "daily-russian:check:review",
+        "text": "Ôn lại theo tình huống thay vì từ rời.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [],
+    "decisions": [],
+    "requiredMaterials": [],
+    "completionEvidence": [],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "daily-russian:node:start",
+          "label": "Tình huống",
+          "kind": "stage",
+          "evidenceId": "daily-russian:action:choose"
+        },
+        {
+          "id": "daily-russian:node:phrases",
+          "label": "3–5 câu chủ động",
+          "kind": "action",
+          "evidenceId": "daily-russian:action:phrases"
+        },
+        {
+          "id": "daily-russian:node:confirm",
+          "label": "Xác nhận lại",
+          "kind": "action",
+          "evidenceId": "daily-russian:action:confirm"
+        }
+      ],
+      "edges": [
+        {
+          "from": "daily-russian:node:start",
+          "to": "daily-russian:node:phrases"
+        },
+        {
+          "from": "daily-russian:node:phrases",
+          "to": "daily-russian:node:confirm"
+        }
+      ]
+    },
+    "nextAction": {
+      "id": "daily-russian:next:choose",
+      "text": "Chọn một tình huống bạn sẽ gặp sớm nhất và giữ tối đa 3–5 câu có thể nói ngay.",
+      "sourceIds": []
+    }
+  },
+  "risk": {
+    "categories": [
+      "reputational"
+    ],
+    "severity": "low",
+    "doNot": [],
+    "critical": [],
+    "cautions": [
+      {
+        "id": "daily-russian:caution:nod",
+        "text": "Không gật đầu cho qua khi chưa hiểu nội dung liên quan tiền, giấy tờ, lịch hẹn hoặc nghĩa vụ hành chính.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [
+      {
+        "id": "daily-russian:recommend:write",
+        "text": "Yêu cầu viết địa chỉ, số phòng, ngày giờ hoặc tên giấy tờ khi nghe không chắc.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "daily-russian:uncertainty:usage",
+        "text": "Cách diễn đạt thay đổi theo người và bối cảnh; đây là hướng dẫn thực hành, không phải chuẩn ngôn ngữ duy nhất.",
+        "sourceIds": []
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [
+      {
+        "term": "Здравствуйте",
+        "meaningVi": "Xin chào lịch sự/trang trọng",
+        "sourceIds": []
+      },
+      {
+        "term": "Подскажите, пожалуйста…",
+        "meaningVi": "Xin vui lòng cho tôi hỏi/cho tôi biết…",
+        "sourceIds": []
+      }
+    ],
+    "enTerms": [],
+    "usefulPhrases": [
+      {
+        "ru": "Я плохо говорю по-русски. Говорите, пожалуйста, медленнее.",
+        "vi": "Tôi nói tiếng Nga chưa tốt. Xin hãy nói chậm hơn.",
+        "context": "Khi cần người đối thoại nói chậm."
+      },
+      {
+        "ru": "Я не понимаю. Можете повторить?",
+        "vi": "Tôi không hiểu. Bạn có thể nói lại không?",
+        "context": "Khi chưa nghe/hiểu rõ."
+      }
+    ],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:integration:personal-notes",
+      "label": "Lưu câu dùng được"
+    }
+  ],
+  "searchTerms": [
+    "tiếng Nga sinh hoạt",
+    "Здравствуйте",
+    "nói chậm",
+    "nhắc lại",
+    "mua sắm",
+    "đi đường",
+    "daily russian"
+  ]
+}
