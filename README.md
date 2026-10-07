@@ -24,10 +24,24 @@ Application Management có thể khóa thiết bị, bật/tắt quyền sửa h
 
 ## Hosting và migration Cloudflare
 
-GitHub là source of truth. Runtime online mục tiêu là Cloudflare Workers + D1 riêng của RU_LIFE; local runtime vẫn hoạt động độc lập qua `wrangler.local.jsonc` và không dùng database preview/production.
+GitHub là source of truth. Local runtime là baseline/canonical personal-use path. Cloudflare Workers + D1 là optional hosted/publish track của RU_LIFE; local runtime vẫn hoạt động độc lập qua `wrangler.local.jsonc` và không dùng database preview/production.
 
 Nhánh migration đã bổ sung đường deploy **preview manual-only** với Worker `ru-life-preview` và D1 `ru-life-preview-db`. Preview bắt buộc dùng D1 ID riêng, không được dùng placeholder local hoặc D1 production. `APPLICATION_MANAGEMENT_ORIGIN` phải là đúng HTTPS origin của control-plane tương ứng; không còn fallback cứng sang ChatGPT Sites hoặc Worker quản trị cũ.
 
 Production auto-deploy vẫn tắt cho tới khi preview được kiểm chứng E2E. Không đặt secret hoặc D1 ID thật trong repo.
 
 Xem [`CONTROL_INTEGRATION.md`](CONTROL_INTEGRATION.md) để biết contract chi tiết.
+
+
+## Operational sovereignty
+
+RU_LIFE adopts Universal Constitution 1.2.0.
+
+- Local/standalone operation is the baseline where the capability permits it.
+- Cloudflare is an optional hosted provider, not mandatory canonical authority.
+- Application Management coordinates policy/device administration but does not own RU_LIFE domain/device/session truth.
+- Google Drive may be used only as optional backup/sync for user-selected portable data.
+- Google Sheets is restricted to low-risk projections and must not receive raw passport/visa, private-key, bearer/session or management-secret data.
+- Google Apps Script may only be a replaceable thin coordination bridge.
+- ChatGPT/AI is optional intelligence and cannot become identity/device/session/canonical-state authority.
+- Significant external dependencies are governed by `docs/DEPENDENCY_BUDGET.json`.
