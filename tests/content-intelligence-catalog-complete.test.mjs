@@ -16,7 +16,7 @@ async function json(path) {
 
 test("catalog remains exactly five modules and twenty stable topic routes", async () => {
   const catalog = await readFile(new URL("../lib/content-catalog.ts", import.meta.url), "utf8");
-  assert.equal((catalog.match(/priority:\s*"(?:essential|recommended|reference)"/g) || []).length, 20);
+  assert.equal((catalog.match(/\{\s*slug:\s*"[^"]+"[^\n]*priority:\s*"(?:essential|recommended|reference)"/g) || []).length, 20);
   for (const [moduleSlug, topics] of Object.entries(expected)) {
     assert.ok(catalog.includes(`slug: "${moduleSlug}"`), moduleSlug);
     for (const topic of topics) assert.ok(catalog.includes(`slug: "${topic}"`), `${moduleSlug}:${topic}`);
