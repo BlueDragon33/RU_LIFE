@@ -1,0 +1,232 @@
+{
+  "id": "ru-life:integration:culture-etiquette",
+  "schemaVersion": 1,
+  "moduleSlug": "integration",
+  "topicSlug": "culture-etiquette",
+  "title": "Văn hóa · ứng xử",
+  "summary": "Quan sát bối cảnh và giảm hiểu nhầm mà không biến trải nghiệm cá nhân thành quy tắc về 'người Nga'; an toàn và ranh giới cá nhân luôn ưu tiên.",
+  "provenance": {
+    "sourceIds": [],
+    "verifiedAt": "2026-10-07",
+    "freshness": "stable-guidance"
+  },
+  "semantics": {
+    "mainIdea": {
+      "id": "culture:idea:no-stereotype",
+      "text": "Không biến một trải nghiệm, một người hoặc một môi trường thành quy tắc đại diện cho toàn bộ văn hóa/người Nga.",
+      "sourceIds": []
+    },
+    "purpose": {
+      "id": "culture:purpose:observe",
+      "text": "Giúp phân biệt khác biệt ngôn ngữ, quy trình và ứng xử cá nhân để phản ứng hợp lý hơn.",
+      "sourceIds": []
+    },
+    "rationale": [],
+    "logic": [
+      {
+        "id": "culture:logic:context",
+        "text": "Đánh giá giao tiếp theo toàn bộ bối cảnh; một câu trả lời ngắn/trực tiếp không tự động đồng nghĩa thiếu thiện chí.",
+        "sourceIds": []
+      },
+      {
+        "id": "culture:logic:alternatives",
+        "text": "Khi khó giao tiếp, thử đổi cách diễn đạt hoặc hỏi đầu mối khác trước khi kết luận nguyên nhân là văn hóa.",
+        "sourceIds": []
+      }
+    ],
+    "preconditions": [],
+    "scope": [
+      {
+        "id": "culture:scope:non-authoritative",
+        "text": "Đây là hướng dẫn quan sát dựa trên tình huống, không phải quy tắc chính thức, mô tả tính cách dân tộc hay kết luận đại diện cho mọi cá nhân/bối cảnh.",
+        "sourceIds": []
+      }
+    ],
+    "actions": [
+      {
+        "id": "culture:action:formal",
+        "text": "Trong bối cảnh mới/hành chính/học thuật, dùng cách xưng hô lịch sự hơn khi chưa biết mức độ thân mật.",
+        "sourceIds": []
+      },
+      {
+        "id": "culture:action:clarify",
+        "text": "Với nội dung hành chính, tập trung ngày giờ, mã hồ sơ, phòng ban và bằng chứng bằng văn bản.",
+        "sourceIds": []
+      },
+      {
+        "id": "culture:action:reflect",
+        "text": "Sau tình huống khó, tách ba khả năng: ngôn ngữ, quy trình, ứng xử cá nhân.",
+        "sourceIds": []
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "culture:outcome:flexible",
+        "text": "Bạn có cách quan sát linh hoạt hơn mà không đóng khung con người bằng định kiến.",
+        "sourceIds": []
+      }
+    ],
+    "exceptions": []
+  },
+  "memory": {
+    "mustRemember": [
+      {
+        "id": "culture:remember:no-rule",
+        "text": "Một trải nghiệm không đại diện cho toàn bộ nước Nga.",
+        "sourceIds": []
+      },
+      {
+        "id": "culture:remember:context",
+        "text": "Tách ngôn ngữ, quy trình và ứng xử cá nhân.",
+        "sourceIds": []
+      },
+      {
+        "id": "culture:remember:safety",
+        "text": "Hòa nhập không yêu cầu bỏ ranh giới an toàn cá nhân.",
+        "sourceIds": []
+      }
+    ],
+    "keyTerms": [],
+    "contrasts": [],
+    "myths": [],
+    "commonMistakes": [],
+    "examples": [],
+    "recallPrompts": [],
+    "memoryAnchor": {
+      "id": "culture:anchor:three",
+      "text": "NGÔN NGỮ? → QUY TRÌNH? → CÁ NHÂN? Đừng vội gọi tất cả là 'văn hóa'.",
+      "sourceIds": []
+    }
+  },
+  "journey": {
+    "stages": [
+      "Quan sát tình huống",
+      "Xác định điều chưa rõ",
+      "Thử cách diễn đạt/đầu mối khác",
+      "Rút kinh nghiệm"
+    ],
+    "triggers": [
+      {
+        "id": "culture:trigger:misunderstanding",
+        "text": "Bạn gặp một tình huống giao tiếp khiến mình bối rối hoặc dễ diễn giải thành khác biệt văn hóa.",
+        "sourceIds": []
+      }
+    ],
+    "checklist": [
+      {
+        "id": "culture:check:situation",
+        "text": "Ghi lại tình huống từng gặp.",
+        "sourceIds": []
+      },
+      {
+        "id": "culture:check:separate",
+        "text": "Tách khác biệt ngôn ngữ và khác biệt thói quen/quy trình.",
+        "sourceIds": []
+      },
+      {
+        "id": "culture:check:effective",
+        "text": "Bổ sung cách xử lý hiệu quả.",
+        "sourceIds": []
+      }
+    ],
+    "timeline": [],
+    "dependencies": [],
+    "decisions": [],
+    "requiredMaterials": [],
+    "completionEvidence": [],
+    "followUps": [],
+    "map": {
+      "nodes": [
+        {
+          "id": "culture:node:start",
+          "label": "Tình huống",
+          "kind": "stage",
+          "evidenceId": "culture:trigger:misunderstanding"
+        },
+        {
+          "id": "culture:node:separate",
+          "label": "Tách nguyên nhân",
+          "kind": "action",
+          "evidenceId": "culture:next:separate"
+        },
+        {
+          "id": "culture:node:clarify",
+          "label": "Thử cách khác",
+          "kind": "action",
+          "evidenceId": "culture:action:clarify"
+        }
+      ],
+      "edges": [
+        {
+          "from": "culture:node:start",
+          "to": "culture:node:separate"
+        },
+        {
+          "from": "culture:node:separate",
+          "to": "culture:node:clarify"
+        }
+      ]
+    },
+    "nextAction": {
+      "id": "culture:next:separate",
+      "text": "Viết ngắn điều đã xảy ra và thử phân loại: vấn đề ngôn ngữ, quy trình hay ứng xử cá nhân?",
+      "sourceIds": []
+    }
+  },
+  "risk": {
+    "categories": [
+      "reputational",
+      "safety"
+    ],
+    "severity": "low",
+    "doNot": [],
+    "critical": [],
+    "cautions": [
+      {
+        "id": "culture:caution:stereotype",
+        "text": "Không biến trải nghiệm cá nhân thành quy tắc hoặc kết luận đại diện cho người Nga; luôn xét bối cảnh và cá nhân.",
+        "sourceIds": []
+      }
+    ],
+    "recommended": [
+      {
+        "id": "culture:recommend:boundaries",
+        "text": "Tôn trọng quy tắc nơi ở/trường nhưng giữ ranh giới cá nhân; nếu có đe dọa/lừa đảo/ép buộc, chuyển sang luồng An toàn.",
+        "sourceIds": []
+      }
+    ],
+    "goodToKnow": [],
+    "consequences": [],
+    "escalations": [],
+    "uncertaintyNotes": [
+      {
+        "id": "culture:uncertainty:variety",
+        "text": "Thành phố, thế hệ, môi trường và cá nhân khác nhau; Knowledge Unit này không có thẩm quyền mô tả một 'tính cách quốc gia'.",
+        "sourceIds": []
+      }
+    ]
+  },
+  "language": {
+    "ruTerms": [],
+    "enTerms": [],
+    "usefulPhrases": [],
+    "cultureNotes": []
+  },
+  "relations": [
+    {
+      "type": "related-to",
+      "targetId": "ru-life:daily-life:safety",
+      "label": "An toàn khi tình huống vượt khỏi giao tiếp"
+    }
+  ],
+  "searchTerms": [
+    "văn hóa",
+    "ứng xử",
+    "Вы",
+    "ты",
+    "giao tiếp",
+    "hiểu nhầm",
+    "culture",
+    "etiquette"
+  ]
+}
