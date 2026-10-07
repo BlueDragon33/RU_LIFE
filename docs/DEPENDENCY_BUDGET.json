@@ -1,0 +1,172 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "BlueDragon33/RU_LIFE",
+  "constitutionPolicy": "blueprint-os:universal-century-grade@1.2.0",
+  "defaultPrinciple": "LOCAL_FIRST_OFFLINE_CAPABLE_PRIVATE_OPTIONAL_SYNC",
+  "canonicalDataRule": "RU_LIFE owns its own domain data, device registry/session ledger and audit. Application Management and external providers may coordinate but do not own RU_LIFE canonical state.",
+  "dependencies": [
+    {
+      "id": "local-runtime",
+      "provider": "Local web runtime + local D1/SQLite-compatible state",
+      "runtimeClass": "LOCAL_CORE",
+      "costClass": "local-free",
+      "purpose": [
+        "core app",
+        "personal Russia-life reference/planning",
+        "local device/session development",
+        "offline/degraded access"
+      ],
+      "dataBoundary": "user device/local runtime",
+      "canonicalState": "allowed for local domain/device state according to schema",
+      "degradedBehavior": "baseline path",
+      "exportPath": [
+        "SQL/JSON export",
+        "portable document/content files"
+      ],
+      "replacementPath": "equivalent local runtime preserving contracts"
+    },
+    {
+      "id": "application-management",
+      "provider": "Application Management",
+      "runtimeClass": "OPTIONAL_SYNC",
+      "costClass": "local-or-user-hosted",
+      "purpose": [
+        "device approval/blocking",
+        "management policy",
+        "remote admin coordination"
+      ],
+      "dataBoundary": "management metadata and signed control commands only",
+      "canonicalState": "forbidden for RU_LIFE device/session/domain truth",
+      "degradedBehavior": "ordinary RU_LIFE user operation remains available in standalone mode where policy allows",
+      "exportPath": [
+        "management metadata only"
+      ],
+      "replacementPath": "standalone/local mode or compatible control-plane adapter"
+    },
+    {
+      "id": "cloudflare-workers-d1",
+      "provider": "Cloudflare Workers / D1",
+      "runtimeClass": "OPTIONAL_PUBLISH",
+      "costClass": "free-tier-or-paid-optional",
+      "purpose": [
+        "preview/hosted runtime",
+        "optional managed D1"
+      ],
+      "dataBoundary": "explicit hosted RU_LIFE state only",
+      "canonicalState": "provider-specific state must remain exportable and replaceable",
+      "degradedBehavior": "local app remains usable; hosted-only access unavailable",
+      "exportPath": [
+        "D1/SQL export",
+        "portable app exports"
+      ],
+      "replacementPath": "local runtime or another managed provider"
+    },
+    {
+      "id": "github",
+      "provider": "GitHub",
+      "runtimeClass": "OPTIONAL_PUBLISH",
+      "costClass": "free-or-user-plan",
+      "purpose": [
+        "source",
+        "CI",
+        "review",
+        "release provenance"
+      ],
+      "dataBoundary": "source/evidence only",
+      "canonicalState": "source/version authority only",
+      "degradedBehavior": "checked-out local app remains usable",
+      "exportPath": [
+        "git clone/mirror"
+      ],
+      "replacementPath": "Git-compatible forge"
+    },
+    {
+      "id": "chatgpt-ai",
+      "provider": "ChatGPT / AI assistant",
+      "runtimeClass": "OPTIONAL_INTELLIGENCE",
+      "costClass": "user-selected",
+      "purpose": [
+        "translation/explanation",
+        "planning assistance",
+        "document understanding"
+      ],
+      "dataBoundary": "user-explicit context only",
+      "canonicalState": "forbidden for identity truth, visa/passport truth, device/session authority or sole durable user state",
+      "degradedBehavior": "core RU_LIFE workflows remain available without AI",
+      "exportPath": [
+        "explicitly saved artifacts only"
+      ],
+      "replacementPath": "non-AI workflow or another advisory provider"
+    },
+    {
+      "id": "google-drive",
+      "provider": "Google Drive",
+      "runtimeClass": "OPTIONAL_SYNC",
+      "costClass": "free-tier-or-user-plan",
+      "purpose": [
+        "optional backup/sync of user-selected RU_LIFE files, notes and sanitized/exported snapshots"
+      ],
+      "dataBoundary": "user-selected files; sensitive artifacts encrypted or sanitized where consequence warrants it",
+      "canonicalState": "forbidden as sole RU_LIFE domain/device/session authority",
+      "degradedBehavior": "local app remains usable; backup/sync deferred",
+      "exportPath": [
+        "native files",
+        "JSON/ZIP"
+      ],
+      "replacementPath": "local file backup or another storage adapter",
+      "status": "planned-optional"
+    },
+    {
+      "id": "google-sheets",
+      "provider": "Google Sheets",
+      "runtimeClass": "OPTIONAL_SYNC",
+      "costClass": "free-tier-or-user-plan",
+      "purpose": [
+        "optional low-risk catalog/planning/report projections only"
+      ],
+      "dataBoundary": "no raw passport/visa forms, device secrets, private keys, bearer/session tokens, or sensitive personal notes",
+      "canonicalState": "forbidden",
+      "degradedBehavior": "projection unavailable only",
+      "exportPath": [
+        "CSV/XLSX"
+      ],
+      "replacementPath": "local report/export",
+      "status": "restricted-optional"
+    },
+    {
+      "id": "google-apps-script",
+      "provider": "Google Apps Script",
+      "runtimeClass": "OPTIONAL_SYNC",
+      "costClass": "free-tier-or-user-plan",
+      "purpose": [
+        "optional lightweight backup/sync coordination"
+      ],
+      "dataBoundary": "least-privilege sanitized/encrypted payloads only",
+      "canonicalState": "forbidden for authorization, device approval or session authority",
+      "degradedBehavior": "manual/local sync remains available",
+      "exportPath": [
+        "portable sync journal/protocol"
+      ],
+      "replacementPath": "manual sync or another adapter",
+      "status": "planned-optional"
+    }
+  ],
+  "forbiddenRemoteData": [
+    "private device keys",
+    "bearer/session tokens",
+    "raw management secrets",
+    "raw passport/visa intake data in Google Sheets",
+    "unapproved sensitive personal notes in Google Sheets"
+  ],
+  "acceptance": {
+    "sovereigntyGateRequires": [
+      "core RU_LIFE remains usable without mandatory paid cloud infrastructure",
+      "Application Management does not own RU_LIFE domain/device/session truth",
+      "hosted provider failure does not destroy local usability",
+      "sensitive exports are encrypted or sanitized appropriately",
+      "Google integration is optional and replaceable",
+      "AI remains advisory and non-canonical"
+    ],
+    "productionAuthority": "separate-explicit-release-gate"
+  }
+}
