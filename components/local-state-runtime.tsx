@@ -27,9 +27,14 @@ export default function LocalStateRuntime() {
     window.addEventListener(RU_LIFE_STORAGE_ERROR_EVENT, onStorageError);
 
     const frame = window.requestAnimationFrame(() => {
-      const result = migrateLocalPersonalState(localStorage);
-      setMigration(result);
-      if (result.ok && result.migratedEntries > 0) dispatchRefresh();
+      try {
+        const result = migrateLocalPersonalState(localStorage);
+        setMigration(result);
+        if (result.ok && result.migratedEntries > 0) dispatchRefresh();
+      } catch {
+        // Accessing window.localStorage can itself throw SecurityError.
+        setStorageError("Không thể truy cập bộ nhớ cục bộ trong trình duyệt này. Hãy cho phép lưu trữ hoặc sử dụng chế độ trình duyệt thông thường.");
+      }
     });
 
     return () => {
