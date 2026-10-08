@@ -137,8 +137,39 @@ jobs:
             fi
           done </tmp/public-css-links.txt
 
+          # Do not mistake an old /app shell and old sw.js for the current release.
+          local_css="$(head -n 1 /tmp/css-links.txt)"
+          published_css="$(head -n 1 /tmp/public-css-links.txt)"
+          if [[ "$local_css" != "$published_css" ]]; then
+            echo "::warning::The local stylesheet asset ($local_css) and published stylesheet asset ($published_css) differ. Confirm that the current Sites artifact was published."
+          fi
+
+          if curl --fail --silent --show-error --location --max-time 20 "$PUBLIC_SITE/app/packs" >/tmp/public-packs.html; then
+            if ! grep -q 'pack-grid' /tmp/public-packs.html; then
+              echo '::error::Published Site is missing current Content Packs discovery (/app/packs).'
+              failures=1
+            fi
+          else
+            echo '::error::Published Site is missing current Content Packs discovery route (/app/packs).'
+            failures=1
+          fi
+
+          for slug in russia-starter first-seven-days international-student language-survival; do
+            if curl --fail --silent --show-error --location --max-time 20 "$PUBLIC_SITE/app/packs/$slug" >/tmp/public-pack-detail.html; then
+              if grep -q 'pack-topic-list' /tmp/public-pack-detail.html; then
+                echo "Published pack route PASS: $slug"
+              else
+                echo "::error::Published Site is missing current Content Packs detail: /app/packs/$slug"
+                failures=1
+              fi
+            else
+              echo "::error::Published Site cannot serve Content Packs detail: /app/packs/$slug"
+              failures=1
+            fi
+          done
+
           if [[ "$failures" -ne 0 ]]; then
             echo "::error::Published Site is stale/broken; source artifact is healthy but has not been published to the current Site."
             exit 1
           fi
-          echo "Published Site premium CSS/static/SW v2 PASS."
+          echo "Published Site current routes + CSS/static/SW v2 PASS."
