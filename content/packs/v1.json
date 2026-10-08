@@ -1,0 +1,87 @@
+[
+  {
+    "schemaVersion": 1,
+    "version": 1,
+    "id": "ru-life:pack:russia-starter",
+    "slug": "russia-starter",
+    "title": "Russia Starter",
+    "subtitle": "Bắt đầu hành trình đến Nga",
+    "description": "Lộ trình mở đầu từ giấy tờ, phương án liên lạc đến ổn định nơi ở và những điều an toàn cần nhớ.",
+    "focus": "Bắt đầu an toàn, nắm các đầu việc quan trọng.",
+    "access": "open",
+    "featuredUnitId": "ru-life:prepare:documents",
+    "unitIds": [
+      "ru-life:prepare:documents",
+      "ru-life:prepare:money-connectivity",
+      "ru-life:prepare:arrival-plan",
+      "ru-life:daily-life:housing",
+      "ru-life:study-procedures:migration-registration",
+      "ru-life:daily-life:safety",
+      "ru-life:health:emergency"
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "version": 1,
+    "id": "ru-life:pack:first-seven-days",
+    "slug": "first-seven-days",
+    "title": "First 7 Days",
+    "subtitle": "Ổn định sau khi đến Nga",
+    "description": "Những việc cần tra cứu trong các ngày đầu: di chuyển, chỗ ở, người liên hệ, cư trú, bảo hiểm và hỗ trợ khẩn cấp.",
+    "focus": "Đi đúng việc theo tình huống; mốc pháp lý cần xác nhận theo nguồn hiện hành.",
+    "access": "open",
+    "featuredUnitId": "ru-life:prepare:arrival-plan",
+    "unitIds": [
+      "ru-life:prepare:arrival-plan",
+      "ru-life:daily-life:transport",
+      "ru-life:daily-life:housing",
+      "ru-life:study-procedures:important-contacts",
+      "ru-life:study-procedures:migration-registration",
+      "ru-life:health:insurance",
+      "ru-life:daily-life:safety",
+      "ru-life:health:emergency"
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "version": 1,
+    "id": "ru-life:pack:international-student",
+    "slug": "international-student",
+    "title": "International Student",
+    "subtitle": "Học tập và thủ tục tại Nga",
+    "description": "Kết nối các chủ đề giấy tờ, nhập học, kế hoạch học, đầu mối của trường, tiếng Nga học vụ và sinh hoạt thiết yếu.",
+    "focus": "Theo dõi hành trình học tập mà không bỏ qua các bước hành chính.",
+    "access": "open",
+    "featuredUnitId": "ru-life:study-procedures:enrollment",
+    "unitIds": [
+      "ru-life:prepare:documents",
+      "ru-life:study-procedures:enrollment",
+      "ru-life:study-procedures:migration-registration",
+      "ru-life:study-procedures:study-plan",
+      "ru-life:study-procedures:important-contacts",
+      "ru-life:integration:school-russian",
+      "ru-life:daily-life:housing",
+      "ru-life:health:insurance",
+      "ru-life:integration:personal-notes"
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "version": 1,
+    "id": "ru-life:pack:language-survival",
+    "slug": "language-survival",
+    "title": "Language Survival",
+    "subtitle": "Giao tiếp hằng ngày và tại trường",
+    "description": "Các chủ đề tiếng Nga sinh hoạt, ngôn ngữ học vụ và tình huống ứng xử được xếp thành lộ trình tra cứu dễ nhớ.",
+    "focus": "Giao tiếp theo tình huống, tránh học từ vựng rời rạc.",
+    "access": "open",
+    "featuredUnitId": "ru-life:integration:daily-russian",
+    "unitIds": [
+      "ru-life:integration:daily-russian",
+      "ru-life:integration:school-russian",
+      "ru-life:integration:culture-etiquette",
+      "ru-life:study-procedures:important-contacts",
+      "ru-life:daily-life:transport"
+    ]
+  }
+]
