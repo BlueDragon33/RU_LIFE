@@ -185,6 +185,18 @@ Wave 3 bắt đầu lớp contextual personalization theo nguyên tắc **lens s
 Wave 3 chỉ chứng minh lens architecture bằng một context có canonical decision mapping rõ ràng. Persona/location/institution lenses chỉ nên mở rộng khi có metadata/evidence riêng; không suy diễn hoặc nhân bản knowledge để lấp chỗ trống.
 
 
+## Content Intelligence Wave 4 — Open Content Packs
+
+Wave 4 tạo 4 gói mở truy cập: **Russia Starter**, **First 7 Days**, **International Student**, **Language Survival**. Mỗi gói là một danh sách có thứ tự các **stable Knowledge Unit IDs**, không sao chép nội dung.
+
+- `content/packs/v1.json`: metadata có version, unit IDs, featured unit và `access: "open"`.
+- `lib/content-intelligence/packs.ts`: resolver lấy title/summary/freshness/risk từ Knowledge Unit gốc.
+- `scripts/validate-content-packs.mjs`: kiểm tra offline duplicate ID, orphan, featured reference và version.
+- `/app/packs` và `/app/packs/[slug]`: điều hướng qua existing protected workspace. Khi vào một topic, risk, source, progress và công cụ cá nhân vẫn do trang canonical gốc quản lý.
+- Browser E2E kiểm bốn journey, liên kết topic, reading modes và phone overflow; CI trigger cả changes ở pack route, CSS và validator.
+
+Tất cả pack hiện **mở tự do**, không có billing, entitlement, paywall hay giá bán. Pack là cách tìm nội dung, không phải bảo đảm đã bao quát hết nghĩa vụ pháp lý/medical.
+
 ## Hướng phát triển sau V1.4
 
 1. kiểm thử trực tiếp trên browser desktop/tablet/phone thực;
