@@ -1,0 +1,92 @@
+/* Content Pack composition — one canonical topic, many journeys */
+.pack-hero { margin-bottom: 28px; }
+.pack-hero > div { max-width: 850px; }
+.pack-section { margin: 24px 0 28px; min-width: 0; }
+.pack-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+.pack-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(20px, 2.7vw, 30px);
+  border: 1px solid #dce5ef;
+  border-radius: 20px;
+  background: linear-gradient(155deg, #fff, #f8fbff);
+  text-decoration: none;
+  color: #263e5d;
+  box-shadow: 0 12px 30px rgba(30,61,108,.045);
+}
+.pack-card:focus-visible, .pack-topic-link:focus-visible, .pack-back-link:focus-visible,
+.pack-entry a:focus-visible { outline: 3px solid #719dde; outline-offset: 3px; }
+.pack-card:hover, .pack-topic-link:hover { border-color: #abc6e6; background: #f7fbff; }
+.pack-card-top { display: flex; gap: 12px; align-items: center; justify-content: space-between; }
+.pack-card-top span, .pack-focus span, .pack-entry span {
+  font-size: 10px; font-weight: 850; letter-spacing: .1em; color: #6e819a;
+}
+.pack-card-top small {
+  font-size: 10px; font-weight: 800; padding: 6px 10px;
+  border: 1px solid #dce7f3; border-radius: 999px; color: #507196;
+}
+.pack-card h3 { margin: 22px 0 4px; font-size: clamp(21px, 2.6vw, 27px); color: #193b65; }
+.pack-card > strong { font-size: 13px; color: #3a5c7d; }
+.pack-card p { margin: 14px 0 24px; color: #5f7289; line-height: 1.65; font-size: 12px; }
+.pack-card-bottom {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 10px; padding-top: 13px; margin-top: auto; border-top: 1px solid #e7edf4;
+}
+.pack-card-bottom span { font-size: 10px; color: #257e60; font-weight: 850; }
+.pack-card-bottom b { font-size: 11px; color: #215d9c; }
+.pack-focus {
+  display: flex; gap: 15px; align-items: center; justify-content: space-between;
+  padding: 20px 22px; border: 1px solid #dce6f1; border-radius: 18px;
+  background: #f7faff;
+}
+.pack-focus h2 { margin: 7px 0 5px; color: #24476f; }
+.pack-focus p { margin: 0; color: #667b94; line-height: 1.55; font-size: 12px; }
+.pack-focus > span { max-width: 190px; text-align: right; line-height: 1.5; }
+.pack-topic-list { display: grid; gap: 11px; list-style: none; padding: 0; margin: 16px 0 0; }
+.pack-topic-link {
+  display: grid; grid-template-columns: 44px minmax(0,1fr) 26px; align-items: start;
+  gap: 15px; min-width: 0; padding: 18px;
+  border: 1px solid #e0e8f2; border-radius: 16px; background: #fff;
+  color: #2c4464; text-decoration: none;
+}
+.pack-step {
+  display: grid; place-items: center; width: 40px; height: 40px;
+  border-radius: 12px; background: #edf4ff; color: #2d65ab;
+  font-size: 12px; font-weight: 900;
+}
+.pack-topic-copy { min-width: 0; }
+.pack-topic-copy small { display: block; font-size: 10px; color: #6f8198; font-weight: 750; }
+.pack-topic-copy h3 { margin: 5px 0 6px; color: #1f3c62; font-size: 17px; }
+.pack-topic-copy p { margin: 0; font-size: 12px; line-height: 1.65; color: #5d718b; }
+.pack-topic-copy > span { display: block; margin-top: 10px; font-size: 10px; color: #61778f; }
+.pack-topic-link > b { color: #3975bd; font-size: 20px; }
+.pack-trust-note { margin: 15px 0 24px; line-height: 1.65; font-size: 12px; color: #60738d; }
+.pack-back-link { display: inline-block; color: #235ea5; font-size: 12px; font-weight: 800; text-decoration: none; }
+.pack-entry {
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+  border: 1px solid #d9e5f3; border-radius: 19px; background: #f8fbff;
+  padding: clamp(20px, 3vw, 30px); margin: 25px 0;
+}
+.pack-entry h2 { margin: 5px 0; color: #1c3c64; }
+.pack-entry p { margin: 0; color: #62778e; line-height: 1.6; font-size: 12px; max-width: 650px; }
+.pack-entry a {
+  flex: 0 0 auto; border-radius: 12px; padding: 12px 16px;
+  background: #173e70; color: #fff; text-decoration: none; font-size: 12px; font-weight: 850;
+}
+@media (max-width: 900px) {
+  .pack-entry { flex-direction: column; align-items: stretch; }
+  .pack-entry a { width: fit-content; }
+}
+@media (max-width: 760px) {
+  .pack-grid { grid-template-columns: minmax(0,1fr); }
+  .pack-focus { display: grid; }
+  .pack-focus > span { text-align: left; max-width: none; }
+}
+@media (max-width: 560px) {
+  .pack-card { border-radius: 16px; }
+  .pack-topic-link { grid-template-columns: 36px minmax(0,1fr); padding: 14px; gap: 10px; }
+  .pack-step { height: 34px; width: 34px; }
+  .pack-topic-link > b { display: none; }
+  .pack-entry a { width: 100%; text-align: center; }
+}
