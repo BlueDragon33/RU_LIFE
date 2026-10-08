@@ -9,6 +9,7 @@ import "./backup.css";
 import "./premium-theme.css";
 import "./premium-deep.css";
 import "./knowledge.css";
+import "./packs.css";
 
 export const metadata: Metadata = {
   title: { default: "Hòa nhập Nga", template: "%s · Hòa nhập Nga" },
