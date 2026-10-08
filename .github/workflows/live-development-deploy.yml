@@ -42,11 +42,16 @@ jobs:
             [[ -n "${!key:-}" ]] || missing+=("$key")
           done
           if (( ${#missing[@]} )); then
-            echo "deploy=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Live development publish skipped; missing: ${missing[*]}"
-          else
-            echo "deploy=true" >> "$GITHUB_OUTPUT"
+            echo "::error::Live development deployment blocked; missing configuration: ${missing[*]}"
+            {
+              echo "### RU_LIFE preview deployment blocked"
+              echo "Required GitHub Environment secrets are not configured: ${missing[*]}"
+              echo "No build, D1 migration or Worker publish occurred. This workflow must not be interpreted as a successful deploy."
+              echo "This Cloudflare Worker pipeline is separate from ChatGPT Sites publishing."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
           fi
+          echo "deploy=true" >> "$GITHUB_OUTPUT"
       - name: Install
         if: ${{ steps.ready.outputs.deploy == 'true' }}
         run: npm install --no-audit --no-fund
@@ -63,7 +68,7 @@ jobs:
         if: ${{ steps.ready.outputs.deploy == 'true' }}
         run: npx wrangler deploy
       - name: Summary
-        if: ${{ always() }}
+        if: ${{ success() && steps.ready.outputs.deploy == 'true' }}
         run: |
-          echo "RU LIFE Standalone Development Mode"
-          echo "main publishes to the public development Worker"
+          echo "Deployment was executed successfully to the configured Cloudflare development Worker." >> "$GITHUB_STEP_SUMMARY"
+          echo "ChatGPT Sites publishing is a separate explicit release action." >> "$GITHUB_STEP_SUMMARY"
