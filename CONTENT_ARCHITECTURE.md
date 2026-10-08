@@ -197,6 +197,16 @@ Wave 4 tạo 4 gói mở truy cập: **Russia Starter**, **First 7 Days**, **Int
 
 Tất cả pack hiện **mở tự do**, không có billing, entitlement, paywall hay giá bán. Pack là cách tìm nội dung, không phải bảo đảm đã bao quát hết nghĩa vụ pháp lý/medical.
 
+## Content Intelligence Wave 5 — Entitlement policy foundation
+
+`lib/content-intelligence/entitlement.ts` defines a **pure and provider-independent** versioned access decision. It accepts a resource, subject, a set of **already verified grants** and caller-supplied time.
+
+- For `access: "open"`, allow by default. The four existing Content Packs remain open.
+- For hypothetical future `access: "gated"`, deny unless a verified, unrevoked, in-scope, unexpired grant matches the subject and resource.
+- No UI paywall, checkout, issuer, token parser, trusted authority, user-account sync, or billing provider has been added.
+- Never treat browser-originated grant JSON as verified; a future trusted issuing/verification boundary must be designed separately before activation.
+- This contract cannot alter canonical Knowledge Units, warning/source metadata, device auth, or personal state.
+
 ## Hướng phát triển sau V1.4
 
 1. kiểm thử trực tiếp trên browser desktop/tablet/phone thực;
