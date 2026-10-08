@@ -71,6 +71,16 @@ const outcome = migrateLocalPersonalState(migration);
 assert.equal(outcome.ok, false);
 assert.equal(outcome.rolledBack, true);
 assert.deepEqual([...migration.data.entries()].sort(), [...before].sort());
+
+// When browser storage rejects a read, migration must report a safe error,
+// not crash the protected workspace or attempt destructive writes.
+const blocked = new StorageWithFault(before);
+blocked.getItem = () => { throw new DOMException("Storage access denied", "SecurityError"); };
+const result = migrateLocalPersonalState(blocked);
+assert.equal(result.ok, false);
+assert.equal(result.rolledBack, true);
+assert.equal(result.migratedEntries, 0);
+assert.deepEqual([...blocked.data.entries()].sort(), [...before].sort());
 `;
     const result = spawnSync(process.execPath, [
       "--experimental-strip-types", "--input-type=module", "-e", snippet,
