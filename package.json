@@ -14,8 +14,9 @@
     "validate:cloudflare-preview": "node scripts/validate-cloudflare-preview.mjs",
     "cloudflare:preview:prepare": "node scripts/prepare-cloudflare-preview.mjs",
     "cloudflare:artifact:check": "node scripts/validate-cloudflare-build-artifact.mjs",
-    "gate": "npm run lint && npm run build && npm test && npm run validate:content-intelligence && npm run validate:cloudflare-preview",
-    "validate:content-intelligence": "node scripts/validate-content-intelligence.mjs"
+    "gate": "npm run lint && npm run build && npm test && npm run validate:content-intelligence && npm run validate:content-packs && npm run validate:cloudflare-preview",
+    "validate:content-intelligence": "node scripts/validate-content-intelligence.mjs",
+    "validate:content-packs": "node scripts/validate-content-packs.mjs"
   },
   "dependencies": {
     "next": "16.2.6",
