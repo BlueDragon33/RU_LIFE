@@ -184,13 +184,35 @@ export function validateLocalBackupText(text: string): BackupValidation {
 
 export function clearLocalDataDomain(storage: Storage, domain: LocalDataDomain) {
   const prefix = prefixes[domain];
-  const keys: string[] = [];
+  const snapshot: LocalBackupEntry[] = [];
+
+  // Capture exact raw values *before* the first destructive write.
   for (let index = 0; index < storage.length; index += 1) {
     const key = storage.key(index);
-    if (key?.startsWith(prefix)) keys.push(key);
+    if (!key?.startsWith(prefix)) continue;
+    const value = storage.getItem(key);
+    if (value === null) throw new Error("Không thể đọc đầy đủ dữ liệu trước khi xóa; chưa thay đổi dữ liệu.");
+    snapshot.push({ key, value });
   }
-  for (const key of keys) storage.removeItem(key);
-  return keys.length;
+
+  try {
+    for (const entry of snapshot) storage.removeItem(entry.key);
+  } catch (error) {
+    try {
+      // Restore even the key whose removal threw: a storage adapter may
+      // mutate before raising. Do not normalize any original user bytes.
+      for (const entry of snapshot) storage.setItem(entry.key, entry.value);
+    } catch {
+      throw new Error(
+        "Xóa thất bại và rollback không thể phục hồi đầy đủ. Hãy dùng tệp backup trước xóa để khôi phục dữ liệu.",
+      );
+    }
+    throw new Error(
+      "Xóa bị gián đoạn; rollback đã phục hồi nguyên trạng dữ liệu. " +
+      (error instanceof Error ? error.message : "Lỗi bộ nhớ trình duyệt."),
+    );
+  }
+  return snapshot.length;
 }
 
 function clearAllPersonalData(storage: Storage) {
