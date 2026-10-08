@@ -20,7 +20,8 @@ test("V1.4 exports schema v2 while explicitly migrating V1.3 backup schema v1", 
 test("personal data replacement is transactional and attempts in-memory rollback", async () => {
   const backup = await source("../lib/local-data-backup.ts");
   const manager = await source("../components/local-data-manager.tsx");
-  assert.match(backup, /const snapshot = collectLocalBackup\(storage\)/);
+  assert.match(backup, /snapshot = snapshotLocalPersonalEntries\(storage\)/);
+  assert.match(backup, /for \(const entry of snapshot\) storage\.setItem\(entry\.key, entry\.value\)/);
   assert.match(backup, /clearAllPersonalData\(storage\)/);
   assert.match(backup, /safeSetLocalStorage/);
   assert.match(backup, /rolledBack:\s*true/);
@@ -39,6 +40,8 @@ test("local state migration normalizes old personal entries and only marks versi
   assert.match(migration, /new Set\(progress\.checked\)/);
   assert.match(migration, /safeSetLocalStorage\(storage, RU_LIFE_LOCAL_STATE_VERSION_KEY/);
   assert.match(migration, /restoreSnapshot/);
+  assert.match(migration, /originalVersionMarker/);
+  assert.match(migration, /snapshotLocalPersonalEntries/);
   assert.match(runtime, /migrateLocalPersonalState\(localStorage\)/);
   assert.match(layout, /LocalStateRuntime/);
   assert.match(layout, /readDeviceSession\(\)/);
