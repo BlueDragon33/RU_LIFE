@@ -132,6 +132,23 @@ function normalizeEntry(entry: LocalBackupEntry): LocalBackupEntry {
   return entry;
 }
 
+/**
+ * Snapshot the original bytes for transactional rollback. Do not pass this
+ * through parseStored* normalization: unknown legacy fields, duplicate
+ * indices and original formatting must survive a failed operation.
+ */
+export function snapshotLocalPersonalEntries(storage: Storage): LocalBackupEntry[] {
+  const entries: LocalBackupEntry[] = [];
+  for (let index = 0; index < storage.length; index += 1) {
+    const key = storage.key(index);
+    if (!key || !isRuLifePersonalKey(key)) continue;
+    const value = storage.getItem(key);
+    if (value === null) throw new Error("Không thể đọc đầy đủ dữ liệu để chuẩn bị rollback.");
+    entries.push({ key, value });
+  }
+  return entries.sort((a, b) => a.key.localeCompare(b.key));
+}
+
 export function collectLocalBackup(storage: Storage, exportedAt = new Date().toISOString()): RuLifeLocalBackup {
   const entries: LocalBackupEntry[] = [];
   for (let index = 0; index < storage.length; index += 1) {
@@ -222,7 +239,12 @@ function clearAllPersonalData(storage: Storage) {
 export function replaceLocalPersonalData(storage: Storage, backup: RuLifeLocalBackup): ReplacePersonalDataResult {
   const validation = validateLocalBackupText(JSON.stringify(backup));
   if (!validation.ok) return { ok: false, rolledBack: true, error: validation.error };
-  const snapshot = collectLocalBackup(storage);
+  let snapshot: LocalBackupEntry[];
+  try {
+    snapshot = snapshotLocalPersonalEntries(storage);
+  } catch {
+    return { ok: false, rolledBack: true, error: "Không thể chụp dữ liệu cũ trước khôi phục; chưa thay đổi dữ liệu." };
+  }
 
   try {
     clearAllPersonalData(storage);
@@ -234,7 +256,7 @@ export function replaceLocalPersonalData(storage: Storage, backup: RuLifeLocalBa
   } catch (error) {
     try {
       clearAllPersonalData(storage);
-      for (const entry of snapshot.entries) storage.setItem(entry.key, entry.value);
+      for (const entry of snapshot) storage.setItem(entry.key, entry.value);
       return {
         ok: false,
         rolledBack: true,
