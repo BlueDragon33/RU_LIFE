@@ -68,6 +68,8 @@ export default function ProtectedAppPage() {
     <WorkspaceDeadlineBoard topics={deadlineTopics} />
     <LocalDataManager />
 
+    <section className="pack-entry" aria-label="Lộ trình theo mục tiêu"><div><span>KHÔNG BIẾT BẮT ĐẦU TỪ ĐÂU?</span><h2>Chọn lộ trình thay vì đọc tất cả</h2><p>Bốn gói mở: ngày đầu, tuần đầu, du học và giao tiếp tiếng Nga. Mỗi bước dẫn về chủ đề có nguồn và checklist hiện có.</p></div><Link href="/app/packs">Khám phá 4 lộ trình →</Link></section>
+
     <section className="module-section">
       <div className="section-heading"><div><span>KHÁM PHÁ CÁC CHỦ ĐỀ CHÍNH · {topicCount()} CHỦ ĐỀ</span><h2>Năm khu vực cho hành trình tại Nga</h2></div><p>Mỗi module là một khu vực độc lập, có hướng dẫn, checklist, nguồn và công cụ cá nhân riêng nhưng vẫn thống nhất trong một trải nghiệm RU_LIFE.</p></div>
       <div className="module-grid">
