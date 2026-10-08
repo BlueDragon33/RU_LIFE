@@ -163,8 +163,10 @@ export default function LocalDataManager() {
       setClearConfirm("");
       void refreshStorageEstimate();
       setImportMessage(`Đã xóa ${removed} mục thuộc “${domainLabel[clearDomain]}”. Backup trước xóa đã được tải xuống.`);
-    } catch {
-      setImportMessage("Không thể xóa miền dữ liệu đã chọn.");
+    } catch (error) {
+      setImportMessage(error instanceof Error
+        ? error.message
+        : "Không thể xóa miền dữ liệu đã chọn. Hãy giữ bản backup trước xóa.");
     }
   }
 
