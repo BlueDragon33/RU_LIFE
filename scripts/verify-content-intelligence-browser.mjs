@@ -68,6 +68,34 @@ try {
     await visible(page.locator(".knowledge-action-view"), `${route} action view`);
   }
 
+  // Content packs are open curated routes over canonical topics, never duplicate articles.
+  const packSlugs = ["russia-starter", "first-seven-days", "international-student", "language-survival"];
+  await page.goto(baseURL + "/app/packs", { waitUntil: "networkidle" });
+  await visible(page.locator(".pack-grid"), "pack discovery");
+  assert(await page.locator(".pack-card").count() === 4, "four open packs must be discoverable");
+  for (const slug of packSlugs) {
+    const packURL = baseURL + "/app/packs/" + slug;
+    const packResponse = await page.goto(packURL, { waitUntil: "networkidle" });
+    assert(packResponse?.ok(), `pack ${slug} must load`);
+    await visible(page.locator(".pack-topic-list"), `pack ${slug} journey`);
+    assert(await page.locator(".pack-topic-link").count() >= 3, `pack ${slug} must reference canonical topics`);
+    const firstLink = page.locator(".pack-topic-link").first();
+    const target = await firstLink.getAttribute("href");
+    assert(target?.startsWith("/app/") && !target.startsWith("/app/packs"), `pack ${slug} links directly to canonical topic`);
+    await firstLink.click();
+    await visible(page.locator(".knowledge-experience"), `pack ${slug} canonical topic`);
+    await visible(page.locator(".topic-progress-panel"), `pack ${slug} personal state sidebar`);
+    await page.getByRole("button", { name: "Tôi muốn hiểu" }).click();
+    await visible(page.locator(".knowledge-learning-view"), `pack ${slug} learn mode`);
+    await page.getByRole("button", { name: "Cho tôi xem toàn bộ" }).click();
+    await visible(page.locator(".knowledge-full-view"), `pack ${slug} full mode`);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(packURL, { waitUntil: "networkidle" });
+    const dims = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, width: window.innerWidth }));
+    assert(dims.scroll <= dims.width + 1, `pack ${slug} must not horizontally overflow on phone`);
+    await page.setViewportSize({ width: 1440, height: 900 });
+  }
+
   const response = await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });
   assert(response && response.ok(), `route must load successfully: ${response?.status()}`);
 
