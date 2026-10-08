@@ -45,13 +45,28 @@ function restoreSnapshot(storage: Storage, entries: LocalBackupEntry[]) {
 }
 
 export function migrateLocalPersonalState(storage: Storage): LocalStateMigrationResult {
-  const fromVersion = readVersion(storage);
-  if (fromVersion >= RU_LIFE_LOCAL_STATE_VERSION) {
-    return { ok: true, fromVersion, toVersion: RU_LIFE_LOCAL_STATE_VERSION, migratedEntries: 0, rolledBack: false };
-  }
+  let fromVersion = 1;
+  let originalVersionMarker: string | null = null;
+  let snapshot: LocalBackupEntry[];
+  try {
+    fromVersion = readVersion(storage);
+    if (fromVersion >= RU_LIFE_LOCAL_STATE_VERSION) {
+      return { ok: true, fromVersion, toVersion: RU_LIFE_LOCAL_STATE_VERSION, migratedEntries: 0, rolledBack: false };
+    }
 
-  const originalVersionMarker = storage.getItem(RU_LIFE_LOCAL_STATE_VERSION_KEY);
-  const snapshot = snapshotLocalPersonalEntries(storage);
+    originalVersionMarker = storage.getItem(RU_LIFE_LOCAL_STATE_VERSION_KEY);
+    snapshot = snapshotLocalPersonalEntries(storage);
+  } catch {
+    // Preflight reads failed: no personal-data write has been attempted.
+    return {
+      ok: false,
+      fromVersion,
+      toVersion: RU_LIFE_LOCAL_STATE_VERSION,
+      migratedEntries: 0,
+      rolledBack: true,
+      error: "Không thể đọc dữ liệu cục bộ trước khi nâng cấp. Chưa thay đổi dữ liệu.",
+    };
+  }
   const normalized = snapshot.map(normalizeEntry);
 
   try {
