@@ -1,7 +1,7 @@
 import { parseStoredTopicDeadlines, RU_LIFE_DEADLINE_PREFIX } from "./deadline-storage";
 import { parseStoredTopicTools, RU_LIFE_TOOLS_PREFIX } from "./personal-tools-storage";
 import { parseStoredTopicProgress, RU_LIFE_PROGRESS_PREFIX } from "./progress-storage";
-import { collectLocalBackup, localDataDomainForKey, type LocalBackupEntry } from "./local-data-backup";
+import { snapshotLocalPersonalEntries, localDataDomainForKey, type LocalBackupEntry } from "./local-data-backup";
 import { safeSetLocalStorage } from "./local-storage-safe";
 
 export const RU_LIFE_LOCAL_STATE_VERSION_KEY = "ru-life-local-state-version";
@@ -50,7 +50,8 @@ export function migrateLocalPersonalState(storage: Storage): LocalStateMigration
     return { ok: true, fromVersion, toVersion: RU_LIFE_LOCAL_STATE_VERSION, migratedEntries: 0, rolledBack: false };
   }
 
-  const snapshot = collectLocalBackup(storage).entries;
+  const originalVersionMarker = storage.getItem(RU_LIFE_LOCAL_STATE_VERSION_KEY);
+  const snapshot = snapshotLocalPersonalEntries(storage);
   const normalized = snapshot.map(normalizeEntry);
 
   try {
@@ -70,7 +71,11 @@ export function migrateLocalPersonalState(storage: Storage): LocalStateMigration
   } catch (error) {
     try {
       restoreSnapshot(storage, snapshot);
-      storage.setItem(RU_LIFE_LOCAL_STATE_VERSION_KEY, String(fromVersion));
+      if (originalVersionMarker === null) {
+        storage.removeItem(RU_LIFE_LOCAL_STATE_VERSION_KEY);
+      } else {
+        storage.setItem(RU_LIFE_LOCAL_STATE_VERSION_KEY, originalVersionMarker);
+      }
       return {
         ok: false,
         fromVersion,
