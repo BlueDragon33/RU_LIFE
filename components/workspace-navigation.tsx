@@ -16,6 +16,7 @@ export default function WorkspaceNavigation() {
   const pathname = usePathname();
   return <nav className="workspace-nav" aria-label="Điều hướng Hòa nhập Nga">
     <Link className={pathname === "/app" ? "active" : ""} href="/app"><span aria-hidden="true">⌂</span>Tổng quan<small>00</small></Link>
+    <Link className={pathname === "/app/packs" || pathname.startsWith("/app/packs/") ? "active" : ""} href="/app/packs"><span aria-hidden="true">▦</span>Lộ trình theo mục tiêu<small>04</small></Link>
     {ruLifeModules.map((module) => {
       const href = `/app/${module.slug}`;
       const active = pathname === href || pathname.startsWith(`${href}/`);
