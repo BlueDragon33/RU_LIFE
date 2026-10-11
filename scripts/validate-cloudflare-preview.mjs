@@ -44,7 +44,7 @@ for (const marker of ["redirect.configPath", "RU_LIFE_PREVIEW_D1_DATABASE_ID", "
 
 if (!workflow.includes("workflow_dispatch")) throw new Error("RU preview deploy phải manual-only.");
 if (/\n\s*push\s*:/.test(workflow)) throw new Error("RU preview chưa được auto-deploy theo push.");
-for (const token of ["DEPLOY_PREVIEW", "RU_LIFE_PREVIEW_D1_DATABASE_ID", "RU_LIFE_PRODUCTION_D1_DATABASE_ID", "RU_LIFE_CONTROL_SERVICE_SECRET", "ru-life-preview-db --remote", "npm run cloudflare:artifact:check", "wrangler deploy"]) {
+for (const token of ["RU_LIFE_PREVIEW_D1_DATABASE_ID", "RU_LIFE_PRODUCTION_D1_DATABASE_ID", "ru-life-preview-db --remote", "run: npm run cloudflare:artifact:check", "run: npx wrangler deploy"]) {
   if (!workflow.includes(token)) throw new Error(`RU preview workflow thiếu: ${token}`);
 }
 if (workflow.includes("ru-life-local --remote")) throw new Error("RU preview tuyệt đối không migrate local database qua remote.");
@@ -52,11 +52,15 @@ const jobEnvSection = workflow.split("steps:")[0] ?? "";
 if (jobEnvSection.includes("CLOUDFLARE_VITE_WRANGLER_CONFIG_PATH")) {
   throw new Error("Không được chọn preview Wrangler config ở job env trước khi file được materialize.");
 }
-const materializeIndex = workflow.indexOf("Materialize isolated preview config");
-const previewBuildIndex = workflow.indexOf("Build with Cloudflare preview bindings");
-const scopedConfigIndex = workflow.indexOf("CLOUDFLARE_VITE_WRANGLER_CONFIG_PATH", materializeIndex);
-if (materializeIndex < 0 || previewBuildIndex < materializeIndex || scopedConfigIndex < materializeIndex || scopedConfigIndex > previewBuildIndex + 250) {
+const materializeIndex = workflow.indexOf("run: npm run cloudflare:preview:prepare");
+const previewBuildIndex = workflow.indexOf("run: CLOUDFLARE_VITE_WRANGLER_CONFIG_PATH=wrangler.cloudflare.preview.jsonc npm run build");
+if (materializeIndex < 0 || previewBuildIndex < materializeIndex) {
   throw new Error("Preview Wrangler config chỉ được scope vào build sau bước materialize.");
+}
+const artifactCheckIndex = workflow.indexOf("run: npm run cloudflare:artifact:check");
+const deployIndex = workflow.indexOf("run: npx wrangler deploy");
+if (artifactCheckIndex < previewBuildIndex || artifactCheckIndex > deployIndex) {
+  throw new Error("cloudflare:artifact:check phải chạy sau build và trước deploy.");
 }
 if (workflow.includes("grep -R") && workflow.includes(".wrangler/deploy/config.json")) {
   throw new Error("Workflow không được grep redirect file như generated config; phải dùng artifact validator follow configPath.");

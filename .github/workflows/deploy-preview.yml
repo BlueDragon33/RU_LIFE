@@ -62,6 +62,10 @@ jobs:
         if: steps.config.outputs.ready == 'true'
         run: CLOUDFLARE_VITE_WRANGLER_CONFIG_PATH=wrangler.cloudflare.preview.jsonc npm run build
 
+      - name: Verify generated preview artifact
+        if: steps.config.outputs.ready == 'true'
+        run: npm run cloudflare:artifact:check
+
       - name: Deploy preview
         if: steps.config.outputs.ready == 'true'
         run: npx wrangler deploy
@@ -79,10 +83,10 @@ jobs:
           echo "::warning::Deploy completed but configured preview URL did not answer yet."
 
       - name: Development publish summary
-        if: always()
+        if: success() && steps.config.outputs.ready == 'true'
         run: |
-          if [[ "${{ steps.config.outputs.ready }}" == "true" ]]; then
-            echo "Development preview publish path executed."
-          else
-            echo "Development continues without blocking: Cloudflare preview credentials/bindings are not configured in this repository."
-          fi
+          echo "Development preview deployment succeeded."
+
+      - name: Skipped development preview summary
+        if: steps.config.outputs.ready == 'false'
+        run: echo "No Cloudflare preview deployment occurred; credentials/bindings are not configured."
