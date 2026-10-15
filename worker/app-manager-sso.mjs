@@ -53,3 +53,55 @@ export async function hasManagedSsoSession(request,env){
 }
 export const requiresManagedBrowserSso = pathname =>
  pathname==="/" || pathname==="/app" || pathname.startsWith("/app/");
+export async function handleManagedSso(request,env){
+ const url=new URL(request.url),path=url.pathname,isSso=path.startsWith("/__sso/");
+ if(!managedSsoEnabled(env))return isSso?jsonError("SSO_NOT_ENABLED",404):null;
+ const cfg=config(request,env);
+ if(!cfg)return isSso?jsonError("SSO_UNCONFIGURED",503):null;
+ if(path==="/__sso/status"){
+  return Response.json({ok:true,authenticated:await hasManagedSsoSession(request,env)},{headers:safeHeaders});
+ }
+ if(path==="/__sso/start"){
+  if(request.method!=="GET")return jsonError("METHOD_NOT_ALLOWED",405);
+  const verifier=b64(rand(32)),state=b64(rand(24));
+  const sha=b64(new Uint8Array(await crypto.subtle.digest("SHA-256",encoder.encode(verifier))));
+  const target=new URL("/__sso/v2/authorize",ISSUER);
+  for(const [name,value]of Object.entries({response_type:"code",client_id:CLIENT,redirect_uri:cfg.callback,
+    code_challenge_method:"S256",code_challenge:sha,state}))target.searchParams.set(name,value);
+  const res=new Response(null,{status:303,headers:{location:target.href}});
+  res.headers.set("cache-control","no-store, private");res.headers.set("referrer-policy","no-referrer");
+  setCookie(res,FLOW,await seal({kind:"flow",verifier,state,exp:now()+300},cfg.secret),300);
+  return res;
+ }
+ if(path==="/__sso/callback"){
+  if(request.method!=="GET")return jsonError("METHOD_NOT_ALLOWED",405);
+  const flow=await unseal(cookie(request,FLOW),cfg.secret,"flow",300);
+  const code=url.searchParams.get("code"),state=url.searchParams.get("state");
+  if(!flow||flow.state!==state||!code||!/^[A-Za-z0-9_-]{43}$/.test(code))return jsonError("SSO_FLOW_INVALID",401);
+  let result;
+  try{
+   result=await fetch(ISSUER+"/__sso/v2/token",{
+     method:"POST",headers:{"content-type":"application/json",accept:"application/json"},
+     body:JSON.stringify({client_id:CLIENT,redirect_uri:cfg.callback,code,code_verifier:flow.verifier}),
+     cache:"no-store",redirect:"error",signal:AbortSignal.timeout(8000)
+   });
+  }catch{return jsonError("SSO_GATEWAY_UNAVAILABLE",503)}
+  if(!result.ok)return jsonError("SSO_GRANT_REJECTED",401);
+  let v;try{v=await result.json()}catch{return jsonError("SSO_IDENTITY_INVALID",401)}
+  if(v?.issuer!==ISSUER||v.audience!==CLIENT||v.authMethod!=="google"||v.emailVerified!==true||
+     v.appManageRole!=="owner"||typeof v.subject!=="string"||v.subject!==v.email||
+     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.subject)||!Number.isSafeInteger(v.expiresAt)||
+     v.expiresAt<=now()||v.expiresAt>now()+60)return jsonError("SSO_IDENTITY_INVALID",401);
+  const res=new Response(null,{status:303,headers:{location:url.origin+"/"}});
+  setCookie(res,SESSION,await seal({kind:"session",aud:CLIENT,issuer:ISSUER,sub:v.subject,exp:now()+600},cfg.secret),600);
+  setCookie(res,FLOW,"",0);
+  res.headers.set("cache-control","no-store, private");return res;
+ }
+ if(path==="/__sso/logout"){
+  if(request.method!=="POST"||request.headers.get("origin")!==url.origin)return jsonError("INVALID_REQUEST",403);
+  const res=new Response(null,{status:303,headers:{location:url.origin+"/"}});
+  setCookie(res,SESSION,"",0);setCookie(res,FLOW,"",0);res.headers.set("cache-control","no-store, private");
+  return res;
+ }
+ return isSso?jsonError("SSO_ROUTE_NOT_FOUND",404):null;
+}
