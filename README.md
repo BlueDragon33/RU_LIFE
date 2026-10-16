@@ -35,7 +35,7 @@ Xem [`CONTROL_INTEGRATION.md`](CONTROL_INTEGRATION.md) để biết contract chi
 
 ## Operational sovereignty
 
-RU_LIFE adopts **Universal Constitution 1.2.0** at Blueprint Level **B3**.
+RU_LIFE adopts **Universal Constitution 1.3.0** at Blueprint Level **B3**.
 
 Default dependency order:
 
@@ -51,3 +51,8 @@ Core rules:
 - hosted Workers/D1 is an optional publish/remote-state track, not a prerequisite for basic local/reference workflows.
 
 Canonical dependency posture: `.blueprint/dependency-budget.json`.
+
+
+## Giới hạn nghiệm thu Blueprint 1.3
+
+Kế thừa chính sách tại nguồn và CI không đồng nghĩa rằng ứng dụng đã được nghiệm thu offline. Hồ sơ kiểm định: `docs/BLUEPRINT-13-MIGRATION-SOURCE-AUDIT.json`; trạng thái các migration blockers hiện giữ `MIGRATION_REQUIRED`. Không publish online từ merge/CI; quyền Production yêu cầu cổng phê duyệt riêng.
