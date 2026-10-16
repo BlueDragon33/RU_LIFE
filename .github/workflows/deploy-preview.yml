@@ -2,6 +2,12 @@ name: RU_LIFE Cloudflare Preview Deploy
 
 on:
   workflow_dispatch:
+    inputs:
+      online_release_enabled:
+        type: boolean
+        required: true
+        default: false
+        description: "Offline-first default; online only by future explicit owner request"
 
 permissions:
   contents: read
@@ -12,6 +18,7 @@ concurrency:
 
 jobs:
   deploy-preview:
+    if: ${{ inputs.online_release_enabled == true }}
     runs-on: ubuntu-24.04
     timeout-minutes: 18
     environment: ru-life-preview

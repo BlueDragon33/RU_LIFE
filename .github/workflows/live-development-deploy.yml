@@ -1,10 +1,13 @@
 name: RU LIFE Live Development Deploy
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+    inputs:
+      online_release_enabled:
+        type: boolean
+        required: true
+        default: false
+        description: "Offline-first default; online only by future explicit owner request"
 
 permissions:
   contents: read
@@ -15,6 +18,7 @@ concurrency:
 
 jobs:
   deploy_live:
+    if: ${{ inputs.online_release_enabled == true }}
     runs-on: ubuntu-24.04
     timeout-minutes: 18
     environment:
