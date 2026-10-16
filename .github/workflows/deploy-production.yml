@@ -3,6 +3,11 @@ name: RU_LIFE Cloudflare Production Deploy
 on:
   workflow_dispatch:
     inputs:
+      online_release_enabled:
+        type: boolean
+        required: true
+        default: false
+        description: "Offline-first default; online only by future explicit owner request"
       confirm:
         description: "Gõ DEPLOY_PRODUCTION để triển khai RU_LIFE Production"
         required: true
@@ -17,6 +22,7 @@ concurrency:
 
 jobs:
   deploy-production:
+    if: ${{ inputs.online_release_enabled == true }}
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     environment: ru-life-production
