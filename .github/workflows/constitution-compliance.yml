@@ -14,7 +14,7 @@ jobs:
     uses: BlueDragon33/Software-Blueprint-Hub/.github/workflows/constitution-compliance.yml@main
 
   dependency-sovereignty:
-    name: Constitution 1.2 RU_LIFE dependency sovereignty
+    name: Constitution 1.3 RU_LIFE dependency sovereignty
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -28,9 +28,9 @@ jobs:
           adoption = json.loads(Path(".blueprint/constitution-adoption.json").read_text())
           budget = json.loads(Path(".blueprint/dependency-budget.json").read_text())
 
-          assert adoption["policyVersion"] == "1.2.0"
+          assert adoption["policyVersion"] == "1.3.0"
           assert "operational-sovereignty-dependency-minimization" in adoption["inheritedPillars"]
-          assert budget["policyVersion"] == "1.2.0"
+          assert budget["policyVersion"] == "1.3.0"
           assert budget["projectId"] == adoption["projectId"] == "project:ru-life"
           assert budget["posture"] == "LOCAL_PERSONAL_LIFE_CORE_WITH_OPTIONAL_SYNC"
           assert budget["complianceState"] == "MIGRATION_REQUIRED"
@@ -53,5 +53,7 @@ jobs:
           assert "mandatory-paid-provider-for-core-personal-reference-workflows" in forbidden
           assert "ai-owned-immigration-or-legal-truth" in forbidden
 
-          print("RU_LIFE Constitution 1.2 dependency sovereignty: PASS")
+          print("RU_LIFE Constitution 1.3 dependency sovereignty: PASS")
           PY
+      - name: Verify B3 source-level inheritance without clearing migrations
+        run: node --test tests/governance/constitution-13-b3-adoption.test.mjs
