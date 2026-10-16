@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "application-constitution-source-adoption",
+  "status": "MIGRATION_REQUIRED_SOURCE_CANDIDATE",
+  "projectId": "project:ru-life",
+  "blueprintLevel": "B3",
+  "baselineSha": "da689e2c00516efb9b1637946c13ec47744d51d7",
+  "centralPolicy": {
+    "repository": "BlueDragon33/Software-Blueprint-Hub",
+    "version": "1.3.0",
+    "newRatification": false
+  },
+  "sourceScope": [
+    ".blueprint/constitution-adoption.json",
+    ".blueprint/dependency-budget.json",
+    "README.md"
+  ],
+  "existingMigrationBlockersMustRemainAtLeast": 4,
+  "coreLocalDependency": "local-webapp-runtime",
+  "criticalForbidden": [
+    "raw-passport-visa-or-credential-data-in-sheets-by-default",
+    "unencrypted-sensitive-document-backup-without-explicit-user-choice",
+    "ai-owned-immigration-or-legal-truth"
+  ],
+  "pendingProductEvidence": [
+    "Offline local navigation and personal reference workflows without network",
+    "Sensitive passport/visa data storage, redaction, encrypted export/restore under network denial",
+    "Human B3 UX/privacy acceptance; never claim AI is immigration authority"
+  ],
+  "truth": {
+    "sourceContractReviewOnly": true,
+    "appOfflineRuntime": "UNVERIFIED",
+    "userAcceptance": "UNVERIFIED",
+    "independentReview": "PENDING",
+    "productionAuthorized": false,
+    "mergeIsNotPublish": true,
+    "nativeRuntimeNotTouched": true
+  }
+}
