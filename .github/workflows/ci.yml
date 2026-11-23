@@ -85,14 +85,28 @@ jobs:
             echo "$headers" | tr -d '\r' | grep -Eiq '^content-type:[[:space:]]*text/css([;[:space:]]|$)'
           done </tmp/css-links.txt
 
+      - name: Retain exact local build stylesheet reference
+        uses: actions/upload-artifact@v4
+        with:
+          name: ru-life-css-links
+          path: /tmp/css-links.txt
+          if-no-files-found: error
+          retention-days: 2
+
   published-site-drift:
     name: Published Site Drift (read-only; blocks stale publication)
     if: github.event_name != 'pull_request'
+    needs: build-and-local-integrity
     runs-on: ubuntu-24.04
     timeout-minutes: 6
     env:
       PUBLIC_SITE: https://hoa-nhap-nga.dinhnam3391.chatgpt.site
     steps:
+      - name: Read exact local build stylesheet reference
+        uses: actions/download-artifact@v4
+        with:
+          name: ru-life-css-links
+          path: /tmp
       - name: Probe current published Site (read-only, never publishes)
         shell: bash
         run: |
@@ -142,8 +156,14 @@ jobs:
             fi
           done </tmp/public-css-links.txt
 
-          # Live inspection is independent from local build artifacts.
-          # A stale published Site remains FAIL even when source tests PASS.
+          # Compare the local candidate artifact uploaded by the build job
+          # against the published Site. Any drift is surfaced; never auto-deploy.
+          local_css="$(head -n 1 /tmp/css-links.txt)"
+          published_css="$(head -n 1 /tmp/public-css-links.txt)"
+          if [[ "$local_css" != "$published_css" ]]; then
+            echo "::warning::The local stylesheet asset ($local_css) and published stylesheet asset ($published_css) differ. Confirm that the current Sites artifact was published."
+          fi
+
           if curl --fail --silent --show-error --location --max-time 20 "$PUBLIC_SITE/app/packs" >/tmp/public-packs.html; then
             if ! grep -q 'pack-grid' /tmp/public-packs.html; then
               echo '::error::Published Site is missing current Content Packs discovery (/app/packs).'
