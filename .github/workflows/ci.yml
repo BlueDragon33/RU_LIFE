@@ -15,11 +15,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-site-integrity:
+  build-and-local-integrity:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
-    env:
-      PUBLIC_SITE: https://hoa-nhap-nga.dinhnam3391.chatgpt.site
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -87,8 +85,15 @@ jobs:
             echo "$headers" | tr -d '\r' | grep -Eiq '^content-type:[[:space:]]*text/css([;[:space:]]|$)'
           done </tmp/css-links.txt
 
-      - name: Probe current published Site
-        if: github.event_name != 'pull_request'
+  published-site-drift:
+    name: Published Site Drift (read-only; blocks stale publication)
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    env:
+      PUBLIC_SITE: https://hoa-nhap-nga.dinhnam3391.chatgpt.site
+    steps:
+      - name: Probe current published Site (read-only, never publishes)
         shell: bash
         run: |
           set -euo pipefail
@@ -137,13 +142,8 @@ jobs:
             fi
           done </tmp/public-css-links.txt
 
-          # Do not mistake an old /app shell and old sw.js for the current release.
-          local_css="$(head -n 1 /tmp/css-links.txt)"
-          published_css="$(head -n 1 /tmp/public-css-links.txt)"
-          if [[ "$local_css" != "$published_css" ]]; then
-            echo "::warning::The local stylesheet asset ($local_css) and published stylesheet asset ($published_css) differ. Confirm that the current Sites artifact was published."
-          fi
-
+          # Live inspection is independent from local build artifacts.
+          # A stale published Site remains FAIL even when source tests PASS.
           if curl --fail --silent --show-error --location --max-time 20 "$PUBLIC_SITE/app/packs" >/tmp/public-packs.html; then
             if ! grep -q 'pack-grid' /tmp/public-packs.html; then
               echo '::error::Published Site is missing current Content Packs discovery (/app/packs).'
