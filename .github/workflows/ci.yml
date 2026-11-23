@@ -15,11 +15,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-site-integrity:
+  build-and-local-integrity:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
-    env:
-      PUBLIC_SITE: https://hoa-nhap-nga.dinhnam3391.chatgpt.site
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -87,8 +85,29 @@ jobs:
             echo "$headers" | tr -d '\r' | grep -Eiq '^content-type:[[:space:]]*text/css([;[:space:]]|$)'
           done </tmp/css-links.txt
 
-      - name: Probe current published Site
-        if: github.event_name != 'pull_request'
+      - name: Retain exact local build stylesheet reference
+        uses: actions/upload-artifact@v4
+        with:
+          name: ru-life-css-links
+          path: /tmp/css-links.txt
+          if-no-files-found: error
+          retention-days: 2
+
+  published-site-drift:
+    name: Published Site Drift (read-only; blocks stale publication)
+    if: github.event_name != 'pull_request'
+    needs: build-and-local-integrity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    env:
+      PUBLIC_SITE: https://hoa-nhap-nga.dinhnam3391.chatgpt.site
+    steps:
+      - name: Read exact local build stylesheet reference
+        uses: actions/download-artifact@v4
+        with:
+          name: ru-life-css-links
+          path: /tmp
+      - name: Probe current published Site (read-only, never publishes)
         shell: bash
         run: |
           set -euo pipefail
@@ -137,7 +156,8 @@ jobs:
             fi
           done </tmp/public-css-links.txt
 
-          # Do not mistake an old /app shell and old sw.js for the current release.
+          # Compare the local candidate artifact uploaded by the build job
+          # against the published Site. Any drift is surfaced; never auto-deploy.
           local_css="$(head -n 1 /tmp/css-links.txt)"
           published_css="$(head -n 1 /tmp/public-css-links.txt)"
           if [[ "$local_css" != "$published_css" ]]; then
